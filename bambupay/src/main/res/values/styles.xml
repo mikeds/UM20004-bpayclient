@@ -36,6 +36,11 @@
         <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
+    <style name="TextViewSmall.Regular2" parent="TextViewSmall">
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
     <style name="TextViewTitle" parent="@android:style/TextAppearance.Widget.TextView">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/black</item>
