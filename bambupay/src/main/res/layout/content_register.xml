@@ -61,6 +61,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:drawableTop="@drawable/ic_camera"
+                    android:drawablePadding="15dp"
+                    android:padding="10dp"
                     android:text="@string/capture_id" />
 
             </RelativeLayout>
@@ -172,6 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="center_vertical"
+                android:hint="XXXX - XXXX - XXXX - XXXX"
                 android:paddingRight="0dp" />
 
             <LinearLayout
