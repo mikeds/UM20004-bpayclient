@@ -108,6 +108,7 @@
                 android:background="@color/div_border" />
 
             <TextView
+                android:id="@+id/btn_cash_out"
                 style="@style/TextViewTiny.SemiBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
