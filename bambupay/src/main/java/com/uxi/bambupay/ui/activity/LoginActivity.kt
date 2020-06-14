@@ -15,6 +15,12 @@ class LoginActivity : BaseActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+
+        btn_register.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+        }
     }
 
     override fun getLayoutId() = R.layout.activity_login
