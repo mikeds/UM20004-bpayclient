@@ -35,11 +35,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/underline"
             android:gravity="center_vertical"
+            android:hint="0.00"
             android:inputType="numberDecimal"
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
             android:paddingBottom="15dp"
-            android:text="0.00" />
+            android:textColorHint="@color/black" />
 
         <TextView
             style="@style/TextViewSmall.SemiBold"
@@ -62,7 +63,7 @@
             android:textColor="@color/black" />
 
         <Button
-            android:id="@+id/btn_sign_in"
+            android:id="@+id/btn_transact"
             style="@style/TextViewSmallBody.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +74,7 @@
             android:textColor="@android:color/white" />
 
         <Button
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_cancel"
             style="@style/TextViewSmallBody.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

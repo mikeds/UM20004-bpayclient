@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.uxi.bambupay.R
 import kotlinx.android.synthetic.main.app_toolbar.*
+import kotlinx.android.synthetic.main.content_cash_out.*
 
 class CashOutActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cash_out)
         setupToolbar()
+        events()
     }
 
     override fun getLayoutId() = R.layout.activity_cash_out
@@ -39,6 +41,12 @@ class CashOutActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+    }
+
+    private fun events() {
+        btn_cancel.setOnClickListener {
+            onBackPressed()
+        }
     }
 
 }

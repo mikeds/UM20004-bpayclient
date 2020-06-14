@@ -5,11 +5,13 @@ import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import com.uxi.bambupay.R
 import kotlinx.android.synthetic.main.app_toolbar.*
+import kotlinx.android.synthetic.main.content_transaction.*
 
 class TransactActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
+        events()
     }
 
     override fun getLayoutId() = R.layout.activity_transact
@@ -40,5 +42,11 @@ class TransactActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+    }
+
+    private fun events() {
+        btn_cancel.setOnClickListener {
+            onBackPressed()
+        }
     }
 }
