@@ -96,7 +96,8 @@
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:minLines="6" />
 
             <TextView
                 style="@style/TextViewSmall"
