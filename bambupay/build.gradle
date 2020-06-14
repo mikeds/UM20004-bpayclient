@@ -5,6 +5,20 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+    signingConfigs {
+        release {
+            keyAlias 'bambu_pay_alias'
+            keyPassword 'uxibambupay123$'
+            storeFile file('keystore_release')
+            storePassword 'uxibambupay123$'
+        }
+        debug {
+            keyAlias 'bambu_pay_alias'
+            keyPassword 'uxibambupay123$'
+            storeFile file('keystore_release')
+            storePassword 'uxibambupay123$'
+        }
+    }
 
     defaultConfig {
         applicationId "com.uxi.bambupay"
@@ -16,10 +30,34 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+        disable 'MissingTranslation'
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            zipAlignEnabled true
+            lintOptions {
+                checkReleaseBuilds false
+                // Or, if you prefer, you can continue to check for errors in release builds,
+                // but continue the build even when errors are found:
+                abortOnError false
+            }
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            debuggable true
+            versionNameSuffix "(demo)"
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
     }
     compileOptions {
@@ -48,6 +86,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'com.google.android.material:material:1.1.0'
+    implementation project(':CardForm')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

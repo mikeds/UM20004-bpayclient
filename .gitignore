@@ -9,10 +9,10 @@
 /captures
 .externalNativeBuild
 .gradle/*
-app/release
-app/staging
-app/dev
-app/debug
+bambupay/release
+bambupay/staging
+bambupay/dev
+bambupay/debug
 BambuPay-Client-Android/.idea/gradle.xml
 BambuPay-Client-Android/.idea/misc.xml
 BambuPay-Client-Android/.idea/modules.xml
@@ -26,3 +26,5 @@ BambuPay-Client-Android/.idea/copyright/profiles_settings.xml
 BambuPay-Client-Android/.idea/markdown-navigator/profiles_settings.xml
 BambuPay-Client-Android/.idea/caches/build_file_checksums.ser
 BambuPay-Client-Android/.idea/codeStyles/Project.xml
+
+CardForm/build

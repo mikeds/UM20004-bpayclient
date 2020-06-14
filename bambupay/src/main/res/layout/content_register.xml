@@ -81,7 +81,7 @@
                 android:text="@string/fname" />
 
             <EditText
-                style="@style/EditTextViewSmall.Regular2"
+                style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords" />
@@ -94,7 +94,7 @@
                 android:text="@string/lname" />
 
             <EditText
-                style="@style/EditTextViewSmall.Regular2"
+                style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords" />
@@ -107,7 +107,7 @@
                 android:text="@string/email" />
 
             <EditText
-                style="@style/EditTextViewSmall.Regular2"
+                style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress" />
@@ -120,7 +120,7 @@
                 android:text="@string/password" />
 
             <EditText
-                style="@style/EditTextViewSmall.Regular2"
+                style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -133,7 +133,7 @@
                 android:text="@string/confirm_password" />
 
             <EditText
-                style="@style/EditTextViewSmall.Regular2"
+                style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -154,10 +154,10 @@
                 android:text="@string/card_name" />
 
             <EditText
-                style="@style/EditTextViewSmall.Regular2"
+                style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="textCapWords" />
 
             <TextView
                 style="@style/TextViewSmall.SemiBold"
@@ -166,11 +166,13 @@
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:text="@string/card_number" />
 
-            <EditText
-                style="@style/EditTextViewSmall.Regular2"
+            <com.braintreepayments.cardform.view.CardEditText
+                android:id="@+id/input_text_credit_card"
+                style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:layout_height="45dp"
+                android:gravity="center_vertical"
+                android:paddingRight="0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -193,7 +195,8 @@
                         android:text="@string/card_expiry_date" />
 
                     <EditText
-                        style="@style/EditTextViewSmall.Regular2"
+                        android:id="@+id/input_card_expiry"
+                        style="@style/EditTextViewSmall.Regular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="MM/YY"
@@ -217,7 +220,7 @@
                         android:text="@string/card_cvv" />
 
                     <EditText
-                        style="@style/EditTextViewSmall.Regular2"
+                        style="@style/EditTextViewSmall.Regular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="123"
@@ -229,13 +232,13 @@
             </LinearLayout>
 
             <CheckBox
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 style="@style/TextViewSmall.Regular2"
-                android:paddingStart="10dp"
-                android:layout_marginStart="-6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="-6dp"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:buttonTint="@color/green"
+                android:paddingStart="10dp"
                 android:text="@string/agreement"
                 android:textColor="@color/black" />
 

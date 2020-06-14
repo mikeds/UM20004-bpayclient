@@ -3,13 +3,16 @@ package com.uxi.bambupay.ui.activity
 import android.os.Bundle
 import android.view.MenuItem
 import com.uxi.bambupay.R
+import com.uxi.bambupay.ui.widget.CreditCardExpiryTextWatcher
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.content_register.*
 
 class RegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         setupToolbar()
+        events()
     }
 
     override fun getLayoutId() = R.layout.activity_register
@@ -38,6 +41,10 @@ class RegisterActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+    }
+
+    private fun events() {
+        input_card_expiry.addTextChangedListener(CreditCardExpiryTextWatcher(input_card_expiry))
     }
 
 }
