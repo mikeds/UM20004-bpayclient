@@ -25,4 +25,11 @@
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="register">Register</string>
+
+    <string name="send_money">Send Money</string>
+    <string name="transact">Transaction</string>
+    <string name="amount">Amount</string>
+    <string name="send_mobile">Send to Mobile Number</string>
+    <string name="optional_msg">Optional Message</string>
+    <string name="cancel">Cancel</string>
 </resources>
