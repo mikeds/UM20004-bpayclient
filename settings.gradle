@@ -1,2 +1,3 @@
+include ':CardForm'
 include ':bambupay'
 rootProject.name = "BambuPay"

@@ -19,3 +19,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# TextDrawable
+-dontwarn com.amulyakhare.textdrawable.**
+-keep class com.amulyakhare.textdrawable.** { *; }
+
+# Card Form
+-dontwarn com.braintreepayments.cardform.**
+-keep class com.braintreepayments.cardform.** { *; }
