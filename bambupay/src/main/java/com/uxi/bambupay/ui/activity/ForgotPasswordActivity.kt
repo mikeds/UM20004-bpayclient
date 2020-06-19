@@ -4,16 +4,16 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.uxi.bambupay.R
 import kotlinx.android.synthetic.main.app_toolbar.*
-import kotlinx.android.synthetic.main.content_cash_out.*
 
-class CashOutActivity : BaseActivity() {
+class ForgotPasswordActivity : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
         events()
     }
 
-    override fun getLayoutId() = R.layout.activity_cash_out
+    override fun getLayoutId() = R.layout.activity_forgot_password
 
     override fun finish() {
         super.finish()
@@ -36,16 +36,13 @@ class CashOutActivity : BaseActivity() {
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
-        tv_toolbar_title?.text = getString(R.string.cash_out)
+        tv_toolbar_title?.text = getString(R.string.forgot_password)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
     private fun events() {
-        btn_cancel.setOnClickListener {
-            onBackPressed()
-        }
-    }
 
+    }
 }

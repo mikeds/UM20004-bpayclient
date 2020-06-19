@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.content_register.*
 class RegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
         setupToolbar()
         events()
     }
