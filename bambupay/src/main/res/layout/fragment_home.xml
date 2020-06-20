@@ -145,7 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin">
 
                 <TextView
@@ -158,12 +158,15 @@
                     android:text="@string/recent_transactions" />
 
                 <TextView
+                    android:id="@+id/btn_view_all"
                     style="@style/TextViewTiny"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/open_sans_regular"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="@string/view_all" />
 
             </RelativeLayout>
@@ -171,39 +174,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="15dp"
                 android:background="@color/div" />
 
-            <include layout="@layout/item_transaction" />
-
-            <include layout="@layout/item_transaction" />
-
-            <include layout="@layout/item_transaction" />
-
-            <include layout="@layout/item_transaction" />
-
-            <include layout="@layout/item_transaction" />
-
-            <include layout="@layout/item_transaction" />
-
-            <include layout="@layout/item_transaction" />
-
-            <include layout="@layout/item_transaction" />
-
-            <TextView
-                android:id="@+id/text_home"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_recent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
