@@ -63,8 +63,12 @@
         <item name="android:drawablePadding">8dp</item>
     </style>
 
-    <style name="TextViewSmallBody.Bold" parent="@android:style/TextAppearance.Widget.TextView">
+    <style name="TextViewSmallBody.Bold" parent="TextViewSmallBody">
         <item name="android:fontFamily">@font/poppins_bold</item>
+    </style>
+
+    <style name="TextViewSmallBody.SemiBold" parent="TextViewSmallBody">
+        <item name="android:fontFamily">@font/poppins_semibold</item>
     </style>
 
     <style name="TextViewTiny" parent="@android:style/TextAppearance.Widget.TextView">

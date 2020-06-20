@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.uxi.bambupay.R
 
-class SlideshowFragment : Fragment() {
+class FAQFragment : Fragment() {
 
     private lateinit var slideshowViewModel: SlideshowViewModel
 
@@ -21,7 +21,7 @@ class SlideshowFragment : Fragment() {
     ): View? {
         slideshowViewModel =
                 ViewModelProviders.of(this).get(SlideshowViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
+        val root = inflater.inflate(R.layout.fragment_faq, container, false)
         val textView: TextView = root.findViewById(R.id.text_slideshow)
         slideshowViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it

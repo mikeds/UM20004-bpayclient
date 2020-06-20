@@ -1,6 +1,7 @@
 package com.uxi.bambupay
 
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -22,20 +23,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
+    private lateinit var initialDrawable: TextDrawable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        val fab: FloatingActionButton = findViewById(R.id.fab)
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//        }
-        setupToolbar()
-        setupDrawerLayout()
 
-        val initials = getNameInitial("Erano", "Payawal")
-        var initialDrawable: TextDrawable? = null
+        val initials = getNameInitial("Juan", "Dela Cruz")
         initialDrawable = TextDrawable.builder()
             .beginConfig()
             .width(80) // width in px
@@ -46,6 +40,8 @@ class MainActivity : AppCompatActivity() {
             .endConfig()
             .buildRound(initials, ContextCompat.getColor(this, R.color.light_green))
 
+        setupToolbar()
+        setupDrawerLayout()
         profile_image.setImageDrawable(initialDrawable)
     }
 
@@ -82,9 +78,14 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout)
+            R.id.nav_home, R.id.nav_settings), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val headerView = navView.getHeaderView(0)
+        val avatarImageView: ImageView? = headerView.findViewById(R.id.image_avatar)
+        initialDrawable?.let {
+            avatarImageView?.setImageDrawable(it)
+        }
     }
 
 }

@@ -31,4 +31,11 @@ package com.uxi.bambupay.utils
         return initial
     }
 
+    fun getNameInitial(fullName: String?) : String {
+        if (!fullName.isNullOrBlank() || !fullName.isNullOrEmpty()) {
+            return fullName.replace("^\\s*([a-zA-Z]).*\\s+([a-zA-Z])\\S+\$".toRegex(), "$fullName")
+        }
+        return ""
+    }
+
 //}
