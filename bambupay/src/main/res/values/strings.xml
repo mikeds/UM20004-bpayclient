@@ -54,4 +54,8 @@
 
     <string name="send">Send</string>
     <string name="transaction_history">Transaction History</string>
+    <string name="date">Date</string>
+    <string name="message">Message</string>
+    <string name="reference_id">Reference ID</string>
+    <string name="transaction_details">Transaction Details</string>
 </resources>

@@ -1,13 +1,16 @@
 package com.uxi.bambupay.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.RecentTransaction
 import com.uxi.bambupay.ui.adapter.RecentTransactionsAdapter
+import com.uxi.bambupay.utils.RecyclerItemClickListener
 import kotlinx.android.synthetic.main.activity_transaction_history.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
@@ -63,11 +66,23 @@ class TransactionHistoryActivity : BaseActivity() {
         data.add(RecentTransaction("cash_in", 1585111159, "PHP 9,000", "+63912366789", "budget", "BP4DA56893FH"))
         data.add(RecentTransaction("send_money", 1584696907, "PHP -1,000", "+639123456789", "payment", "BP4DA56893FH"))
 
-        val adapter = RecentTransactionsAdapter(this, data)
-        recycler_view_history?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL ,false)
+        val adapter = RecentTransactionsAdapter(this@TransactionHistoryActivity, data)
+        recycler_view_history?.layoutManager = LinearLayoutManager(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL ,false)
         recycler_view_history?.adapter = adapter
-        val decorator = DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
-        ContextCompat.getDrawable(this, R.drawable.divider)?.let { decorator.setDrawable(it) }
+        val decorator = DividerItemDecoration(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL)
+        ContextCompat.getDrawable(this@TransactionHistoryActivity, R.drawable.divider)?.let { decorator.setDrawable(it) }
         recycler_view_history?.addItemDecoration(decorator)
+        recycler_view_history?.addOnItemTouchListener(
+            RecyclerItemClickListener(this@TransactionHistoryActivity, object : RecyclerItemClickListener.OnItemClickListener {
+
+                override fun onItemClick(view: View?, position: Int) {
+                    val item = adapter.getItem(position)
+                    val intent = Intent(this@TransactionHistoryActivity, TransactionDetailsActivity::class.java)
+                    intent.putExtra("transaction", item)
+                    startActivity(intent)
+                    overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                }
+            })
+        )
     }
 }

@@ -1,6 +1,5 @@
 package com.uxi.bambupay.ui.adapter
 
-import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -54,5 +53,9 @@ class RecentTransactionsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         arrayList?.get(position)?.let { holder.bind(it) }
+    }
+
+    fun getItem(position: Int) : RecentTransaction? {
+        return arrayList?.get(position)
     }
 }

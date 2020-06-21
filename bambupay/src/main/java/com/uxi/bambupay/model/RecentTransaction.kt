@@ -1,6 +1,8 @@
 package com.uxi.bambupay.model
 
-open class RecentTransaction {
+import java.io.Serializable
+
+open class RecentTransaction : Serializable {
 
     constructor(
         transactionType: String?,
