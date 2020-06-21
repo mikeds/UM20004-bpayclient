@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BambuPay</string>
+    <string name="demo_microblink_key">sRwAAAAQY29tLnV4aS5iYW1idXBhebZAofRiTBeMqaLJ2ybtvh7oihzQQjOu3Q45StdjPmTWkhGXk8Ex8YLEHiOP0erSpUECz45P6xUrbcx1yQInX4Xt45haTul6gMAb6JnNv00NAd34bQIK5foGqtsMif3Te0VdWNLkMyi99dPN3reX00SXoWnDrLTDfD4TPqOv44ZhneRUORC9iwtWiQzPxFWQpVJxBPZ+VrRK1PP+D8oyxta1JF6ugoSZBvRDt6MLFYHZOMeqRTQHxLsZ0PstMqK9fbY2ikZZVqBaMQ==</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -34,6 +35,9 @@
     <string name="account_details">Account Details</string>
     <string name="fname">First Name</string>
     <string name="lname">Last Name</string>
+    <string name="gender">Gender</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="id_number">ID Number</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="card_details">Card Details</string>
     <string name="card_name">Card Name</string>
