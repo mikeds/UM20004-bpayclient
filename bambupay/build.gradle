@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 29
@@ -51,11 +53,13 @@ android {
                 abortOnError false
             }
             signingConfig signingConfigs.release
+            buildConfigField "String", 'API_BASE_URL', '"https://api.resolveitthrough.us/"'
         }
 
         debug {
             debuggable true
             versionNameSuffix "(demo)"
+            buildConfigField "String", 'API_BASE_URL', '"https://dev-api.resolveitthrough.us/"'
             signingConfig signingConfigs.debug
             matchingFallbacks = ['debug', 'release']
         }
@@ -91,6 +95,36 @@ dependencies {
     implementation('com.microblink:blinkid:5.5.0@aar') {
         transitive = true
     }
+
+    // Retroft
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofitAdapterVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLoggingVersion"
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion2"
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion2"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxJavaKotlinVersion"
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.2'
+    // Dagger 2
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+    // Realm Adapter
+    implementation "io.realm:android-adapters:$realmAdapterVersion"
+    // Realm Inspector
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.uphyca:stetho_realm:2.3.0'
+
+    // Facebook Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
+
+    // Logs Timber
+    implementation "com.jakewharton.timber:timber:$timberVersion"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.activity.CashOutActivity"
+    tools:context=".view.activity.CashOutActivity"
     tools:showIn="@layout/activity_cash_out">
 
     <LinearLayout

@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.uxi.bambupay.ui.home.HomeFragment"
+        android:name="com.uxi.bambupay.view.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.uxi.bambupay.ui.gallery.SettingsFragment"
+        android:name="com.uxi.bambupay.view.gallery.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_faq"
-        android:name="com.uxi.bambupay.ui.slideshow.FAQFragment"
+        android:name="com.uxi.bambupay.view.slideshow.FAQFragment"
         android:label="@string/menu_faq"
         tools:layout="@layout/fragment_faq" />
 
     <fragment
         android:id="@+id/nav_about"
-        android:name="com.uxi.bambupay.ui.fragment.AboutFragment"
+        android:name="com.uxi.bambupay.view.fragment.AboutFragment"
         android:label="@string/menu_about"
         tools:layout="@layout/fragment_faq" />
 </navigation>

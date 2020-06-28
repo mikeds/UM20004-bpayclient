@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.activity.RegisterActivity"
+    tools:context=".view.activity.RegisterActivity"
     tools:showIn="@layout/activity_register">
 
     <LinearLayout
