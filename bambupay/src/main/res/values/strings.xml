@@ -73,4 +73,10 @@
     <string name="terms">Terms &amp; Conditions</string>
     <string name="contact_us">Contact Us</string>
     <string name="sign_out">Sign Out</string>
+
+    <string name="skip">Skip</string>
+    <string name="page1">Easy payments</string>
+    <string name="page2">Manage payments</string>
+    <string name="page3">High level security</string>
+    <string name="page_demo">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</string>
 </resources>

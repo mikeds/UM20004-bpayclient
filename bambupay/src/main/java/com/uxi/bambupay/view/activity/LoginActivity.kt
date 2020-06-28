@@ -56,6 +56,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             if (isSuccessLoggedIn) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                finish()
             } else {
                 viewModelLogin.subscribeToken()
             }

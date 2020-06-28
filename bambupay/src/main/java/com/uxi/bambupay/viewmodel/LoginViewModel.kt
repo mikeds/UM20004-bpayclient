@@ -3,6 +3,7 @@ package com.uxi.bambupay.viewmodel
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
+import com.uxi.bambupay.model.User
 import com.uxi.bambupay.repository.LoginRepository
 import com.uxi.bambupay.utils.Utils
 import timber.log.Timber
@@ -19,7 +20,7 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
     val refreshLogin = MutableLiveData<Boolean>()
 
     fun subscribeToken() {
-        Log.e("DEBUG", "TOKEN=> ${utils.token}")
+        // Log.e("DEBUG", "TOKEN=> ${utils.token}")
         Log.e("DEBUG", "isTokenExpired=> ${utils.isTokenExpired}")
 
         if (utils.token?.isNotEmpty()!! && !utils.isTokenExpired) return
@@ -27,7 +28,7 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
         disposable?.add(repository.loadToken()
             .subscribe({
                 it.let { token ->
-                    Log.e("DEBUG", "accessToken:: ${token.accessToken}")
+                    // Log.e("DEBUG", "accessToken:: ${token.accessToken}")
                     utils.saveTokenPack(token.accessToken, false)
 
                     if (isSuccessLoggedIn.value == false) {
@@ -47,10 +48,28 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
                 .doOnSubscribe { loading.value = true }
                 .doAfterTerminate { loading.value = false }
                 .subscribe({
-                    Log.e("DEBUG", "User:: $it")
-                    repository.saveUser(it)
-                    utils.saveLoggedIn(true)
-                    isSuccessLoggedIn.value = true
+
+                    it.let {
+
+                        repository.saveUser(it)
+                            utils.saveLoggedIn(true)
+                            isSuccessLoggedIn.value = true
+
+                        /*if (it.error == true) {
+                            Log.e("DEBUG", "error message:: ${it.message}")
+                        } else {
+
+//                            Log.e("DEBUG", "value:: ${it.value.toString()}")
+                            if (it is User) {
+                                val user: User? = it as User?
+                                Log.e("DEBUG", "user:: ${user?.emailAddress}")
+                            } else {
+
+                            }
+                        }*/
+                    }
+
+
                 }, {
                     Timber.e(it)
                     if (refreshToken(it)) {

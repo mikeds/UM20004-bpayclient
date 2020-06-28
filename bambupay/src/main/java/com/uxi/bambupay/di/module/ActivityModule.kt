@@ -13,6 +13,9 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityModule {
 
     @ContributesAndroidInjector()
+    internal abstract fun contributeSplashActivity(): SplashActivity
+
+    @ContributesAndroidInjector()
     internal abstract fun contributeLoginActivity(): LoginActivity
 
     @ContributesAndroidInjector()

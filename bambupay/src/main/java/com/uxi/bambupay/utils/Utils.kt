@@ -73,17 +73,6 @@ class Utils constructor(private val context: Context?) {
         const val HAS_SAW_TUTORIAL = "has_saw_tutorial"
         const val USER_EMAIL = "user_email"
         const val USER_NAME = "user_name"
-//        private var instance: Utils? = null
-//        fun getInstance(context: Context): Utils? {
-//            if (instance == null) {
-//                synchronized(Utils::class.java) {
-//                    if (instance == null) {
-//                        instance = Utils(context)
-//                    }
-//                }
-//            }
-//            return instance
-//        }
     }
 
     init {

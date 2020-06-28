@@ -1,5 +1,6 @@
 package com.uxi.bambupay.repository
 
+import com.uxi.bambupay.api.GenericApiResponse
 import com.uxi.bambupay.api.WebService
 import com.uxi.bambupay.db.UserDao
 import com.uxi.bambupay.model.TokenResponse
@@ -28,11 +29,9 @@ constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+//    fun loadLogin(username: String, password: String) : Flowable<GenericApiResponse<User>> {
     fun loadLogin(username: String, password: String) : Flowable<User> {
-        val map = HashMap<String, String>()
-        map["username"] = username
-        map["password"] = password
-        return webService.login(map)
+        return webService.login(username, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

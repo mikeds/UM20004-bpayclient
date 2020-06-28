@@ -1,6 +1,7 @@
 package com.uxi.bambupay.api
 
 import android.util.Log
+import com.uxi.bambupay.BuildConfig
 import com.uxi.bambupay.utils.Utils
 import okhttp3.Credentials
 import okhttp3.Interceptor
@@ -22,26 +23,26 @@ class AuthenticationInterceptor
         val original = chain.request()
         val builder: Request.Builder
 
-        // ${SPInstance.getInstance(RetrofitHttp.getContext()).getToken()}
-        Timber.tag("DEBUG").e("TOKEN:: ${utils?.token}")
+        if (BuildConfig.DEBUG) {
+            Timber.tag("DEBUG").e("TOKEN:: ${utils?.token}")
+        }
 
         var token = ""
         utils?.let {
             if (it.token.isNullOrBlank() && it.isTokenExpired) {
                 val basicAuth = getBasicAuth()
-                Log.e("DEBUG", "basicAuth:: $basicAuth")
                 token = "".plus(basicAuth)
-                Log.e("DEBUG", "token:: $token")
             } else {
                 token = "Bearer ${it.token}"
-                Log.e("DEBUG", "Bearer Token:: $token")
+                if (BuildConfig.DEBUG) {
+                    Log.e("DEBUG", "Bearer Token:: $token")
+                }
             }
         }
 
         builder = original.newBuilder()
             .addHeader("Accept", "application/json")
             .addHeader("Content-Type", "application/json")
-//            .addHeader("Accept-Encoding", "application/gzip")
             .header("Authorization", token)
         val request = builder.build()
         return chain.proceed(request)

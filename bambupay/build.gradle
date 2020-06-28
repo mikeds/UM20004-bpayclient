@@ -119,12 +119,12 @@ dependencies {
     // Realm Inspector
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.uphyca:stetho_realm:2.3.0'
-
     // Facebook Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
-
     // Logs Timber
     implementation "com.jakewharton.timber:timber:$timberVersion"
+    // indicator
+    implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

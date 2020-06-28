@@ -8,7 +8,9 @@ import com.google.gson.GsonBuilder
 import com.uxi.bambupay.BuildConfig
 import com.uxi.bambupay.BuildConfig.API_BASE_URL
 import com.uxi.bambupay.api.AuthenticationInterceptor
+import com.uxi.bambupay.api.ErrorDeserializer
 import com.uxi.bambupay.api.WebService
+import com.uxi.bambupay.model.User
 import com.uxi.bambupay.utils.Utils
 import dagger.Module
 import dagger.Provides
@@ -80,16 +82,15 @@ class AppModule  {
         Timber.tag("DEBUG").e(API_BASE_URL)
 
         // add gsonBuilder here if need to have Deserializer
-        /*val gsonBuilder = GsonBuilder()
-            .registerTypeAdapter(MembershipDirectoryKt::class.java, MembershipDeserializer())
-            .create()*/
+        val gsonBuilder = GsonBuilder()
+            .registerTypeAdapter(User::class.java, ErrorDeserializer())
+            .create()
 
         //add retro builder
         val retroBuilder = Retrofit.Builder()
             .baseUrl(API_BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-//            .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
+            .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
 
         retroBuilder.client(httpClient)
 
