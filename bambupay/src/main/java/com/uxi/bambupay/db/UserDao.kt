@@ -15,4 +15,12 @@ class UserDao(val realm: Realm) {
         }
     }
 
+    fun getCurrentUser(): User? {
+        val currentUser = realm.where(User::class.java).findFirst()
+        currentUser?.let {
+            return realm.copyFromRealm(currentUser)
+        }
+        return null
+    }
+
 }

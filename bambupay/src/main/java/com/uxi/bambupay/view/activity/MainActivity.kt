@@ -2,11 +2,12 @@ package com.uxi.bambupay.view.activity
 
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -15,38 +16,31 @@ import androidx.navigation.ui.setupWithNavController
 import com.amulyakhare.textdrawable.TextDrawable
 import com.google.android.material.navigation.NavigationView
 import com.uxi.bambupay.R
-import com.uxi.bambupay.utils.getNameInitial
+import com.uxi.bambupay.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
-    private lateinit var initialDrawable: TextDrawable
+    private var initialDrawable: TextDrawable? = null
+    private var avatarImageView: ImageView? = null
+    private var nameTextView: TextView? = null
+    private var mobileTextView: TextView? = null
+
+    private val viewModelMain by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val initials = getNameInitial("Juan", "Dela Cruz")
-        initialDrawable = TextDrawable.builder()
-            .beginConfig()
-            .width(80) // width in px
-            .height(80) // height in px
-            .fontSize(32)
-            .bold()
-            .toUpperCase()
-            .endConfig()
-            .buildRound(initials, ContextCompat.getColor(this,
-                R.color.light_green
-            ))
 
         setupToolbar()
         setupDrawerLayout()
-        profile_image.setImageDrawable(initialDrawable)
+        observeViewModel()
     }
+
+    override fun getLayoutId() = R.layout.activity_main
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
@@ -87,10 +81,47 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         val headerView = navView.getHeaderView(0)
-        val avatarImageView: ImageView? = headerView.findViewById(R.id.image_avatar)
-        initialDrawable?.let {
-            avatarImageView?.setImageDrawable(it)
+        avatarImageView = headerView.findViewById(R.id.image_avatar)
+        nameTextView = headerView.findViewById(R.id.text_full_name)
+        mobileTextView = headerView.findViewById(R.id.text_mobile_num)
+        if (initialDrawable != null) {
+            avatarImageView?.setImageDrawable(initialDrawable)
         }
+    }
+
+    private fun observeViewModel() {
+        viewModelMain.getCurrUser()
+
+        viewModelMain.initials.observe(this, Observer { initials ->
+            initials?.let {
+                initialDrawable = TextDrawable.builder()
+                    .beginConfig()
+                    .width(80) // width in px
+                    .height(80) // height in px
+                    .fontSize(32)
+                    .bold()
+                    .toUpperCase()
+                    .endConfig()
+                    .buildRound(initials, ContextCompat.getColor(this,
+                        R.color.light_green
+                    ))
+
+                profile_image?.setImageDrawable(initialDrawable)
+                avatarImageView?.setImageDrawable(initialDrawable)
+            }
+        })
+
+        viewModelMain.fullName.observe(this, Observer { fullName ->
+            fullName?.let {
+                nameTextView?.text = it
+            }
+        })
+
+        viewModelMain.mobileNumber.observe(this, Observer { mobileNumber ->
+            mobileNumber?.let {
+                mobileTextView?.text = it
+            }
+        })
     }
 
 }

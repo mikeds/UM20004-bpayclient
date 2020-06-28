@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.uxi.bambupay.di.factory.ViewModelFactory
 import com.uxi.bambupay.di.factory.ViewModelKey
 import com.uxi.bambupay.viewmodel.LoginViewModel
+import com.uxi.bambupay.viewmodel.MainViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -16,6 +17,11 @@ import dagger.multibindings.IntoMap
 @Suppress("unused")
 @Module
 abstract class ViewModelModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    internal abstract fun bindMainViewModel(loginViewModel: MainViewModel): ViewModel
 
     @Binds
     @IntoMap

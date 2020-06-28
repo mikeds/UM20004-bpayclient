@@ -52,8 +52,8 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
                     it.let {
 
                         repository.saveUser(it)
-                            utils.saveLoggedIn(true)
-                            isSuccessLoggedIn.value = true
+                        utils.saveLoggedIn(true)
+                        isSuccessLoggedIn.value = true
 
                         /*if (it.error == true) {
                             Log.e("DEBUG", "error message:: ${it.message}")

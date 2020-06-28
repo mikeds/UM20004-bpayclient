@@ -34,6 +34,7 @@
             android:text="Juan Dela Cruz" />
 
         <TextView
+            android:id="@+id/text_mobile_num"
             style="@style/TextViewTiny"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

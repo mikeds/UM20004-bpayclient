@@ -38,4 +38,16 @@ package com.uxi.bambupay.utils
         return ""
     }
 
+fun buildName(firstName: String? = "", lastName: String? = ""): String {
+    var name: String
+    if (isChinese(lastName)) {
+        // for Chinese name
+        name = lastName + firstName
+    } else {
+        //for English name
+        name = "$firstName $lastName"
+    }
+    return name.trim { it <= ' ' }
+}
+
 //}
