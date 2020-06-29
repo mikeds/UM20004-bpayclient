@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
 import com.uxi.bambupay.viewmodel.LoginViewModel
@@ -62,12 +63,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
-        viewModelLogin.refreshLogin.observe(this, Observer { isrefreshLogin ->
-            if (isrefreshLogin) {
-                Log.e("DEBUG", "isrefreshLogin")
+        viewModelLogin.refreshLogin.observe(this, Observer { isRefreshLogin ->
+            if (isRefreshLogin) {
+                Log.e("DEBUG", "isRefreshLogin")
                 viewModelLogin.subscribeLogin(input_email.text.toString(), input_password.text.toString())
             }
         })
+
+        viewModelLogin.errorMessage.observe(this, Observer { errorMessage ->
+            Log.e("DEBUG", "login error")
+            Toast.makeText(this, "$errorMessage", Toast.LENGTH_SHORT).show()
+        })
+
+
     }
 
     private fun events() {

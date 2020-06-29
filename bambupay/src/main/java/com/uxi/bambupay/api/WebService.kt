@@ -13,7 +13,6 @@ interface WebService {
     @FormUrlEncoded
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("client/login")
-    fun login(@Field("username") username: String, @Field("password") password: String): Flowable<User>
-//    fun login(@Field("username") username: String, @Field("password") password: String): Flowable<GenericApiResponse<User>>
+    fun login(@Field("username") username: String, @Field("password") password: String): Flowable<GenericApiResponse<User>>
 
 }

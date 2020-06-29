@@ -3,7 +3,6 @@ package com.uxi.bambupay.viewmodel
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
-import com.uxi.bambupay.model.User
 import com.uxi.bambupay.repository.LoginRepository
 import com.uxi.bambupay.utils.Utils
 import timber.log.Timber
@@ -49,26 +48,18 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
                 .doAfterTerminate { loading.value = false }
                 .subscribe({
 
-                    it.let {
-
-                        repository.saveUser(it)
-                        utils.saveLoggedIn(true)
-                        isSuccessLoggedIn.value = true
-
-                        /*if (it.error == true) {
-                            Log.e("DEBUG", "error message:: ${it.message}")
-                        } else {
-
-//                            Log.e("DEBUG", "value:: ${it.value.toString()}")
-                            if (it is User) {
-                                val user: User? = it as User?
-                                Log.e("DEBUG", "user:: ${user?.emailAddress}")
-                            } else {
-
-                            }
-                        }*/
+                    if (it.value != null) {
+                        it.value?.let { user ->
+                            repository.saveUser(user)
+                            utils.saveLoggedIn(true)
+                            isSuccessLoggedIn.value = true
+                        }
+                    } else {
+                        it.message?.let { error ->
+                            errorMessage.value = error
+                            Log.e("DEBUG", "error message:: $error")
+                        }
                     }
-
 
                 }, {
                     Timber.e(it)
@@ -77,6 +68,7 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
                         utils.saveTokenPack("", true)
                         isSuccessLoggedIn.value = false
                     }
+                    errorHandling(it)
                 })
             )
 

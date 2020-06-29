@@ -2,6 +2,7 @@ package com.uxi.bambupay.api
 
 import com.google.gson.Gson
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
 
 /**
@@ -12,10 +13,10 @@ open class GenericApiResponse<T> {
 
     var error: Boolean? = null
 
+    @SerializedName("error_description")
     var message: String? = null
 
-//    @Expose
-//    var value: T? = null
+    var value: T? = null
 
     companion object {
         fun <T> create(body: String): GenericApiResponse<T> {

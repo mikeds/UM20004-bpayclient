@@ -82,15 +82,16 @@ class AppModule  {
         Timber.tag("DEBUG").e(API_BASE_URL)
 
         // add gsonBuilder here if need to have Deserializer
-        val gsonBuilder = GsonBuilder()
-            .registerTypeAdapter(User::class.java, ErrorDeserializer())
-            .create()
+//        val gsonBuilder = GsonBuilder()
+//            .registerTypeAdapter(User::class.java, ErrorDeserializer())
+//            .create()
 
         //add retro builder
         val retroBuilder = Retrofit.Builder()
             .baseUrl(API_BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
+            .addConverterFactory(GsonConverterFactory.create())
+//            .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
 
         retroBuilder.client(httpClient)
 

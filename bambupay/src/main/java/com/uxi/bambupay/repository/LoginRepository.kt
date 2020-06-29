@@ -29,8 +29,7 @@ constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-//    fun loadLogin(username: String, password: String) : Flowable<GenericApiResponse<User>> {
-    fun loadLogin(username: String, password: String) : Flowable<User> {
+    fun loadLogin(username: String, password: String) : Flowable<GenericApiResponse<User>> {
         return webService.login(username, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
