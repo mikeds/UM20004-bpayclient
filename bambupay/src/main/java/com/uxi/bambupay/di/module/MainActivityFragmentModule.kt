@@ -1,6 +1,7 @@
 package com.uxi.bambupay.di.module
 
-import com.uxi.bambupay.view.gallery.SettingsFragment
+import com.uxi.bambupay.view.fragment.HomeFragment
+import com.uxi.bambupay.view.fragment.SettingsFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -14,5 +15,8 @@ abstract class MainActivityFragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSettingsFragment(): SettingsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeHomeFragment(): HomeFragment
 
 }

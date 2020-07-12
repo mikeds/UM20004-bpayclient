@@ -67,6 +67,30 @@ class Utils constructor(private val context: Context?) {
         prefs.edit().putBoolean(IS_TOKEN_EXPIRED, isExpired).apply()
     }
 
+    //---------------------------------------------------------------------------
+    fun saveUserTokenPack(token: String?, isExpired: Boolean) {
+        prefs.edit().putString(USER_TOKEN, token).apply()
+        prefs.edit().putBoolean(IS_USER_TOKEN_EXPIRED, isExpired).apply()
+    }
+
+    fun saveUserKeyPack(secretKey: String?, secretCode: String?) {
+        prefs.edit().putString(USER_SECRET_KEY, secretKey).apply()
+        prefs.edit().putString(USER_SECRET_CODE, secretCode).apply()
+    }
+
+    val isUserTokenExpired: Boolean
+        get() = prefs.getBoolean(IS_USER_TOKEN_EXPIRED, true)
+
+    val userToken: String?
+        get() = prefs.getString(USER_TOKEN, "")
+
+    val userSecretKey: String?
+        get() = prefs.getString(USER_SECRET_KEY, "")
+
+    val userSecretCode: String?
+        get() = prefs.getString(USER_SECRET_CODE, "")
+    //---------------------------------------------------------------------------
+
 
     companion object {
         const val BP_PREFS = "bp_prefs"
@@ -77,6 +101,10 @@ class Utils constructor(private val context: Context?) {
         const val HAS_SAW_TUTORIAL = "has_saw_tutorial"
         const val USER_EMAIL = "user_email"
         const val USER_NAME = "user_name"
+        const val USER_TOKEN = "user_token"
+        const val IS_USER_TOKEN_EXPIRED = "is_user_token_expired"
+        const val USER_SECRET_KEY = "user_secret_key"
+        const val USER_SECRET_CODE = "user_secret_code"
     }
 
     init {

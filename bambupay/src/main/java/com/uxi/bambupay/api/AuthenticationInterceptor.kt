@@ -25,19 +25,32 @@ class AuthenticationInterceptor
 
         if (BuildConfig.DEBUG) {
             Timber.tag("DEBUG").e("TOKEN:: ${utils?.token}")
+            Log.e("DEBUG", "USER TOKEN:: ${utils?.userToken}")
         }
 
         var token = ""
         utils?.let {
-            if (it.token.isNullOrBlank() && it.isTokenExpired) {
-                val basicAuth = getBasicAuth()
-                token = "".plus(basicAuth)
+            if (!it.isLoggedIn) {
+                token = if (it.token.isNullOrBlank() && it.isTokenExpired) {
+                    // this is for generating token for login
+                    val basicAuth = getBasicAuth()
+                    "".plus(basicAuth)
+                } else {
+                    // this is for login only
+                    "Bearer ${it.token}"
+                }
             } else {
-                token = "Bearer ${it.token}"
-                if (BuildConfig.DEBUG) {
-                    Log.e("DEBUG", "Bearer Token:: $token")
+                token = if (it.userToken.isNullOrBlank() && it.isUserTokenExpired) {
+                    val userAuth = Credentials.basic(it.userSecretKey, it.userSecretCode)
+                    "".plus(userAuth)
+                } else {
+                    "Bearer ${it.userToken}"
                 }
             }
+        }
+
+        if (BuildConfig.DEBUG) {
+            Log.e("Authentication", "Bearer Token:: $token")
         }
 
         builder = original.newBuilder()
@@ -53,4 +66,5 @@ class AuthenticationInterceptor
         val password = "testsecretcode"
         return Credentials.basic(username, password)
     }
+
 }

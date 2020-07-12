@@ -8,9 +8,7 @@ import com.google.gson.GsonBuilder
 import com.uxi.bambupay.BuildConfig
 import com.uxi.bambupay.BuildConfig.API_BASE_URL
 import com.uxi.bambupay.api.AuthenticationInterceptor
-import com.uxi.bambupay.api.ErrorDeserializer
 import com.uxi.bambupay.api.WebService
-import com.uxi.bambupay.model.User
 import com.uxi.bambupay.utils.Utils
 import dagger.Module
 import dagger.Provides
@@ -23,7 +21,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import javax.inject.Singleton
 
 /**

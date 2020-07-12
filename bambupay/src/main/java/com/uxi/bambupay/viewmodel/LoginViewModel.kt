@@ -52,6 +52,7 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
                         it.value?.let { user ->
                             repository.saveUser(user)
                             utils.saveLoggedIn(true)
+                            utils.saveUserKeyPack(user.secretKey, user.secretCode)
                             isSuccessLoggedIn.value = true
                         }
                     } else {

@@ -1,7 +1,10 @@
 package com.uxi.bambupay.db
 
+import com.uxi.bambupay.model.Balance
 import com.uxi.bambupay.model.User
 import io.realm.Realm
+import io.realm.RealmResults
+import io.realm.Sort
 
 /**
  * Created by Eraño Payawal on 6/28/20.
@@ -27,6 +30,22 @@ class UserDao(val realm: Realm) {
         realm.executeTransaction {
             it.deleteAll()
         }
+    }
+
+    fun insertOrUpdate(obj: Balance) {
+        realm.executeTransaction { realm1 ->
+            realm1.insertOrUpdate(obj)
+        }
+    }
+
+    fun deleteBalance() {
+        realm.executeTransaction {
+            it.delete(Balance::class.java)
+        }
+    }
+
+    fun queryBalance(): RealmResults<Balance> {
+        return realm.where(Balance::class.java).findAllAsync()
     }
 
 }

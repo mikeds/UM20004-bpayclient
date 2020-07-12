@@ -1,14 +1,9 @@
-package com.uxi.bambupay.view.home
+package com.uxi.bambupay.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uxi.bambupay.R
@@ -17,26 +12,16 @@ import com.uxi.bambupay.view.activity.CashOutActivity
 import com.uxi.bambupay.view.activity.TransactActivity
 import com.uxi.bambupay.view.activity.TransactionHistoryActivity
 import com.uxi.bambupay.view.adapter.RecentTransactionsAdapter
+import com.uxi.bambupay.viewmodel.HomeViewModel
+import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val userTokenModel by viewModel<UserTokenViewModel>()
+    private val homeViewModel by viewModel<HomeViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-        })
-        return root
-    }
+    override fun getLayoutId() = R.layout.fragment_home
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -60,6 +45,7 @@ class HomeFragment : Fragment() {
         }
 
         setupAdapter()
+        observeViewModel()
     }
 
     private fun setupAdapter() {
@@ -79,6 +65,31 @@ class HomeFragment : Fragment() {
         val decorator = DividerItemDecoration(activity, LinearLayoutManager.VERTICAL)
         decorator.setDrawable(activity?.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
         recycler_view_recent?.addItemDecoration(decorator)
+    }
+
+    private fun observeViewModel() {
+        homeViewModel.rxUIBalance()
+        homeViewModel.subscribeUserBalance()
+
+        homeViewModel.isSuccess.observe(viewLifecycleOwner, Observer { isSuccess ->
+            if (!isSuccess) {
+                // call token refresher
+                userTokenModel.subscribeToken()
+            }
+        })
+
+        userTokenModel.isTokenRefresh.observe(viewLifecycleOwner, Observer { isTokenRefresh ->
+            if (isTokenRefresh) {
+                homeViewModel.subscribeUserBalance()
+            }
+        })
+
+        homeViewModel.textBalance.observe(viewLifecycleOwner, Observer { textBalance ->
+             if (!textBalance.isNullOrBlank()) {
+                 txt_current_balance.text = textBalance
+             }
+        })
+
     }
 
 }

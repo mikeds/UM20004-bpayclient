@@ -29,4 +29,10 @@ open class User : RealmObject() {
     @SerializedName("mobile_no")
     var mobileNumber: String? = null
 
+    @SerializedName("secret_key")
+    var secretKey: String? = null
+
+    @SerializedName("secret_code")
+    var secretCode: String? = null
+
 }

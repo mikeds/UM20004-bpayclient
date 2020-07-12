@@ -1,4 +1,4 @@
-package com.uxi.bambupay.view.gallery
+package com.uxi.bambupay.view.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.uxi.bambupay.R
 import com.uxi.bambupay.view.activity.LoginActivity
-import com.uxi.bambupay.view.fragment.BaseFragment
 import com.uxi.bambupay.viewmodel.SettingsViewModel
 import kotlinx.android.synthetic.main.fragment_settings.*
 
