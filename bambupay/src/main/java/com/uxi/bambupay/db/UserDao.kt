@@ -23,4 +23,10 @@ class UserDao(val realm: Realm) {
         return null
     }
 
+    fun deleteAll() {
+        realm.executeTransaction {
+            it.deleteAll()
+        }
+    }
+
 }

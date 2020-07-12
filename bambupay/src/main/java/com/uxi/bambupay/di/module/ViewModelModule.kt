@@ -6,6 +6,7 @@ import com.uxi.bambupay.di.factory.ViewModelFactory
 import com.uxi.bambupay.di.factory.ViewModelKey
 import com.uxi.bambupay.viewmodel.LoginViewModel
 import com.uxi.bambupay.viewmodel.MainViewModel
+import com.uxi.bambupay.viewmodel.SettingsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -27,6 +28,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     internal abstract fun bindLoginViewModel(loginViewModel: LoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    internal abstract fun bindSettingsViewModel(settingsViewModel: SettingsViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

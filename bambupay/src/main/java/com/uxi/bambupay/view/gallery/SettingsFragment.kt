@@ -1,30 +1,44 @@
 package com.uxi.bambupay.view.gallery
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.appcompat.app.AlertDialog
 import com.uxi.bambupay.R
+import com.uxi.bambupay.view.activity.LoginActivity
+import com.uxi.bambupay.view.fragment.BaseFragment
+import com.uxi.bambupay.viewmodel.SettingsViewModel
+import kotlinx.android.synthetic.main.fragment_settings.*
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : BaseFragment() {
 
-    private lateinit var galleryViewModel: GalleryViewModel
+    private val settingsViewModel by viewModel<SettingsViewModel>()
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_settings, container, false)
-//        val textView: TextView = root.findViewById(R.id.text_gallery)
-        galleryViewModel.text.observe(viewLifecycleOwner, Observer {
-//            textView.text = it
-        })
-        return root
+    override fun getLayoutId() = R.layout.fragment_settings
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        btn_logout.setOnClickListener {
+            showLogoutDialog()
+        }
+    }
+
+    private fun showLogoutDialog() {
+        val builder = AlertDialog.Builder(context as Context)
+        builder.setMessage(resources.getString(R.string.dialog_logout))
+        builder.setNegativeButton(getString(R.string.action_cancel).toUpperCase(), null)
+        builder.setPositiveButton(R.string.action_logout) { _, _ ->
+            settingsViewModel.deleteLocalData()
+            logout()
+        }
+        builder.create().show()
+    }
+
+    private fun logout() {
+        val intent = Intent(activity, LoginActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
     }
 }

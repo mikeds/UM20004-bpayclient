@@ -10,6 +10,10 @@ import android.content.SharedPreferences
 class Utils constructor(private val context: Context?) {
     private val prefs: SharedPreferences
 
+    fun clearPref() {
+        prefs.edit().clear().apply()
+    }
+
     fun saveTokenPack(
         token: String?,
         expiryDate: Long,

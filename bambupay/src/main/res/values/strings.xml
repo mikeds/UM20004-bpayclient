@@ -7,6 +7,9 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_okay">Okay</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_settings">Settings</string>
@@ -82,4 +85,6 @@
 
     <string name="verification_title">Enter verification code we just sent you via email</string>
     <string name="verification">Verification</string>
+
+    <string name="dialog_logout">Are you sure you want to logout?</string>
 </resources>
