@@ -79,4 +79,7 @@
     <string name="page2">Manage payments</string>
     <string name="page3">High level security</string>
     <string name="page_demo">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</string>
+
+    <string name="verification_title">Enter verification code we just sent you via email</string>
+    <string name="verification">Verification</string>
 </resources>

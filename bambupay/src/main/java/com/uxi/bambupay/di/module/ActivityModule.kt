@@ -39,4 +39,7 @@ abstract class ActivityModule {
     @ContributesAndroidInjector()
     internal abstract fun contributeTransactionHistoryActivity(): TransactionHistoryActivity
 
+    @ContributesAndroidInjector()
+    internal abstract fun contributeVerificationActivity(): VerificationActivity
+
 }

@@ -83,12 +83,16 @@ class RegisterActivity : BaseActivity() {
     }
 
     private fun events() {
-        input_card_expiry.addTextChangedListener(CreditCardExpiryTextWatcher(input_card_expiry))
+        //input_card_expiry.addTextChangedListener(CreditCardExpiryTextWatcher(input_card_expiry))
         btn_image_document.setOnClickListener {
             // use default UI for scanning documents
             val uiSettings = BlinkIdUISettings(recognizerBundle)
             // start scan activity based on UI settings
             ActivityRunner.startActivityForResult(this, MY_BLINKID_REQUEST_CODE, uiSettings)
+        }
+
+        btn_register.setOnClickListener {
+            showVerificationScreen()
         }
     }
 
@@ -156,6 +160,12 @@ class RegisterActivity : BaseActivity() {
 
     private fun onScanCanceled() {
         Toast.makeText(this, "Scan cancelled!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showVerificationScreen() {
+        val intent = Intent(this, VerificationActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
 
 }

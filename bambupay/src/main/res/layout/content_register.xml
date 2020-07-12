@@ -203,7 +203,7 @@
                 android:inputType="textPassword"
                 android:minLines="6" />
 
-            <TextView
+            <!--<TextView
                 style="@style/TextViewSmallBody"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -238,9 +238,9 @@
                 android:layout_height="45dp"
                 android:gravity="center_vertical"
                 android:hint="XXXX - XXXX - XXXX - XXXX"
-                android:paddingRight="0dp" />
+                android:paddingRight="0dp" />-->
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -295,7 +295,7 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </LinearLayout>-->
 
             <CheckBox
                 style="@style/TextViewSmall.Regular2"
