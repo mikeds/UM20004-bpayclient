@@ -1,6 +1,7 @@
 package com.uxi.bambupay.db
 
 import com.uxi.bambupay.model.Balance
+import com.uxi.bambupay.model.Transaction
 import com.uxi.bambupay.model.User
 import io.realm.Realm
 import io.realm.RealmResults

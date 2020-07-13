@@ -125,6 +125,9 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timberVersion"
     // indicator
     implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+    // pull to refresh
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.4-7'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.4-7'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

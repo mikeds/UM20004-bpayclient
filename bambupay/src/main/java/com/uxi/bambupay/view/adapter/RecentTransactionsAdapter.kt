@@ -8,17 +8,22 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.RecentTransaction
+import com.uxi.bambupay.model.Transaction
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN
+import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
 import com.uxi.bambupay.utils.Constants.Companion.SEND_MONEY
+import com.uxi.bambupay.utils.convertTimeToDate
 import com.uxi.bambupay.utils.getDateTimeFormat
+import io.realm.OrderedRealmCollection
+import io.realm.RealmRecyclerViewAdapter
 import kotlinx.android.synthetic.main.item_transaction.view.*
 
 
 class RecentTransactionsAdapter(
     private val context: Context,
-    private var arrayList: ArrayList<RecentTransaction>?
+    collection: OrderedRealmCollection<Transaction>
 ) :
-    RecyclerView.Adapter<RecentTransactionsAdapter.ViewHolder>() {
+    RealmRecyclerViewAdapter<Transaction, RecentTransactionsAdapter.ViewHolder>(collection, true) {
 
     class ViewHolder(itemView: View, private val context: Context?) : RecyclerView.ViewHolder(itemView) {
 
@@ -26,36 +31,31 @@ class RecentTransactionsAdapter(
         var txtDate: TextView = itemView.txt_date
         var txtAmount: TextView = itemView.txt_amount
 
-        fun bind(item: RecentTransaction?) {
+        fun bind(item: Transaction?) {
             item?.let {
-                val transactionType = it.transactionType
+                val transactionType = it.type
                 if (transactionType.equals(SEND_MONEY)) {
                     txtTransactionType.text = context?.getString(R.string.send_money)
                 } else if (transactionType.equals(CASH_IN)) {
                     txtTransactionType.text = context?.getString(R.string.cash_in)
+                } else if (transactionType.equals(CASH_OUT)) {
+                    txtTransactionType.text = context?.getString(R.string.cash_out)
                 }
-                txtAmount.text = it.transactionAmount
-                val dateTime = getDateTimeFormat(it.createdAt)
+                txtAmount.text = it.amount
+//                val dateTime = it.date//getDateTimeFormat(it.createdAt)
+                val dateTime = convertTimeToDate(it.date)
                 txtDate.text = dateTime
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false)
         return ViewHolder(itemView, context)
     }
 
-    override fun getItemCount(): Int {
-        return arrayList?.size ?: 0
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        arrayList?.get(position)?.let { holder.bind(it) }
+        getItem(position)?.let { holder.bind(it) }
     }
 
-    fun getItem(position: Int) : RecentTransaction? {
-        return arrayList?.get(position)
-    }
 }

@@ -1,8 +1,6 @@
 package com.uxi.bambupay.api
 
-import com.uxi.bambupay.model.Balance
-import com.uxi.bambupay.model.TokenResponse
-import com.uxi.bambupay.model.User
+import com.uxi.bambupay.model.*
 import io.reactivex.Flowable
 import retrofit2.http.*
 
@@ -18,5 +16,17 @@ interface WebService {
 
     @GET("client/balance")
     fun balance(): Flowable<GenericApiResponse<Balance>>
+
+    @POST("client/cash-in")
+    fun cashIn(@Body params: Request): Flowable<GenericApiResponse<CashIn>>
+
+    @POST("client/send-to")
+    fun sendTo(@Body params: Request): Flowable<GenericApiResponse<Pay>>
+
+    @POST("client/cash-out")
+    fun cashOut(@Body params: Request): Flowable<GenericApiResponse<CashOut>>
+
+    @GET("client/history")
+    fun history(): Flowable<GenericApiResponse<Transactions>>
 
 }

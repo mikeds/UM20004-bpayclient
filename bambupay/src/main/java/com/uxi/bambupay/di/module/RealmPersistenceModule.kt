@@ -1,5 +1,6 @@
 package com.uxi.bambupay.di.module
 
+import com.uxi.bambupay.db.TransactionDao
 import com.uxi.bambupay.db.UserDao
 import dagger.Module
 import dagger.Provides
@@ -23,6 +24,12 @@ class RealmPersistenceModule {
     @Singleton
     fun provideUserDao(realm: Realm): UserDao {
         return UserDao(realm)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTransactionDao(realm: Realm): TransactionDao {
+        return TransactionDao(realm)
     }
 
 }

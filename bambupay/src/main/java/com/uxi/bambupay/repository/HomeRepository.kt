@@ -2,8 +2,11 @@ package com.uxi.bambupay.repository
 
 import com.uxi.bambupay.api.GenericApiResponse
 import com.uxi.bambupay.api.WebService
+import com.uxi.bambupay.db.TransactionDao
 import com.uxi.bambupay.db.UserDao
 import com.uxi.bambupay.model.Balance
+import com.uxi.bambupay.model.Transaction
+import com.uxi.bambupay.model.Transactions
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -16,7 +19,8 @@ import javax.inject.Singleton
  * hunterxer31@gmail.com
  */
 @Singleton
-class HomeRepository @Inject constructor(private val userDao: UserDao, private val webService: WebService) {
+class HomeRepository @Inject constructor(private val userDao: UserDao,
+                                         private val webService: WebService) {
 
     fun loadBalance() : Flowable<GenericApiResponse<Balance>> {
         return webService.balance()

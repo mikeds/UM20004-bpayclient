@@ -13,6 +13,7 @@ import com.uxi.bambupay.view.activity.TransactActivity
 import com.uxi.bambupay.view.activity.TransactionHistoryActivity
 import com.uxi.bambupay.view.adapter.RecentTransactionsAdapter
 import com.uxi.bambupay.viewmodel.HomeViewModel
+import com.uxi.bambupay.viewmodel.TransactionViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -20,6 +21,7 @@ class HomeFragment : BaseFragment() {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val homeViewModel by viewModel<HomeViewModel>()
+    private val transactionViewModel by viewModel<TransactionViewModel>()
 
     override fun getLayoutId() = R.layout.fragment_home
 
@@ -46,6 +48,7 @@ class HomeFragment : BaseFragment() {
 
         setupAdapter()
         observeViewModel()
+        events()
     }
 
     private fun setupAdapter() {
@@ -59,7 +62,7 @@ class HomeFragment : BaseFragment() {
         data.add(RecentTransaction("cash_in", 1585111159, "PHP 9,000", "+63912366789", "budget", "BP4DA56893FH"))
         data.add(RecentTransaction("send_money", 1584696907, "PHP -1,000", "+639123456789", "payment", "BP4DA56893FH"))
 
-        val adapter = activity?.let { RecentTransactionsAdapter(it, data) }
+        val adapter = activity?.let { RecentTransactionsAdapter(it, transactionViewModel.filterTransactions()) }
         recycler_view_recent?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL ,false)
         recycler_view_recent?.adapter = adapter
         val decorator = DividerItemDecoration(activity, LinearLayoutManager.VERTICAL)
@@ -70,6 +73,16 @@ class HomeFragment : BaseFragment() {
     private fun observeViewModel() {
         homeViewModel.rxUIBalance()
         homeViewModel.subscribeUserBalance()
+        transactionViewModel.subscribeTransactions()
+
+        homeViewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
+            if (isLoading) {
+
+            } else {
+                refresh_layout?.finishRefresh()
+                refresh_layout?.finishLoadmore()
+            }
+        })
 
         homeViewModel.isSuccess.observe(viewLifecycleOwner, Observer { isSuccess ->
             if (!isSuccess) {
@@ -81,6 +94,7 @@ class HomeFragment : BaseFragment() {
         userTokenModel.isTokenRefresh.observe(viewLifecycleOwner, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
                 homeViewModel.subscribeUserBalance()
+                transactionViewModel.subscribeTransactions()
             }
         })
 
@@ -90,6 +104,30 @@ class HomeFragment : BaseFragment() {
              }
         })
 
+        transactionViewModel.isSuccess.observe(viewLifecycleOwner, Observer { isSuccess ->
+            if (!isSuccess) {
+                // call token refresher
+                userTokenModel.subscribeToken()
+            }
+        })
+
+    }
+
+    private fun events() {
+        refresh_layout?.isEnableRefresh = true
+        refresh_layout?.isEnableLoadmore = false
+
+        refresh_layout?.setOnRefreshListener {
+            homeViewModel.subscribeUserBalance()
+            transactionViewModel.subscribeTransactions()
+        }
+
+        refresh_layout?.setOnLoadmoreListener {
+
+        }
+
+        refresh_layout?.finishRefresh()
+        refresh_layout?.finishLoadmore()
     }
 
 }

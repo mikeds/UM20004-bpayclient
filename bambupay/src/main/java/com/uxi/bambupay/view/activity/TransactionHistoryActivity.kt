@@ -66,7 +66,7 @@ class TransactionHistoryActivity : BaseActivity() {
         data.add(RecentTransaction("cash_in", 1585111159, "PHP 9,000", "+63912366789", "budget", "BP4DA56893FH"))
         data.add(RecentTransaction("send_money", 1584696907, "PHP -1,000", "+639123456789", "payment", "BP4DA56893FH"))
 
-        val adapter = RecentTransactionsAdapter(this@TransactionHistoryActivity, data)
+        /*val adapter = RecentTransactionsAdapter(this@TransactionHistoryActivity, data)
         recycler_view_history?.layoutManager = LinearLayoutManager(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL ,false)
         recycler_view_history?.adapter = adapter
         val decorator = DividerItemDecoration(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL)
@@ -83,6 +83,6 @@ class TransactionHistoryActivity : BaseActivity() {
                     overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
                 }
             })
-        )
+        )*/
     }
 }
