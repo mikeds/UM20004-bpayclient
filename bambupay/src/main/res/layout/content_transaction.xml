@@ -30,6 +30,7 @@
             android:text="@string/amount" />
 
         <EditText
+            android:id="@+id/text_input_amount"
             style="@style/TextViewSmall.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
             android:text="@string/send_mobile" />
 
         <EditText
+            android:id="@+id/text_input_mobile"
             style="@style/TextViewSmall.Regular2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,7 +61,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
             android:paddingBottom="15dp"
-            android:text="+63"
+            android:hint="639xxxxxxxxx"
             android:textColor="@color/black" />
 
         <TextView

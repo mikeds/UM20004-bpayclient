@@ -1,6 +1,7 @@
 package com.uxi.bambupay.repository
 
 import com.uxi.bambupay.api.GenericApiResponse
+import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.api.WebService
 import com.uxi.bambupay.db.UserDao
 import com.uxi.bambupay.model.TokenResponse
@@ -29,8 +30,8 @@ constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun loadLogin(username: String, password: String) : Flowable<GenericApiResponse<User>> {
-        return webService.login(username, password)
+    fun loadLogin(request: Request) : Flowable<GenericApiResponse<User>> {
+        return webService.login(request)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

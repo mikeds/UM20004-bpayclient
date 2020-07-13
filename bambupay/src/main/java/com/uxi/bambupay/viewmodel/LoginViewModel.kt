@@ -3,6 +3,7 @@ package com.uxi.bambupay.viewmodel
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
+import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.repository.LoginRepository
 import com.uxi.bambupay.utils.Utils
 import timber.log.Timber
@@ -43,7 +44,11 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
     fun subscribeLogin(username: String, password: String) {
         if (isValidateCredentials(username, password)) {
 
-            disposable?.add(repository.loadLogin(username, password)
+            val requestBuilder = Request.Builder()
+                .setUsername(username)
+                .setPassword(password).build()
+
+            disposable?.add(repository.loadLogin(requestBuilder)
                 .doOnSubscribe { loading.value = true }
                 .doAfterTerminate { loading.value = false }
                 .subscribe({
@@ -69,7 +74,7 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
                         utils.saveTokenPack("", true)
                         isSuccessLoggedIn.value = false
                     }
-                    errorHandling(it)
+//                    errorHandling(it)
                 })
             )
 

@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uxi.bambupay.R
-import com.uxi.bambupay.model.RecentTransaction
 import com.uxi.bambupay.view.activity.CashOutActivity
 import com.uxi.bambupay.view.activity.TransactActivity
 import com.uxi.bambupay.view.activity.TransactionHistoryActivity
@@ -51,18 +50,14 @@ class HomeFragment : BaseFragment() {
         events()
     }
 
-    private fun setupAdapter() {
-        val data = arrayListOf<RecentTransaction>()
-        data.add(RecentTransaction("cash_in", 1586931717, "PHP 40,000", "+63911366989", "salary", "BP4DC56893GH"))
-        data.add(RecentTransaction("send_money", 1586034532, "PHP 650", "+63911366989", "payment", "BP4DB56893GH"))
-        data.add(RecentTransaction("send_money", 1586034532, "PHP 2,000", "+63911366789", "payment", "BP4DA56893GH"))
-        data.add(RecentTransaction("send_money", 1585559688, "PHP 2,000", "+63911366789", "payment", "BP4DA56893GH"))
-        data.add(RecentTransaction("cash_in", 1585559688, "PHP 20,000", "+63912366789", "budget", "BP4DA56793FH"))
-        data.add(RecentTransaction("cash_in", 1585250675, "PHP 5,000", "+63912366789", "budget", "BP4DA54893FH"))
-        data.add(RecentTransaction("cash_in", 1585111159, "PHP 9,000", "+63912366789", "budget", "BP4DA56893FH"))
-        data.add(RecentTransaction("send_money", 1584696907, "PHP -1,000", "+639123456789", "payment", "BP4DA56893FH"))
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.subscribeUserBalance()
+        transactionViewModel.subscribeRecentTransactions()
+    }
 
-        val adapter = activity?.let { RecentTransactionsAdapter(it, transactionViewModel.filterTransactions()) }
+    private fun setupAdapter() {
+        val adapter = activity?.let { RecentTransactionsAdapter(it, transactionViewModel.filterRecentTransactions()) }
         recycler_view_recent?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL ,false)
         recycler_view_recent?.adapter = adapter
         val decorator = DividerItemDecoration(activity, LinearLayoutManager.VERTICAL)
@@ -72,8 +67,6 @@ class HomeFragment : BaseFragment() {
 
     private fun observeViewModel() {
         homeViewModel.rxUIBalance()
-        homeViewModel.subscribeUserBalance()
-        transactionViewModel.subscribeTransactions()
 
         homeViewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
@@ -94,7 +87,7 @@ class HomeFragment : BaseFragment() {
         userTokenModel.isTokenRefresh.observe(viewLifecycleOwner, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
                 homeViewModel.subscribeUserBalance()
-                transactionViewModel.subscribeTransactions()
+                transactionViewModel.subscribeRecentTransactions()
             }
         })
 
@@ -119,7 +112,7 @@ class HomeFragment : BaseFragment() {
 
         refresh_layout?.setOnRefreshListener {
             homeViewModel.subscribeUserBalance()
-            transactionViewModel.subscribeTransactions()
+            transactionViewModel.subscribeRecentTransactions()
         }
 
         refresh_layout?.setOnLoadmoreListener {

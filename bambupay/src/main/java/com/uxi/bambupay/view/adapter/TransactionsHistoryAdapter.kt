@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.uxi.bambupay.R
-import com.uxi.bambupay.model.RecentTransaction
+import com.uxi.bambupay.model.Transaction
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN
 import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
 import com.uxi.bambupay.utils.Constants.Companion.SEND_MONEY
@@ -17,19 +17,19 @@ import io.realm.RealmRecyclerViewAdapter
 import kotlinx.android.synthetic.main.item_transaction.view.*
 
 
-class RecentTransactionsAdapter(
+class TransactionsHistoryAdapter(
     private val context: Context,
-    collection: OrderedRealmCollection<RecentTransaction>
+    collection: OrderedRealmCollection<Transaction>
 ) :
-    RealmRecyclerViewAdapter<RecentTransaction, RecentTransactionsAdapter.ViewHolder>(collection, true) {
+    RealmRecyclerViewAdapter<Transaction, TransactionsHistoryAdapter.ViewHolder>(collection, true) {
 
     class ViewHolder(itemView: View, private val context: Context?) : RecyclerView.ViewHolder(itemView) {
 
         private var txtTransactionType: TextView = itemView.txt_transaction_type
-        private var txtDate: TextView = itemView.txt_date
-        private var txtAmount: TextView = itemView.txt_amount
+        var txtDate: TextView = itemView.txt_date
+        var txtAmount: TextView = itemView.txt_amount
 
-        fun bind(item: RecentTransaction?) {
+        fun bind(item: Transaction?) {
             item?.let {
                 val transactionType = it.type
                 when {

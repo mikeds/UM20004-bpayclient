@@ -2,17 +2,17 @@ package com.uxi.bambupay.api
 
 import com.uxi.bambupay.model.*
 import io.reactivex.Flowable
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface WebService {
 
     @POST("token")
     fun getToken(@Body map: HashMap<String, String>): Flowable<TokenResponse>
 
-    @FormUrlEncoded
-    @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("client/login")
-    fun login(@Field("username") username: String, @Field("password") password: String): Flowable<GenericApiResponse<User>>
+    fun login(@Body params: Request): Flowable<GenericApiResponse<User>>
 
     @GET("client/balance")
     fun balance(): Flowable<GenericApiResponse<Balance>>
@@ -28,5 +28,8 @@ interface WebService {
 
     @GET("client/history")
     fun history(): Flowable<GenericApiResponse<Transactions>>
+
+    @GET("client/history")
+    fun recentTransactions(): Flowable<GenericApiResponse<RecentTransactions>>
 
 }

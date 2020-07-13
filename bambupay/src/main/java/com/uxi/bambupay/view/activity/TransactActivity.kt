@@ -2,14 +2,22 @@ package com.uxi.bambupay.view.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.viewmodel.TransactionViewModel
+import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_transaction.*
 
 class TransactActivity : BaseActivity() {
+
+    private val userTokenModel by viewModel<UserTokenViewModel>()
+    private val transactionViewModel by viewModel<TransactionViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
+        observeViewModel()
         events()
     }
 
@@ -47,5 +55,56 @@ class TransactActivity : BaseActivity() {
         btn_cancel.setOnClickListener {
             onBackPressed()
         }
+
+        btn_transact.setOnClickListener {
+            transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString())
+        }
     }
+
+    private fun observeViewModel() {
+        transactionViewModel.isAmountEmpty.observe(this, Observer { isAmountEmpty ->
+            if (isAmountEmpty) {
+                showDialogMessage("Amount Required")
+            }
+        })
+
+        transactionViewModel.isRecipientEmpty.observe(this, Observer { isRecipientEmpty ->
+            if (isRecipientEmpty) {
+                showDialogMessage("Mobile Number Required")
+            }
+        })
+
+        transactionViewModel.loading.observe(this, Observer { isLoading ->
+            if (isLoading) {
+                showProgressDialog("Loading...")
+            } else {
+                dismissProgressDialog()
+            }
+        })
+
+        transactionViewModel.errorMessage.observe(this, Observer { errorMessage ->
+            showMessageDialog(errorMessage)
+        })
+
+        transactionViewModel.isSuccess.observe(this, Observer { isSuccess ->
+            if (!isSuccess) {
+                // call token refresher
+//                userTokenModel.subscribeToken()
+            }
+        })
+
+        transactionViewModel.isSendMoneySuccess.observe(this, Observer { isSendMoneySuccess ->
+            if (isSendMoneySuccess) {
+                finish()
+            }
+        })
+
+        userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
+            if (isTokenRefresh) {
+                transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString())
+            }
+        })
+
+    }
+
 }

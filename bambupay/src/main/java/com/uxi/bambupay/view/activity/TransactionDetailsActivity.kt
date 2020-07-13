@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import com.uxi.bambupay.R
-import com.uxi.bambupay.model.RecentTransaction
+import com.uxi.bambupay.model.RecentTransactions
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.getDateTimeFormat
 import kotlinx.android.synthetic.main.app_toolbar.*
@@ -14,7 +14,7 @@ class TransactionDetailsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
-        val transaction = intent.getSerializableExtra("transaction") as? RecentTransaction
+        val transaction = intent.getSerializableExtra("transaction") as? RecentTransactions
         setViews(transaction)
     }
 
@@ -47,22 +47,22 @@ class TransactionDetailsActivity : BaseActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
-    private fun  setViews(transaction: RecentTransaction?) {
-        transaction?.let {
-            val transactionType = it.transactionType
-            if (transactionType.equals(Constants.SEND_MONEY)) {
-                txt_transaction_type?.text = getString(R.string.send_money)
-                txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.red))
-            } else if (transactionType.equals(Constants.CASH_IN)) {
-                txt_transaction_type?.text = getString(R.string.cash_in)
-                txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.light_green))
-            }
-            txt_amount?.text = it.transactionAmount
-            val dateTime = getDateTimeFormat(it.createdAt)
-            txt_date?.text = dateTime
-            txt_mobile_number?.text = it.mobileNumber
-            txt_message?.text = it.message
-            txt_reference_id?.text = it.referenceID
-        }
+    private fun  setViews(transactions: RecentTransactions?) {
+//        transactions?.let {
+//            val transactionType = it.transactionType
+//            if (transactionType.equals(Constants.SEND_MONEY)) {
+//                txt_transaction_type?.text = getString(R.string.send_money)
+//                txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.red))
+//            } else if (transactionType.equals(Constants.CASH_IN)) {
+//                txt_transaction_type?.text = getString(R.string.cash_in)
+//                txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.light_green))
+//            }
+//            txt_amount?.text = it.transactionAmount
+//            val dateTime = getDateTimeFormat(it.createdAt)
+//            txt_date?.text = dateTime
+//            txt_mobile_number?.text = it.mobileNumber
+//            txt_message?.text = it.message
+//            txt_reference_id?.text = it.referenceID
+//        }
     }
 }

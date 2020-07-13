@@ -1,10 +1,10 @@
 package com.uxi.bambupay.repository
 
 import com.uxi.bambupay.api.GenericApiResponse
+import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.api.WebService
 import com.uxi.bambupay.db.TransactionDao
-import com.uxi.bambupay.model.Transaction
-import com.uxi.bambupay.model.Transactions
+import com.uxi.bambupay.model.*
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -25,6 +25,12 @@ class TransactionRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun loadRecentTransactions(): Flowable<GenericApiResponse<RecentTransactions>> {
+        return webService.recentTransactions()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun saveTransactions(transactions: List<Transaction>) {
         transactionDao.insertOrUpdate(transactions)
     }
@@ -32,5 +38,29 @@ class TransactionRepository @Inject constructor(
     fun filter(): RealmResults<Transaction> {
         return transactionDao.query()
     }
+
+    fun saveRecentTransactions(transactions: List<RecentTransaction>) {
+        transactionDao.insertOrUpdateRecent(transactions)
+    }
+
+    fun filterRecent(): RealmResults<RecentTransaction> {
+        return transactionDao.queryRecent()
+    }
+
+    fun deleteRecent() {
+        transactionDao.deleteRecent()
+    }
+
+    fun loadSendMoney(request: Request) : Flowable<GenericApiResponse<Pay>>{
+        return webService.sendTo(request)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    /*fun loadSendMoney(amount: String, recipient: String) : Flowable<GenericApiResponse<Pay>>{
+        return webService.sendTo(amount, recipient)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }*/
 
 }

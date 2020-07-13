@@ -1,12 +1,15 @@
 package com.uxi.bambupay.view.activity
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.uxi.bambupay.R
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -58,6 +61,20 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
         } catch (e: Exception) {
             Timber.e(e)
         }
+    }
+
+    protected open fun showDialogMessage(message: String?) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(message)
+        builder.setPositiveButton(R.string.action_okay) { _, _ -> }
+        builder.create().show()
+    }
+
+    protected fun showMessageDialog(message: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(message)
+        builder.setPositiveButton(getString(R.string.action_okay), null)
+        builder.create().show()
     }
 
 }

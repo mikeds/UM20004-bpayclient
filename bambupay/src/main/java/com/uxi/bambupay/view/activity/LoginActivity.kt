@@ -1,12 +1,10 @@
 package com.uxi.bambupay.view.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
 import com.uxi.bambupay.viewmodel.LoginViewModel
@@ -85,13 +83,5 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         btn_sign_in.setOnClickListener(this)
         btn_register.setOnClickListener(this)
         btn_forgot_password.setOnClickListener(this)
-    }
-
-    private fun showMessageDialog(message: String) {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(message)
-        builder.setPositiveButton(getString(R.string.action_okay), null)
-        builder.create().show()
-
     }
 }

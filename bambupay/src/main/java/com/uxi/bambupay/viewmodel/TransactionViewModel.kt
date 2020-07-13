@@ -2,6 +2,8 @@ package com.uxi.bambupay.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.uxi.bambupay.api.Request
+import com.uxi.bambupay.model.RecentTransaction
 import com.uxi.bambupay.model.Transaction
 import com.uxi.bambupay.repository.TransactionRepository
 import com.uxi.bambupay.utils.Utils
@@ -17,6 +19,9 @@ class TransactionViewModel @Inject
 constructor(private val repository: TransactionRepository, private val utils: Utils) : BaseViewModel() {
 
     val isSuccess = MutableLiveData<Boolean>()
+    val isAmountEmpty = MutableLiveData<Boolean>()
+    val isRecipientEmpty = MutableLiveData<Boolean>()
+    val isSendMoneySuccess = MutableLiveData<Boolean>()
 
     fun subscribeTransactions() {
         disposable?.add(repository.loadTransactions()
@@ -46,8 +51,83 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
         )
     }
 
+    fun subscribeRecentTransactions() {
+        disposable?.add(repository.loadRecentTransactions()
+            .doOnSubscribe { loading.value = true }
+            .doAfterTerminate { loading.value = false }
+            .subscribe({
+                if (it.value != null) {
+                    it.value?.let { transactions ->
+                        repository.deleteRecent()
+                        transactions.history?.let { it1 -> repository.saveRecentTransactions(it1) }
+
+                    }
+                } else {
+                    it.message?.let { error ->
+                        errorMessage.value = error
+                        Log.e("DEBUG", "error message:: $error")
+                    }
+                }
+
+            }, {
+                Timber.e(it)
+                if (refreshToken(it)) {
+                    Log.e("DEBUG", "error refreshToken")
+                    utils.saveUserTokenPack("", true)
+                    isSuccess.value = false
+                }
+            })
+        )
+    }
+
     fun filterTransactions() : OrderedRealmCollection<Transaction> {
         return repository.filter()
+    }
+
+    fun filterRecentTransactions() : OrderedRealmCollection<RecentTransaction> {
+        return repository.filterRecent()
+    }
+
+    fun subscribeSendMoney(amount: String?, recipient: String?) {
+        if (amount.isNullOrEmpty()) {
+            isAmountEmpty.value = true
+            return
+        }
+
+        if (recipient.isNullOrEmpty()) {
+            isRecipientEmpty.value = true
+            return
+        }
+
+        val requestBuilder = Request.Builder()
+            .setAmount(amount)
+            .setSendTo(recipient).build()
+
+        disposable?.add(repository.loadSendMoney(requestBuilder)
+            .doOnSubscribe { loading.value = true }
+            .doAfterTerminate { loading.value = false }
+            .subscribe({
+                if (it.value != null) {
+                    it.value?.let { pay ->
+                        isSendMoneySuccess.value = true
+                    }
+                } else {
+                    it.message?.let { error ->
+                        errorMessage.value = error
+                        Log.e("DEBUG", "error message:: $error")
+                    }
+                }
+
+            }, {
+                Timber.e(it)
+                if (refreshToken(it)) {
+                    Log.e("DEBUG", "error refreshToken")
+                    utils.saveUserTokenPack("", true)
+                    isSuccess.value = false
+                }
+            })
+        )
+
     }
 
 }
