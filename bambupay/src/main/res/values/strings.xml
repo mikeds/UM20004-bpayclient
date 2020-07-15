@@ -57,6 +57,7 @@
     <string name="cancel">Cancel</string>
 
     <string name="cash_out_details">Cash Out Details</string>
+    <string name="cash_in_details">Cash In Details</string>
     <string name="send_card">Send to Card Number Ending</string>
 
     <string name="send">Send</string>

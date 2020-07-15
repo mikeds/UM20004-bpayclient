@@ -2,11 +2,13 @@ package com.uxi.bambupay.view.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uxi.bambupay.R
+import com.uxi.bambupay.view.activity.CashInActivity
 import com.uxi.bambupay.view.activity.CashOutActivity
 import com.uxi.bambupay.view.activity.TransactActivity
 import com.uxi.bambupay.view.activity.TransactionHistoryActivity
@@ -16,7 +18,7 @@ import com.uxi.bambupay.viewmodel.TransactionViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), View.OnClickListener {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val homeViewModel by viewModel<HomeViewModel>()
@@ -26,25 +28,6 @@ class HomeFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        btn_pay.setOnClickListener {
-            val intent = Intent(activity, TransactActivity::class.java)
-            startActivity(intent)
-            activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
-        }
-
-        btn_cash_out.setOnClickListener {
-            val intent = Intent(activity, CashOutActivity::class.java)
-            startActivity(intent)
-            activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
-        }
-
-        btn_view_all.setOnClickListener {
-            val intent = Intent(activity, TransactionHistoryActivity::class.java)
-            startActivity(intent)
-            activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
-        }
-
         setupAdapter()
         observeViewModel()
         events()
@@ -54,6 +37,32 @@ class HomeFragment : BaseFragment() {
         super.onResume()
         homeViewModel.subscribeUserBalance()
         transactionViewModel.subscribeRecentTransactions()
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_cash_in -> {
+                val intent = Intent(activity, CashInActivity::class.java)
+                startActivity(intent)
+                activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+            }
+            R.id.btn_pay -> {
+                val intent = Intent(activity, TransactActivity::class.java)
+                startActivity(intent)
+                activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+            }
+            R.id.btn_cash_out -> {
+                val intent = Intent(activity, CashOutActivity::class.java)
+                startActivity(intent)
+                activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+            }
+            R.id.btn_view_all -> {
+                val intent = Intent(activity, TransactionHistoryActivity::class.java)
+                startActivity(intent)
+                activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+            }
+
+        }
     }
 
     private fun setupAdapter() {
@@ -121,6 +130,11 @@ class HomeFragment : BaseFragment() {
 
         refresh_layout?.finishRefresh()
         refresh_layout?.finishLoadmore()
+
+        btn_cash_in.setOnClickListener(this)
+        btn_pay.setOnClickListener(this)
+        btn_cash_out.setOnClickListener(this)
+        btn_view_all.setOnClickListener(this)
     }
 
 }

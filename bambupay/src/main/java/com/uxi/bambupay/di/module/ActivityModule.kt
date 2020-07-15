@@ -42,4 +42,7 @@ abstract class ActivityModule {
     @ContributesAndroidInjector()
     internal abstract fun contributeVerificationActivity(): VerificationActivity
 
+    @ContributesAndroidInjector()
+    internal abstract fun contributeCashInActivity(): CashInActivity
+
 }
