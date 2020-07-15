@@ -26,8 +26,8 @@ class TransactionsHistoryAdapter(
     class ViewHolder(itemView: View, private val context: Context?) : RecyclerView.ViewHolder(itemView) {
 
         private var txtTransactionType: TextView = itemView.txt_transaction_type
-        var txtDate: TextView = itemView.txt_date
-        var txtAmount: TextView = itemView.txt_amount
+        private var txtDate: TextView = itemView.txt_date
+        private var txtAmount: TextView = itemView.txt_amount
 
         fun bind(item: Transaction?) {
             item?.let {

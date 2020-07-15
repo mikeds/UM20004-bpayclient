@@ -43,4 +43,10 @@ class TransactionDao(val realm: Realm) {
         }
     }
 
+    fun getTransaction(transactionId: Long) : Transaction? {
+        return realm.where(Transaction::class.java)
+            .equalTo("transactionId", transactionId)
+            .findFirst()
+    }
+
 }

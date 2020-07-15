@@ -31,13 +31,13 @@ class BambuPayApplication : DaggerApplication() {
         initRealm()
         initStetho()
 
-//        ClassicsFooter.REFRESH_FOOTER_PULLUP = "Pull up to load more"//this.resources.getString(R.string.refresh_footer_pull_up)
-//        ClassicsFooter.REFRESH_FOOTER_RELEASE = "Release"//this.resources.getString(R.string.refresh_footer_release)
-//        ClassicsFooter.REFRESH_FOOTER_REFRESHING = "Refreshing..."//this.resources.getString(R.string.refresh_footer_refreshing)
-//        ClassicsFooter.REFRESH_FOOTER_LOADING = "Loading..."//this.resources.getString(R.string.refresh_footer_loading)
-//        ClassicsFooter.REFRESH_FOOTER_FINISH = ""
-//        ClassicsFooter.REFRESH_FOOTER_FAILED = "Unable to load"//this.resources.getString(R.string.refresh_footer_failed)
-//        ClassicsFooter.REFRESH_FOOTER_ALLLOADED = ""
+        ClassicsFooter.REFRESH_FOOTER_PULLUP = "Pull up to load more"//this.resources.getString(R.string.refresh_footer_pull_up)
+        ClassicsFooter.REFRESH_FOOTER_RELEASE = "Release"//this.resources.getString(R.string.refresh_footer_release)
+        ClassicsFooter.REFRESH_FOOTER_REFRESHING = "Refreshing..."//this.resources.getString(R.string.refresh_footer_refreshing)
+        ClassicsFooter.REFRESH_FOOTER_LOADING = "Loading..."//this.resources.getString(R.string.refresh_footer_loading)
+        ClassicsFooter.REFRESH_FOOTER_FINISH = ""
+        ClassicsFooter.REFRESH_FOOTER_FAILED = "Unable to load"//this.resources.getString(R.string.refresh_footer_failed)
+        ClassicsFooter.REFRESH_FOOTER_ALLLOADED = ""
     }
 
     override fun attachBaseContext(base: Context) {

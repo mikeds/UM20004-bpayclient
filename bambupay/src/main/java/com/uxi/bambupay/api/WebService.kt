@@ -5,6 +5,7 @@ import io.reactivex.Flowable
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface WebService {
 
@@ -26,8 +27,8 @@ interface WebService {
     @POST("client/cash-out")
     fun cashOut(@Body params: Request): Flowable<GenericApiResponse<CashOut>>
 
-    @GET("client/history")
-    fun history(): Flowable<GenericApiResponse<Transactions>>
+    @GET("client/history/{page}")
+    fun history(@Path("page") page: Int): Flowable<GenericApiResponse<Transactions>>
 
     @GET("client/history")
     fun recentTransactions(): Flowable<GenericApiResponse<RecentTransactions>>

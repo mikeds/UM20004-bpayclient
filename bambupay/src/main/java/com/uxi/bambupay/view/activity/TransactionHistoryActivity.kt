@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,57 +60,68 @@ class TransactionHistoryActivity : BaseActivity() {
     }
 
     private fun events() {
+        refresh_layout?.setOnRefreshListener {
+            transactionViewModel.isPullToRefresh = true
+            transactionViewModel.subscribeTransactions()
+        }
 
+        refresh_layout?.setOnLoadmoreListener {
+            transactionViewModel.subscribeTransactions()
+        }
     }
 
     private fun setupAdapter() {
-        /*val adapter = RecentTransactionsAdapter(this@TransactionHistoryActivity, data)
-        recycler_view_history?.layoutManager = LinearLayoutManager(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL ,false)
-        recycler_view_history?.adapter = adapter
-        val decorator = DividerItemDecoration(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL)
-        ContextCompat.getDrawable(this@TransactionHistoryActivity, R.drawable.divider)?.let { decorator.setDrawable(it) }
-        recycler_view_history?.addItemDecoration(decorator)
-        recycler_view_history?.addOnItemTouchListener(
-            RecyclerItemClickListener(this@TransactionHistoryActivity, object : RecyclerItemClickListener.OnItemClickListener {
-
-                override fun onItemClick(view: View?, position: Int) {
-                    val item = adapter.getItem(position)
-                    val intent = Intent(this@TransactionHistoryActivity, TransactionDetailsActivity::class.java)
-                    intent.putExtra("transaction", item)
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
-                }
-            })
-        )*/
-
         val adapter = TransactionsHistoryAdapter(this@TransactionHistoryActivity, transactionViewModel.filterTransactions())
         recycler_view_history?.layoutManager = LinearLayoutManager(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL ,false)
         recycler_view_history?.adapter = adapter
+        recycler_view_history.isNestedScrollingEnabled = false
+        ViewCompat.setNestedScrollingEnabled(recycler_view_history, false)
         val decorator = DividerItemDecoration(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL)
         ContextCompat.getDrawable(this@TransactionHistoryActivity, R.drawable.divider)?.let { decorator.setDrawable(it) }
-        recycler_view_history?.addItemDecoration(decorator)
         recycler_view_history?.addItemDecoration(decorator)
         recycler_view_history?.addOnItemTouchListener(
             RecyclerItemClickListener(this@TransactionHistoryActivity, object : RecyclerItemClickListener.OnItemClickListener {
 
                 override fun onItemClick(view: View?, position: Int) {
                     val item = adapter.getItem(position)
-                    val intent = Intent(this@TransactionHistoryActivity, TransactionDetailsActivity::class.java)
-//                    intent.putExtra("transaction", item)
-                    startActivity(intent)
-                    overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+
+                    if (item != null) {
+                        val transactionId = item.transactionId
+                        val intent = Intent(this@TransactionHistoryActivity, TransactionDetailsActivity::class.java)
+                        intent.putExtra("transactionId", transactionId)
+                        startActivity(intent)
+                        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                    }
+
                 }
             })
         )
     }
 
     private fun observeViewModel() {
+        transactionViewModel.isPullToRefresh = true
         transactionViewModel.subscribeTransactions()
 
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
-                transactionViewModel.subscribeTransactions()
+//                transactionViewModel.subscribeTransactions()
             }
+        })
+
+        transactionViewModel.loading.observe(this, Observer { isLoading ->
+            if (isLoading) {
+                recycler_view_history.visibility = View.GONE
+                shimmer_view_container.visibility = View.VISIBLE
+                shimmer_view_container.startShimmer()
+            } else {
+                recycler_view_history.visibility = View.VISIBLE
+                shimmer_view_container.visibility = View.GONE
+                shimmer_view_container.stopShimmer()
+
+                refresh_layout?.finishRefresh()
+                refresh_layout?.finishLoadmore()
+            }
+
         })
 
         transactionViewModel.isSuccess.observe(this, Observer { isSuccess ->

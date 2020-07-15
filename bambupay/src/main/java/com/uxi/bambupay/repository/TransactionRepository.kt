@@ -19,8 +19,8 @@ class TransactionRepository @Inject constructor(
     private val transactionDao: TransactionDao,
     private val webService: WebService) {
 
-    fun loadTransactions(): Flowable<GenericApiResponse<Transactions>> {
-        return webService.history()
+    fun loadTransactions(page: Int): Flowable<GenericApiResponse<Transactions>> {
+        return webService.history(page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -57,10 +57,8 @@ class TransactionRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    /*fun loadSendMoney(amount: String, recipient: String) : Flowable<GenericApiResponse<Pay>>{
-        return webService.sendTo(amount, recipient)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }*/
+    fun loadTransaction(transactionId: Long) : Transaction? {
+        return transactionDao.getTransaction(transactionId)
+    }
 
 }

@@ -12,15 +12,12 @@
         app:srlAccentColor="@color/colorPrimaryDark"
         app:srlPrimaryColor="@color/colorPrimaryDark">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
             android:orientation="vertical"
             tools:context=".view.fragment.HomeFragment">
-
 
             <RelativeLayout
                 android:id="@+id/container_top"

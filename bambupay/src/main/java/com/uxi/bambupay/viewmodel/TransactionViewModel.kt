@@ -22,16 +22,28 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
     val isAmountEmpty = MutableLiveData<Boolean>()
     val isRecipientEmpty = MutableLiveData<Boolean>()
     val isSendMoneySuccess = MutableLiveData<Boolean>()
+    val transactionData = MutableLiveData<Transaction>()
+
+    var isPullToRefresh: Boolean = false
+    private var pageOffset: Int = 0
 
     fun subscribeTransactions() {
-        disposable?.add(repository.loadTransactions()
-            .doOnSubscribe { loading.value = true }
+
+        if (isPullToRefresh) {
+            loading.value = true
+            pageOffset = 0
+            isPullToRefresh = false
+        }
+
+        // get last record
+
+        disposable?.add(repository.loadTransactions(pageOffset)
+//            .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
                 if (it.value != null) {
                     it.value?.let { transactions ->
                         transactions.history?.let { it1 -> repository.saveTransactions(it1) }
-
                     }
                 } else {
                     it.message?.let { error ->
@@ -128,6 +140,15 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
             })
         )
 
+    }
+
+    fun subscribeTransactionId(transactionId: Long?) {
+        transactionId?.let {
+            if (it > 0) {
+                val transaction = repository.loadTransaction(it)
+                transactionData.value = transaction
+            }
+        }
     }
 
 }
