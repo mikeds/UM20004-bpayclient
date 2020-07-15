@@ -1,6 +1,5 @@
 package com.uxi.bambupay.db
 
-import com.uxi.bambupay.model.Balance
 import com.uxi.bambupay.model.RecentTransaction
 import com.uxi.bambupay.model.Transaction
 import io.realm.Realm
@@ -22,7 +21,6 @@ class TransactionDao(val realm: Realm) {
 
     fun query(): RealmResults<Transaction> {
         return realm.where(Transaction::class.java)
-            .limit(10)
             .sort("date", Sort.DESCENDING)
             .findAllAsync()
     }

@@ -48,6 +48,11 @@ abstract class ViewModelModule {
     internal abstract fun bindTransactionViewModel(transactionViewModel: TransactionViewModel): ViewModel
 
     @Binds
+    @IntoMap
+    @ViewModelKey(CashOutViewModel::class)
+    internal abstract fun bindCashOutViewModel(cashOutViewModel: CashOutViewModel): ViewModel
+
+    @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
 }

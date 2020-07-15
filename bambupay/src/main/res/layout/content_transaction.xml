@@ -40,8 +40,7 @@
             android:inputType="numberDecimal"
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
-            android:paddingBottom="15dp"
-            android:textColorHint="@color/black" />
+            android:paddingBottom="15dp" />
 
         <TextView
             style="@style/TextViewSmall.SemiBold"

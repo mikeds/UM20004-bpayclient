@@ -89,7 +89,7 @@ class TransactActivity : BaseActivity() {
         transactionViewModel.isSuccess.observe(this, Observer { isSuccess ->
             if (!isSuccess) {
                 // call token refresher
-//                userTokenModel.subscribeToken()
+                userTokenModel.subscribeToken()
             }
         })
 

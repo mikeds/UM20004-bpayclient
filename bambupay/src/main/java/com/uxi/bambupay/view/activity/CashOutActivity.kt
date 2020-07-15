@@ -2,14 +2,25 @@ package com.uxi.bambupay.view.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.viewmodel.CashOutViewModel
+import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_cash_out.*
+import kotlinx.android.synthetic.main.content_cash_out.btn_cancel
+import kotlinx.android.synthetic.main.content_cash_out.btn_transact
+import kotlinx.android.synthetic.main.content_cash_out.text_input_mobile
 
 class CashOutActivity : BaseActivity() {
+
+    private val userTokenModel by viewModel<UserTokenViewModel>()
+    private val cashOutViewModel by viewModel<CashOutViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
+        observeViewModel()
         events()
     }
 
@@ -46,6 +57,52 @@ class CashOutActivity : BaseActivity() {
         btn_cancel.setOnClickListener {
             onBackPressed()
         }
+
+        btn_transact.setOnClickListener {
+            cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
+        }
+    }
+
+    private fun observeViewModel() {
+        userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
+            if (isTokenRefresh) {
+                cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
+            }
+        })
+
+        cashOutViewModel.isAmountEmpty.observe(this, Observer { isAmountEmpty ->
+            if (isAmountEmpty) {
+                showDialogMessage("Amount Required")
+            }
+        })
+
+        cashOutViewModel.isRecipientEmpty.observe(this, Observer { isRecipientEmpty ->
+            if (isRecipientEmpty) {
+                showDialogMessage("Mobile Number Required")
+            }
+        })
+
+        cashOutViewModel.isCashOutSuccess.observe(this, Observer { isCashOutSuccess ->
+            if (isCashOutSuccess) {
+                finish()
+            }
+        })
+
+        cashOutViewModel.loading.observe(this, Observer { isLoading ->
+            if (isLoading) {
+                showProgressDialog("Loading...")
+            } else {
+                dismissProgressDialog()
+            }
+        })
+
+        cashOutViewModel.isSuccess.observe(this, Observer { isSuccess ->
+            if (!isSuccess) {
+                // call token refresher
+                userTokenModel.subscribeToken()
+            }
+        })
+
     }
 
 }

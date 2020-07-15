@@ -30,6 +30,7 @@
             android:text="@string/amount" />
 
         <EditText
+            android:id="@+id/text_input_amount"
             style="@style/TextViewSmall.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,27 +40,27 @@
             android:inputType="numberDecimal"
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
-            android:paddingBottom="15dp"
-            android:textColorHint="@color/black" />
+            android:paddingBottom="15dp" />
 
         <TextView
             style="@style/TextViewSmall.SemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:text="@string/send_card" />
+            android:text="@string/send_mobile" />
 
         <EditText
+            android:id="@+id/text_input_mobile"
             style="@style/TextViewSmall.Regular2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/underline"
             android:gravity="center_vertical"
-            android:inputType="number"
+            android:inputType="text"
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
             android:paddingBottom="15dp"
-            android:text=""
+            android:hint="639xxxxxxxxx"
             android:textColor="@color/black" />
 
         <Button
