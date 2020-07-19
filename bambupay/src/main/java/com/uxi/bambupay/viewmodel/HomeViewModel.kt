@@ -12,7 +12,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject
 constructor(private val repository: HomeRepository, private val utils: Utils) : BaseViewModel() {
 
-    val isSuccess = MutableLiveData<Boolean>()
     private var subscriptionUIBalance: Disposable? = null
     val textBalance = MutableLiveData<String>()
 

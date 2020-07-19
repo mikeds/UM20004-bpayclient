@@ -16,6 +16,9 @@ open class GenericApiResponse<T> {
     @SerializedName("error_description")
     var message: String? = null
 
+    @SerializedName("message")
+    var successMessage: String? = null
+
     var value: T? = null
 
     companion object {

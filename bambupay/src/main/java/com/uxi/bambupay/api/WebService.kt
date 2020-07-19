@@ -2,6 +2,7 @@ package com.uxi.bambupay.api
 
 import com.uxi.bambupay.model.*
 import io.reactivex.Flowable
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -35,5 +36,14 @@ interface WebService {
 
     @GET("client/history")
     fun recentTransactions(): Flowable<GenericApiResponse<RecentTransactions>>
+
+    @POST("client/registration")
+    fun register(@Body params: RequestRegister): Flowable<GenericApiResponse<User>>
+
+    @POST("client/code-confirmation")
+    fun verificationCode(@Body params: Request): Flowable<GenericApiResponse<User>>
+
+    @POST("client/resend-code-confirmation")
+    fun resendVerificationCode(@Body params: Request): Flowable<GenericApiResponse<User>>
 
 }

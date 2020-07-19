@@ -136,6 +136,20 @@
                 android:textAllCaps="false"
                 android:textColor="@color/green" />
 
+            <TextView
+                android:id="@+id/btn_verification"
+                style="@style/TextViewSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="15dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="5dp"
+                android:paddingBottom="10dp"
+                android:text="@string/verification"
+                android:textColor="@color/gold" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

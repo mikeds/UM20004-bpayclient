@@ -1,22 +1,36 @@
 package com.uxi.bambupay.view.activity
 
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import com.microblink.entities.recognizers.RecognizerBundle
 import com.microblink.entities.recognizers.blinkid.generic.BlinkIdCombinedRecognizer
 import com.microblink.entities.recognizers.blinkid.imageoptions.FullDocumentImageOptions
 import com.microblink.uisettings.ActivityRunner
 import com.microblink.uisettings.BlinkIdUISettings
 import com.uxi.bambupay.R
-import com.uxi.bambupay.view.widget.CreditCardExpiryTextWatcher
+import com.uxi.bambupay.viewmodel.LoginViewModel
+import com.uxi.bambupay.viewmodel.RegisterViewModel
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.content_forgot_password.*
 import kotlinx.android.synthetic.main.content_register.*
+import kotlinx.android.synthetic.main.content_register.input_email
+import java.text.DateFormat
+import java.util.*
 
-class RegisterActivity : BaseActivity() {
+
+class RegisterActivity : BaseActivity(), View.OnClickListener {
+
+    private val registerViewModel by viewModel<RegisterViewModel>()
+    private val viewModelLogin by viewModel<LoginViewModel>()
 
     companion object {
         const val MY_BLINKID_REQUEST_CODE = 123
@@ -28,6 +42,7 @@ class RegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
+        observeViewModel()
         events()
         setupMicroBlink()
     }
@@ -82,6 +97,22 @@ class RegisterActivity : BaseActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_register -> {
+                registerViewModel.subscribeRegister(input_fname.text.toString(), input_lname.text.toString(), input_gender.text.toString(),
+                    input_date_of_birth.text.toString(), input_id_number.text.toString(), input_mobile_number.text.toString(),
+                    input_email.text.toString(), input_password.text.toString(), input_confirm_password.text.toString(), input_policy.isChecked)
+            }
+            R.id.input_gender -> {
+                showGenderDialog()
+            }
+            R.id.input_date_of_birth -> {
+                showDatePicker()
+            }
+        }
+    }
+
     private fun events() {
         //input_card_expiry.addTextChangedListener(CreditCardExpiryTextWatcher(input_card_expiry))
         btn_image_document.setOnClickListener {
@@ -91,9 +122,10 @@ class RegisterActivity : BaseActivity() {
             ActivityRunner.startActivityForResult(this, MY_BLINKID_REQUEST_CODE, uiSettings)
         }
 
-        btn_register.setOnClickListener {
-            showVerificationScreen()
-        }
+        btn_register.setOnClickListener(this)
+        input_gender.setOnClickListener(this)
+        input_date_of_birth.setOnClickListener(this)
+//            showVerificationScreen()
     }
 
     private fun setupMicroBlink() {
@@ -155,7 +187,6 @@ class RegisterActivity : BaseActivity() {
             input_id_number.setText(idNumber)
         }
 
-//        Toast.makeText(this, "Name: $name", Toast.LENGTH_LONG).show()
     }
 
     private fun onScanCanceled() {
@@ -164,8 +195,139 @@ class RegisterActivity : BaseActivity() {
 
     private fun showVerificationScreen() {
         val intent = Intent(this, VerificationActivity::class.java)
+        intent.putExtra("username", input_email.text.toString())
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+    }
+
+    private fun showGenderDialog() {
+        val singleChoiceItems = resources.getStringArray(R.array.gender_choice_array)
+        val itemSelected = 0
+        var currSelectedIndex = 0
+
+        val builder = AlertDialog.Builder(this)
+            .setTitle("Select your gender")
+            .setSingleChoiceItems(singleChoiceItems, itemSelected) { _, selectedIndex ->
+                currSelectedIndex = selectedIndex
+            }
+            .setPositiveButton("Okay") { dialog, _ ->
+                input_gender.setText(singleChoiceItems[currSelectedIndex])
+                input_gender.error = null
+                dialog.cancel()
+            }
+            .setNegativeButton("Cancel", null)
+
+        builder.create().show()
+    }
+
+    private fun showDatePicker() {
+        val mCalendar: Calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            this, R.style.DatePickerDialogStyle,
+            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                mCalendar.set(Calendar.YEAR, year)
+                mCalendar.set(Calendar.MONTH, monthOfYear)
+                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                val date: String = DateFormat.getDateInstance(DateFormat.MEDIUM).format(mCalendar.time)
+                input_date_of_birth.setText(date)
+                input_date_of_birth.error = null
+            },
+            mCalendar.get(Calendar.YEAR),
+            mCalendar.get(Calendar.MONTH),
+            mCalendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.setTitle("Select Date")
+        datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
+        datePickerDialog.show()
+    }
+
+    private fun observeViewModel() {
+        viewModelLogin.subscribeToken()
+
+        registerViewModel.loading.observe(this, Observer { isLoading ->
+            if (isLoading) {
+                showProgressDialog("Loading...")
+            } else {
+                dismissProgressDialog()
+            }
+        })
+
+        registerViewModel.isFirstNameEmpty.observe(this, Observer { isFirstNameEmpty ->
+            if (isFirstNameEmpty) input_fname.error = getString(R.string.signup_no_firstname)
+            nested_scroll_view.requestChildFocus(input_fname, input_fname)
+        })
+
+        registerViewModel.isLastNameEmpty.observe(this, Observer { isLastNameEmpty ->
+            if (isLastNameEmpty) input_lname.error = getString(R.string.signup_no_lastname)
+            nested_scroll_view.requestChildFocus(input_lname, input_lname)
+        })
+
+        registerViewModel.isGenderEmpty.observe(this, Observer { isGenderEmpty ->
+            if (isGenderEmpty) input_gender.error = getString(R.string.signup_no_gender)
+            nested_scroll_view.requestChildFocus(input_gender, input_gender)
+        })
+
+        registerViewModel.isDobEmpty.observe(this, Observer { isDobEmpty ->
+            if (isDobEmpty) input_date_of_birth.error = getString(R.string.signup_no_dob)
+            nested_scroll_view.requestChildFocus(input_date_of_birth, input_date_of_birth)
+        })
+
+        registerViewModel.isIdNumberEmpty.observe(this, Observer { isIdNumberEmpty ->
+            if (isIdNumberEmpty) input_id_number.error = getString(R.string.signup_no_id)
+        })
+
+        registerViewModel.isMobileNumberEmpty.observe(this, Observer { isMobileNumberEmpty ->
+            if (isMobileNumberEmpty) input_mobile_number.error = getString(R.string.signup_no_mobile)
+            nested_scroll_view.requestChildFocus(input_mobile_number, input_mobile_number)
+        })
+
+        registerViewModel.isEmailEmpty.observe(this, Observer { isEmailEmpty ->
+            if (isEmailEmpty) input_email.error = getString(R.string.signup_no_email)
+        })
+
+        registerViewModel.isPasswordEmpty.observe(this, Observer { isPasswordEmpty ->
+            if (isPasswordEmpty) input_password.error = getString(R.string.signup_no_password)
+        })
+
+        registerViewModel.isConfirmPasswordEmpty.observe(this, Observer { isConfirmPasswordEmpty ->
+            if (isConfirmPasswordEmpty) input_confirm_password.error = getString(R.string.signup_no_password)
+        })
+
+        registerViewModel.isPasswordMismatch.observe(this, Observer { isPasswordMismatch ->
+            if (isPasswordMismatch) {
+                Toast.makeText(this, getString(R.string.signup_password_mismatch), Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        registerViewModel.isPolicyCheck.observe(this, Observer { isPolicyCheck ->
+            if (!isPolicyCheck) {
+                Toast.makeText(this, getString(R.string.signup_no_consent), Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        registerViewModel.isSuccess.observe(this, Observer { isSuccess ->
+            if (isSuccess) {
+                showVerificationScreen()
+            } else {
+                viewModelLogin.subscribeToken()
+            }
+        })
+
+        registerViewModel.errorMessage.observe(this, Observer { errorMessage ->
+            Log.e("DEBUG", "registration error")
+            Toast.makeText(this, "$errorMessage", Toast.LENGTH_SHORT).show()
+            showMessageDialog(errorMessage)
+        })
+
+        viewModelLogin.refreshLogin.observe(this, Observer { isRefreshLogin ->
+            if (isRefreshLogin) {
+                Log.e("DEBUG", "isRefreshLogin")
+                registerViewModel.subscribeRegister(input_fname.text.toString(), input_lname.text.toString(), input_gender.text.toString(),
+                    input_date_of_birth.text.toString(), input_id_number.text.toString(), input_mobile_number.text.toString(),
+                    input_email.text.toString(), input_password.text.toString(), input_confirm_password.text.toString(), input_policy.isChecked)
+            }
+        })
+
     }
 
 }

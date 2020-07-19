@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nested_scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -117,6 +118,8 @@
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
                 android:inputType="textCapWords" />
 
             <TextView
@@ -131,6 +134,8 @@
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
                 android:inputType="textCapWords" />
 
             <TextView
@@ -155,10 +160,12 @@
                 android:text="@string/mobile_number" />
 
             <EditText
+                android:id="@+id/input_mobile_number"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="+63 or 09XXXXXXXXX"
+                android:digits="0123456789"
+                android:hint="63 or 09XXXXXXXXX"
                 android:inputType="phone"
                 android:maxLength="13" />
 
@@ -170,6 +177,7 @@
                 android:text="@string/email" />
 
             <EditText
+                android:id="@+id/input_email"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -183,6 +191,7 @@
                 android:text="@string/password" />
 
             <EditText
+                android:id="@+id/input_password"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -197,6 +206,7 @@
                 android:text="@string/confirm_password" />
 
             <EditText
+                android:id="@+id/input_confirm_password"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -298,6 +308,7 @@
             </LinearLayout>-->
 
             <CheckBox
+                android:id="@+id/input_policy"
                 style="@style/TextViewSmall.Regular2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

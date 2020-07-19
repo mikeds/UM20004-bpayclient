@@ -127,6 +127,15 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="DatePickerDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:datePickerStyle">@style/DatePickerStyle</item>
+    </style>
+
+    <style name="DatePickerStyle" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
+
 <!--    <style name="EditTextHint" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">-->
 <!--        <item name="colorAccent">@android:color/white</item>-->
 <!--        <item name="android:textColorHint">@color/colorPrimary</item>-->

@@ -15,7 +15,6 @@ import javax.inject.Inject
 class CashOutViewModel @Inject
 constructor(private val repository: CashOutRepository, private val utils: Utils) : BaseViewModel() {
 
-    val isSuccess = MutableLiveData<Boolean>()
     val isAmountEmpty = MutableLiveData<Boolean>()
     val isRecipientEmpty = MutableLiveData<Boolean>()
     val isCashOutSuccess = MutableLiveData<Boolean>()

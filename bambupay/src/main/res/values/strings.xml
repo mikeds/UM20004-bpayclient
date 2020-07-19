@@ -31,6 +31,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="email_verification">Email Verification</string>
     <string name="register">Register</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="register_details">Please fill up this form to create an account.</string>
@@ -93,4 +94,22 @@
     <string name="cancelled">Cancelled</string>
 
     <string name="dialog_logout">Are you sure you want to logout?</string>
+
+    <string name="signup_no_lastname">Please input last name</string>
+    <string name="signup_no_firstname">Please input first name</string>
+    <string name="signup_no_gender">Please input gender</string>
+    <string name="signup_no_dob">Please input date of birth</string>
+    <string name="signup_no_id">Please input id number</string>
+    <string name="signup_no_mobile">Please input correct mobile number</string>
+    <string name="signup_no_email">Please enter a valid email address</string>
+    <string name="signup_no_password">Please enter a password that contains at least 8 characters</string>
+    <string name="signup_password_mismatch">Password Mismatch</string>
+    <string name="signup_no_consent">Consent is required</string>
+    <string name="signup_no_verify">Please enter a valid verification code</string>
+
+    <string-array name="gender_choice_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
 </resources>

@@ -1,11 +1,16 @@
 package com.uxi.bambupay.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.viewmodel.LoginViewModel
+import com.uxi.bambupay.viewmodel.VerifyViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_verification.*
 
@@ -15,9 +20,18 @@ import kotlinx.android.synthetic.main.content_verification.*
  */
 class VerificationActivity : BaseActivity() {
 
+    private val viewModelLogin by viewModel<LoginViewModel>()
+    private val verifyViewModel by viewModel<VerifyViewModel>()
+
+    private var username: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        username = intent?.getStringExtra("username")
+
         setupToolbar()
+        observeViewModel()
         events()
     }
 
@@ -72,7 +86,51 @@ class VerificationActivity : BaseActivity() {
         })
 
         btn_send.setOnClickListener {
-            Log.e("DEBUG", "verification send!")
+            verifyViewModel.subscribeVerifyCode(pin_view.text.toString(), username)
         }
+    }
+
+    private fun observeViewModel() {
+        viewModelLogin.subscribeToken()
+
+        viewModelLogin.refreshLogin.observe(this, Observer { isRefreshLogin ->
+            if (isRefreshLogin) {
+                Log.e("DEBUG", "isRefreshLogin")
+                verifyViewModel.subscribeVerifyCode(pin_view.text.toString(), username)
+            }
+        })
+
+        verifyViewModel.loading.observe(this, Observer { isLoading ->
+            if (isLoading) {
+                showProgressDialog("Loading...")
+            } else {
+                dismissProgressDialog()
+            }
+        })
+
+        verifyViewModel.isCodeEmpty.observe(this, Observer { isCodeEmpty ->
+            if (isCodeEmpty) Toast.makeText(this, getString(R.string.signup_no_verify), Toast.LENGTH_SHORT).show()
+        })
+
+        verifyViewModel.isSuccess.observe(this, Observer { isSuccess ->
+            if (isSuccess) {
+                showLoginScreen()
+            } else {
+                viewModelLogin.subscribeToken()
+            }
+        })
+
+        verifyViewModel.errorMessage.observe(this, Observer { errorMessage ->
+            showMessageDialog(errorMessage)
+        })
+
+    }
+
+    private fun showLoginScreen() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+        finish()
     }
 }

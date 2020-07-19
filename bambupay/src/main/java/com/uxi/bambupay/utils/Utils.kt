@@ -2,6 +2,13 @@ package com.uxi.bambupay.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import android.util.Patterns
+import androidx.core.util.PatternsCompat
+import com.google.i18n.phonenumbers.NumberParseException
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 /**
  * Created by Eraño Payawal on 6/28/20.
@@ -12,6 +19,63 @@ class Utils constructor(private val context: Context?) {
 
     fun clearPref() {
         prefs.edit().clear().apply()
+    }
+
+    fun isEmailValid(email: String): Boolean {
+        return PatternsCompat.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun isValidMobile(phone: String): Boolean {
+        return Patterns.PHONE.matcher(phone).matches()
+    }
+
+    fun isValidPhone(s: String?): Boolean {
+        // The given argument to compile() method
+        // is regular expression. With the help of
+        // regular expression we can validate mobile
+        // number.
+        // 1) Begins with 0 or 91
+        // 2) Then contains 7 or 8 or 9.
+        // 3) Then contains 9 digits
+        val p: Pattern = Pattern.compile("^[0-9]{10,13}\$")
+        // Pattern class contains matcher() method
+        // to find matching between given number
+        // and regular expression
+        val m: Matcher = p.matcher(s!!)
+        return m.find() && m.group() == s
+    }
+
+    fun getCountryIsoCode(number: String): String? {
+
+        val phoneNumberUtil = PhoneNumberUtil.getInstance()
+        val validatedNumber = if (number.startsWith("+")) number else "+$number"
+
+        val phoneNumber = try {
+            phoneNumberUtil.parse(validatedNumber, null)
+        } catch (e: NumberParseException) {
+            Log.e("DEBUG", "error during parsing a number")
+            null
+        }
+            ?: return null
+
+        phoneNumber
+        return phoneNumber.countryCode.toString()//phoneNumberUtil.getRegionCodeForCountryCode(phoneNumber.countryCode)
+    }
+
+    fun getMobileNumber(number: String): String? {
+
+        val phoneNumberUtil = PhoneNumberUtil.getInstance()
+        val validatedNumber = if (number.startsWith("+")) number else "+$number"
+
+        val phoneNumber = try {
+            phoneNumberUtil.parse(validatedNumber, null)
+        } catch (e: NumberParseException) {
+            Log.e("DEBUG", "error during parsing a number")
+            null
+        }
+            ?: return null
+
+        return phoneNumber.nationalNumber.toString()
     }
 
     fun saveTokenPack(

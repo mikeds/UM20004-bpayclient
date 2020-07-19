@@ -39,6 +39,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
+            R.id.btn_verification -> {
+                val intent = Intent(this, VerificationEmailActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+            }
         }
     }
 
@@ -76,12 +81,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             showMessageDialog(errorMessage)
         })
 
-
     }
 
     private fun events() {
         btn_sign_in.setOnClickListener(this)
         btn_register.setOnClickListener(this)
         btn_forgot_password.setOnClickListener(this)
+        btn_verification.setOnClickListener(this)
     }
 }

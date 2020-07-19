@@ -18,6 +18,7 @@ open class BaseViewModel : ViewModel() {
     val error = MutableLiveData<Error>()
     val errorMessage = MutableLiveData<String>()
     val loading = MutableLiveData<Boolean>(false)
+    val isSuccess = MutableLiveData<Boolean>()
 
     init {
         disposable = CompositeDisposable()

@@ -9,5 +9,7 @@ class Constants {
         const val PENDING = "pending"
         const val APPROVED = "approved"
         const val CANCELLED = "cancelled"
+
+        const val PASSWORD_MIN_LENGTH = 8
     }
 }

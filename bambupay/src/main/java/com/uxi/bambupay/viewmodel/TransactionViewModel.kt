@@ -18,7 +18,6 @@ import javax.inject.Inject
 class TransactionViewModel @Inject
 constructor(private val repository: TransactionRepository, private val utils: Utils) : BaseViewModel() {
 
-    val isSuccess = MutableLiveData<Boolean>()
     val isAmountEmpty = MutableLiveData<Boolean>()
     val isRecipientEmpty = MutableLiveData<Boolean>()
     val isSendMoneySuccess = MutableLiveData<Boolean>()
@@ -34,7 +33,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
             pageOffset = 0
             isPullToRefresh = false
         }
-        
+
         disposable?.add(repository.loadTransactions()
             .doAfterTerminate { loading.value = false }
             .subscribe({
