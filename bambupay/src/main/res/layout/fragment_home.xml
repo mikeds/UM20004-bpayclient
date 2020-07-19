@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/lbl_current_balance"
                     android:layout_marginEnd="5dp"
-                    android:text="1,200" />
+                    android:text="0" />
 
                 <TextView
                     android:id="@+id/lbl_currency"

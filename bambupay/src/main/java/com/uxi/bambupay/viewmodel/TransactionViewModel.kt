@@ -191,4 +191,8 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
         }
     }
 
+    fun formatAmount(amount: String) : String? {
+        return utils.currencyFormat(amount)
+    }
+
 }

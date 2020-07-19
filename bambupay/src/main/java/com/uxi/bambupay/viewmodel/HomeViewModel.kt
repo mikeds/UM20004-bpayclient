@@ -6,7 +6,6 @@ import com.uxi.bambupay.repository.HomeRepository
 import com.uxi.bambupay.utils.Utils
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
-import java.text.DecimalFormat
 import javax.inject.Inject
 
 class HomeViewModel @Inject
@@ -22,7 +21,7 @@ constructor(private val repository: HomeRepository, private val utils: Utils) : 
                     it?.let { results ->
                         if (results.size > 0 && results[0] != null) {
                             val balance = results[0]
-                            val balFormat = currencyFormat(balance?.balance!!)
+                            val balFormat = utils.currencyFormat(balance?.balance!!)
                             textBalance.value = balFormat
                         }
                     }
@@ -58,11 +57,6 @@ constructor(private val repository: HomeRepository, private val utils: Utils) : 
                 }
             })
         )
-    }
-
-    private fun currencyFormat(amount: String): String? {
-        val formatter = DecimalFormat("###,###,###.##")
-        return formatter.format(amount.toDouble())
     }
 
 }

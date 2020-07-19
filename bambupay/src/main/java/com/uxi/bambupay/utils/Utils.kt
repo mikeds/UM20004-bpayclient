@@ -7,6 +7,7 @@ import android.util.Patterns
 import androidx.core.util.PatternsCompat
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import java.text.DecimalFormat
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -76,6 +77,11 @@ class Utils constructor(private val context: Context?) {
             ?: return null
 
         return phoneNumber.nationalNumber.toString()
+    }
+
+    fun currencyFormat(amount: String): String? {
+        val formatter = DecimalFormat("###,###,###.##")
+        return formatter.format(amount.toDouble())
     }
 
     fun saveTokenPack(

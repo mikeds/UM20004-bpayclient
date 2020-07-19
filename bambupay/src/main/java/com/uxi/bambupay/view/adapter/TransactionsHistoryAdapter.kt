@@ -11,6 +11,7 @@ import com.uxi.bambupay.model.Transaction
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN
 import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
 import com.uxi.bambupay.utils.Constants.Companion.SEND_MONEY
+import com.uxi.bambupay.utils.Utils
 import com.uxi.bambupay.utils.convertTimeToDate
 import io.realm.OrderedRealmCollection
 import io.realm.RealmRecyclerViewAdapter
@@ -28,6 +29,11 @@ class TransactionsHistoryAdapter(
         private var txtTransactionType: TextView = itemView.txt_transaction_type
         private var txtDate: TextView = itemView.txt_date
         private var txtAmount: TextView = itemView.txt_amount
+        private var utils: Utils? = null
+
+        init {
+            utils = Utils(context)
+        }
 
         fun bind(item: Transaction?) {
             item?.let {
@@ -43,7 +49,8 @@ class TransactionsHistoryAdapter(
                         txtTransactionType.text = context?.getString(R.string.cash_out)
                     }
                 }
-                txtAmount.text = it.amount
+                val transactionAmount = it.amount?.let { it1 -> utils?.currencyFormat(it1) }
+                txtAmount.text = "PHP $transactionAmount"
                 val dateTime = convertTimeToDate(it.date)
                 txtDate.text = dateTime
             }

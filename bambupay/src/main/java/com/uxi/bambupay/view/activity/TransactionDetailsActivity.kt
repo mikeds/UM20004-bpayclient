@@ -106,7 +106,7 @@ class TransactionDetailsActivity : BaseActivity() {
             }
         }
 
-        val transactionAmount = "PHP ${transaction?.amount}"
+        val transactionAmount = "PHP ${transactionViewModel.formatAmount(transaction?.amount!!)}"
         txt_amount?.text = transactionAmount
         val dateTime = convertTimeToDate(transaction?.date)
         txt_date?.text = dateTime

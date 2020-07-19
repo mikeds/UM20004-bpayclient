@@ -9,6 +9,9 @@ import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
 import com.uxi.bambupay.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.btn_register
+import kotlinx.android.synthetic.main.activity_login.input_email
+import kotlinx.android.synthetic.main.activity_login.input_password
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
@@ -79,6 +82,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             Log.e("DEBUG", "login error")
             Toast.makeText(this, "$errorMessage", Toast.LENGTH_SHORT).show()
             showMessageDialog(errorMessage)
+        })
+
+        viewModelLogin.isEmailEmpty.observe(this, Observer { isEmailEmpty ->
+            if (isEmailEmpty) input_email.error = getString(R.string.signup_no_email)
+        })
+
+        viewModelLogin.isPasswordEmpty.observe(this, Observer { isPasswordEmpty ->
+            if (isPasswordEmpty) input_password.error = getString(R.string.signup_no_password)
         })
 
     }
