@@ -44,7 +44,7 @@ class CashInActivity : BaseActivity() {
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
-        tv_toolbar_title?.text = getString(R.string.cash_out)
+        tv_toolbar_title?.text = getString(R.string.cash_in)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)

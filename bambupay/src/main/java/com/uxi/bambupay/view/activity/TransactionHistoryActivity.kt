@@ -66,7 +66,7 @@ class TransactionHistoryActivity : BaseActivity() {
         }
 
         refresh_layout?.setOnLoadmoreListener {
-            transactionViewModel.subscribeTransactions()
+            transactionViewModel.subscribeTransactionsMore()
         }
     }
 
@@ -96,6 +96,7 @@ class TransactionHistoryActivity : BaseActivity() {
                 }
             })
         )
+
     }
 
     private fun observeViewModel() {

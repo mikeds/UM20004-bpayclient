@@ -67,6 +67,10 @@ class Utils constructor(private val context: Context?) {
         prefs.edit().putBoolean(IS_TOKEN_EXPIRED, isExpired).apply()
     }
 
+    fun saveLastTransactionId(transactionId: Long) {
+        prefs.edit().putLong(USER_LAST_TRANSACTION_ID, transactionId).apply()
+    }
+
     //---------------------------------------------------------------------------
     fun saveUserTokenPack(token: String?, isExpired: Boolean) {
         prefs.edit().putString(USER_TOKEN, token).apply()
@@ -89,6 +93,9 @@ class Utils constructor(private val context: Context?) {
 
     val userSecretCode: String?
         get() = prefs.getString(USER_SECRET_CODE, "")
+
+    val userLastTransactionId: Long?
+        get() = prefs.getLong(USER_LAST_TRANSACTION_ID, 0)
     //---------------------------------------------------------------------------
 
 
@@ -105,6 +112,7 @@ class Utils constructor(private val context: Context?) {
         const val IS_USER_TOKEN_EXPIRED = "is_user_token_expired"
         const val USER_SECRET_KEY = "user_secret_key"
         const val USER_SECRET_CODE = "user_secret_code"
+        const val USER_LAST_TRANSACTION_ID = "user_last_transaction_id"
     }
 
     init {

@@ -34,15 +34,13 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
             pageOffset = 0
             isPullToRefresh = false
         }
-
-        // get last record
-
-        disposable?.add(repository.loadTransactions(pageOffset)
-//            .doOnSubscribe { loading.value = true }
+        
+        disposable?.add(repository.loadTransactions()
             .doAfterTerminate { loading.value = false }
             .subscribe({
                 if (it.value != null) {
                     it.value?.let { transactions ->
+                        transactions.lastTransactionId?.let { it1 -> utils.saveLastTransactionId(it1) }
                         transactions.history?.let { it1 -> repository.saveTransactions(it1) }
                     }
                 } else {
@@ -61,6 +59,49 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
                 }
             })
         )
+    }
+
+    fun subscribeTransactionsMore() {
+
+        val transaction = repository.loadLastTransaction()
+        val lastTransactionId = utils.userLastTransactionId
+
+        if (transaction != null) {
+            val transactionId = transaction.transactionId
+
+            if (lastTransactionId == transactionId) {
+                loading.value = false
+            } else {
+                disposable?.add(repository.loadTransactionsMore(transactionId!!)
+                    .doAfterTerminate { loading.value = false }
+                    .subscribe({
+                        if (it.value != null) {
+                            it.value?.let { transactions ->
+                                transactions.lastTransactionId?.let { it1 -> utils.saveLastTransactionId(it1) }
+                                transactions.history?.let { it1 -> repository.saveTransactions(it1) }
+                            }
+                        } else {
+                            it.message?.let { error ->
+                                errorMessage.value = error
+                                Log.e("DEBUG", "error message:: $error")
+                            }
+                        }
+
+                    }, {
+                        Timber.e(it)
+                        if (refreshToken(it)) {
+                            Log.e("DEBUG", "error refreshToken")
+                            utils.saveUserTokenPack("", true)
+                            isSuccess.value = false
+                        }
+                    })
+                )
+            }
+
+        } else {
+            loading.value = false
+        }
+
     }
 
     fun subscribeRecentTransactions() {

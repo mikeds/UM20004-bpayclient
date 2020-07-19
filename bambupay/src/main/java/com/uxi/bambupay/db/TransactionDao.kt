@@ -49,4 +49,10 @@ class TransactionDao(val realm: Realm) {
             .findFirst()
     }
 
+    fun getLastTransaction() : Transaction? {
+        return realm.where(Transaction::class.java)
+            .sort("transactionId", Sort.DESCENDING)
+            .findAllAsync().last()
+    }
+
 }

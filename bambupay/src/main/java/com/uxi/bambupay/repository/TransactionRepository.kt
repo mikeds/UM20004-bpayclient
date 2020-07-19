@@ -19,8 +19,14 @@ class TransactionRepository @Inject constructor(
     private val transactionDao: TransactionDao,
     private val webService: WebService) {
 
-    fun loadTransactions(page: Int): Flowable<GenericApiResponse<Transactions>> {
-        return webService.history(page)
+    fun loadTransactions(): Flowable<GenericApiResponse<Transactions>> {
+        return webService.history()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun loadTransactionsMore(transactionId: Long): Flowable<GenericApiResponse<Transactions>> {
+        return webService.historyMore(transactionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -59,6 +65,10 @@ class TransactionRepository @Inject constructor(
 
     fun loadTransaction(transactionId: Long) : Transaction? {
         return transactionDao.getTransaction(transactionId)
+    }
+
+    fun loadLastTransaction() : Transaction? {
+        return transactionDao.getLastTransaction()
     }
 
 }
