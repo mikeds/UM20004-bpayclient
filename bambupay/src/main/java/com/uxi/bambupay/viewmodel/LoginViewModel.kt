@@ -47,9 +47,12 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
     fun subscribeLogin(username: String, password: String) {
         if (isValidateCredentials(username, password)) {
 
+            val encryptedPassword = utils.sha256(password)
+            Log.e("DEBUG", "encryptedPassword:: ${encryptedPassword.toLowerCase()}")
+
             val requestBuilder = Request.Builder()
                 .setUsername(username)
-                .setPassword(password).build()
+                .setPassword(encryptedPassword.toLowerCase()).build()
 
             disposable?.add(repository.loadLogin(requestBuilder)
                 .doOnSubscribe { loading.value = true }

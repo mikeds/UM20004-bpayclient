@@ -7,6 +7,7 @@ import android.util.Patterns
 import androidx.core.util.PatternsCompat
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import java.security.MessageDigest
 import java.text.DecimalFormat
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -17,6 +18,25 @@ import java.util.regex.Pattern
  */
 class Utils constructor(private val context: Context?) {
     private val prefs: SharedPreferences
+
+    fun sha256(input: String) = hashString("SHA-256", input)
+
+    private fun printHexBinary(data: ByteArray): String {
+        val r = StringBuilder(data.size * 2)
+        data.forEach { b ->
+            val i = b.toInt()
+            r.append(HEX_CHARS[i shr 4 and 0xF])
+            r.append(HEX_CHARS[i and 0xF])
+        }
+        return r.toString()
+    }
+
+    private fun hashString(type: String, input: String): String {
+        val bytes = MessageDigest
+            .getInstance(type)
+            .digest(input.toByteArray())
+        return printHexBinary(bytes).toLowerCase()
+    }
 
     fun clearPref() {
         prefs.edit().clear().apply()
@@ -183,6 +203,7 @@ class Utils constructor(private val context: Context?) {
         const val USER_SECRET_KEY = "user_secret_key"
         const val USER_SECRET_CODE = "user_secret_code"
         const val USER_LAST_TRANSACTION_ID = "user_last_transaction_id"
+        val HEX_CHARS = "0123456789ABCDEF".toCharArray()
     }
 
     init {

@@ -62,8 +62,8 @@ class AuthenticationInterceptor
     }
 
     private fun getBasicAuth() : String {
-        val username = "testclientid"
-        val password = "testsecretcode"
+        val username = "ecf3662266040ba80bfa49d925f74999e56d7f80f0b3b14e430a5d526c591dcf"
+        val password = "9326fdf58cfe187a90ba4a1c7bcabbbdb72afb1ad0495472a1befa6c4a0c61f9"
         return Credentials.basic(username, password)
     }
 
