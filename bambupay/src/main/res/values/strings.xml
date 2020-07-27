@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">BambuPay</string>
-    <string name="demo_microblink_key">sRwAAAAQY29tLnV4aS5iYW1idXBhebZAofRiTBeMqaLJ2ybtvh7oihzQQjOu3Q45StdjPmTWkhGXk8Ex8YLEHiOP0erSpUECz45P6xUrbcx1yQInX4Xt45haTul6gMAb6JnNv00NAd34bQIK5foGqtsMif3Te0VdWNLkMyi99dPN3reX00SXoWnDrLTDfD4TPqOv44ZhneRUORC9iwtWiQzPxFWQpVJxBPZ+VrRK1PP+D8oyxta1JF6ugoSZBvRDt6MLFYHZOMeqRTQHxLsZ0PstMqK9fbY2ikZZVqBaMQ==</string>
+    <string name="demo_microblink_key">sRwAAAAQY29tLnV4aS5iYW1idXBhebZAofRiTBeMqaLJWyGFnbDKayGHoYaF8Rl5SDpsA7Nq/5Ei8qh6DC71hCy42hwKHRcDCZwNBYVSi6d4Q2G+XCXzUc+TzeS0/xs6UErNebCNdGfhaubvpk8EsifjDgUGXvESCA598aAYGDVEFNUtfnzGhFhm5kd3P+g/gq//gcNBTHlo7vNYJ5xqc88l3nbMR60V/kjLO9BheelskcV+oX7qluxBEpDdzSMIfzorjG5rkjQ0W5q0FCk2BPXM2RCDmANAn4R/xFK1yg==</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
