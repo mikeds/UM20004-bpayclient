@@ -63,6 +63,15 @@ android {
             signingConfig signingConfigs.debug
             matchingFallbacks = ['debug', 'release']
         }
+
+        staging {
+            debuggable true
+            versionNameSuffix "(staging)"
+            buildConfigField "String", 'API_BASE_URL', '"https://staging-api.resolveitthrough.us/"'
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
