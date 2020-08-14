@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.RecentTransactions
 import com.uxi.bambupay.model.Transaction
@@ -113,5 +115,12 @@ class TransactionDetailsActivity : BaseActivity() {
 //        txt_mobile_number?.text = it.mobileNumber
 //        txt_message?.text = it.message
         txt_reference_id?.text = transaction?.transactionNumber
+
+        if (!transaction.transactionQrCode.isNullOrEmpty()) {
+            Glide.with(this).load(transaction.transactionQrCode)
+                .thumbnail(1f)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(image_qr)
+        }
     }
 }

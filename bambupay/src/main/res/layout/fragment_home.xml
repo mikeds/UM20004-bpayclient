@@ -55,7 +55,6 @@
                     android:text="@string/currency" />
 
                 <ImageView
-                    android:id="@+id/btn_cash_in"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/lbl_current_balance"
@@ -68,6 +67,71 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/container_top"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:id="@+id/btn_cash_in"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/TextViewTiny.SemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_cash_in"
+                        android:gravity="center"
+                        android:text="@string/cash_in" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_cash_out"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/TextViewTiny.SemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_cash_out"
+                        android:drawablePadding="4dp"
+                        android:gravity="center"
+                        android:text="@string/cash_out" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_send_money"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/TextViewTiny.SemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableTop="@drawable/ic_send_money"
+                        android:drawablePadding="7dp"
+                        android:gravity="center"
+                        android:text="@string/send_money" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="82dp"
@@ -76,6 +140,7 @@
                 android:layout_marginTop="-51dp"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:background="@color/colorPrimary"
+                android:visibility="gone"
                 app:cardCornerRadius="4dp"
                 app:cardElevation="1dp"
                 app:cardUseCompatPadding="true">
@@ -119,13 +184,12 @@
                         android:background="@color/div_border" />
 
                     <TextView
-                        android:id="@+id/btn_cash_out"
                         style="@style/TextViewTiny.SemiBold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:drawableTop="@drawable/ic_cash_out"
-                        android:drawablePadding="2dp"
+                        android:drawablePadding="3dp"
                         android:gravity="center"
                         android:text="@string/cash_out" />
 
@@ -144,7 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/container_top"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="55dp"
                 android:background="@android:color/transparent">
 
                 <LinearLayout

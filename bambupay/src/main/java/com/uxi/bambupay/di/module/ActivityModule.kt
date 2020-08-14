@@ -48,4 +48,7 @@ abstract class ActivityModule {
     @ContributesAndroidInjector()
     internal abstract fun contributeVerificationEmailActivity(): VerificationEmailActivity
 
+    @ContributesAndroidInjector()
+    internal abstract fun contributeSelectBankActivity(): SelectBankActivity
+
 }

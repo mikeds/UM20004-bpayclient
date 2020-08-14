@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">BambuPay</string>
     <string name="demo_microblink_key">sRwAAAAQY29tLnV4aS5iYW1idXBhebZAofRiTBeMqaLJWyGFnbDKayGHoYaF8Rl5SDpsA7Nq/5Ei8qh6DC71hCy42hwKHRcDCZwNBYVSi6d4Q2G+XCXzUc+TzeS0/xs6UErNebCNdGfhaubvpk8EsifjDgUGXvESCA598aAYGDVEFNUtfnzGhFhm5kd3P+g/gq//gcNBTHlo7vNYJ5xqc88l3nbMR60V/kjLO9BheelskcV+oX7qluxBEpDdzSMIfzorjG5rkjQ0W5q0FCk2BPXM2RCDmANAn4R/xFK1yg==</string>
+    <string name="ubp_client_id">854b7778-c9d3-4b3e-9fd5-21c828f7df39</string>
+    <string name="ubp_client_secret">mJ5bF5kG2mK8bV3wP5oV4qT6iQ0eW8cT4kG5yR3eD1nV4wP7uM</string>
+    <string name="ubp_partner_id">01bbb51e-1e6c-4bd4-af9c-450957522aac</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -106,6 +110,10 @@
     <string name="signup_password_mismatch">Password Mismatch</string>
     <string name="signup_no_consent">Consent is required</string>
     <string name="signup_no_verify">Please enter a valid verification code</string>
+
+    <string name="cash_in_merchant">Cash In via Merchant (Over The Counter)</string>
+    <string name="cash_in_bank">Cash In via Bank</string>
+    <string name="select_bank">Select a Bank</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

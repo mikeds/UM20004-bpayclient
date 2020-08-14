@@ -8,10 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uxi.bambupay.R
-import com.uxi.bambupay.view.activity.CashInActivity
-import com.uxi.bambupay.view.activity.CashOutActivity
-import com.uxi.bambupay.view.activity.TransactActivity
-import com.uxi.bambupay.view.activity.TransactionHistoryActivity
+import com.uxi.bambupay.view.activity.*
 import com.uxi.bambupay.view.adapter.RecentTransactionsAdapter
 import com.uxi.bambupay.viewmodel.HomeViewModel
 import com.uxi.bambupay.viewmodel.TransactionViewModel
@@ -42,7 +39,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_cash_in -> {
-                val intent = Intent(activity, CashInActivity::class.java)
+//                val intent = Intent(activity, CashInActivity::class.java)
+                val intent = Intent(activity, SelectCashInActivity::class.java)
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }

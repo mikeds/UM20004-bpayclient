@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder
 import com.uxi.bambupay.BuildConfig
 import com.uxi.bambupay.BuildConfig.API_BASE_URL
 import com.uxi.bambupay.api.AuthenticationInterceptor
+import com.uxi.bambupay.api.UbpService
 import com.uxi.bambupay.api.WebService
 import com.uxi.bambupay.utils.Utils
 import dagger.Module
@@ -15,6 +16,7 @@ import dagger.Provides
 import io.realm.RealmObject
 import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -46,17 +48,18 @@ class AppModule  {
     @Provides
     fun provideOkHttpClient(interceptor: AuthenticationInterceptor): OkHttpClient {
         val httpClientBuilder = OkHttpClient.Builder()
+        httpClientBuilder.connectTimeout(2, TimeUnit.MINUTES)
+            .writeTimeout(2, TimeUnit.MINUTES)
+            .readTimeout(2, TimeUnit.MINUTES)
+            .connectionPool(ConnectionPool(3, 10, TimeUnit.MINUTES))
+            .addInterceptor(interceptor)
+
         if (BuildConfig.DEBUG) {
             val logging = HttpLoggingInterceptor()
             logging.level = HttpLoggingInterceptor.Level.BODY
             httpClientBuilder.networkInterceptors().add(logging)
         }
 
-        httpClientBuilder.connectTimeout(2, TimeUnit.MINUTES)
-            .writeTimeout(2, TimeUnit.MINUTES)
-            .readTimeout(2, TimeUnit.MINUTES)
-            .connectionPool(ConnectionPool(3, 10, TimeUnit.MINUTES))
-            .addInterceptor(interceptor)
         return httpClientBuilder.build()
     }
 
@@ -94,6 +97,35 @@ class AppModule  {
 
         //create retrofit - only this instance would be used in the entire application
         return retroBuilder.build().create(WebService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @NonNull
+    fun provideUbpService(): UbpService {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val okHttpBuilder = OkHttpClient.Builder()
+        okHttpBuilder.addInterceptor { chain ->
+            val original = chain.request()
+            val builder: Request.Builder
+            builder = original.newBuilder()
+                .addHeader("Accept", "application/json")
+                .addHeader("Content-Type", "application/json")
+            val request = builder.build()
+            chain.proceed(request)
+        }
+        if (BuildConfig.DEBUG) {
+            okHttpBuilder.addInterceptor(loggingInterceptor)
+        }
+        val client = okHttpBuilder.build()
+        val retroBuilder = Retrofit.Builder()
+            .baseUrl("https://api-uat.unionbankph.com/")
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retroBuilder.create(UbpService::class.java)
     }
 
 }

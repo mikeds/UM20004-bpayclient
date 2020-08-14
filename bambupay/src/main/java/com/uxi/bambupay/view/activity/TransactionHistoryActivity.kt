@@ -2,6 +2,7 @@ package com.uxi.bambupay.view.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -79,11 +80,13 @@ class TransactionHistoryActivity : BaseActivity() {
         val decorator = DividerItemDecoration(this@TransactionHistoryActivity, LinearLayoutManager.VERTICAL)
         ContextCompat.getDrawable(this@TransactionHistoryActivity, R.drawable.divider)?.let { decorator.setDrawable(it) }
         recycler_view_history?.addItemDecoration(decorator)
-        recycler_view_history?.addOnItemTouchListener(
+        /*recycler_view_history?.addOnItemTouchListener(
             RecyclerItemClickListener(this@TransactionHistoryActivity, object : RecyclerItemClickListener.OnItemClickListener {
 
                 override fun onItemClick(view: View?, position: Int) {
                     val item = adapter.getItem(position)
+
+                    Log.e("DEBUG", "onItemClick")
 
                     if (item != null) {
                         val transactionId = item.transactionId
@@ -95,7 +98,7 @@ class TransactionHistoryActivity : BaseActivity() {
 
                 }
             })
-        )
+        )*/
 
     }
 

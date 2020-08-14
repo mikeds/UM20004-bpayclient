@@ -1,9 +1,11 @@
 package com.uxi.bambupay.view.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.uxi.bambupay.R
@@ -13,6 +15,7 @@ import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
 import com.uxi.bambupay.utils.Constants.Companion.SEND_MONEY
 import com.uxi.bambupay.utils.Utils
 import com.uxi.bambupay.utils.convertTimeToDate
+import com.uxi.bambupay.view.activity.TransactionDetailsActivity
 import io.realm.OrderedRealmCollection
 import io.realm.RealmRecyclerViewAdapter
 import kotlinx.android.synthetic.main.item_transaction.view.*
@@ -26,6 +29,7 @@ class TransactionsHistoryAdapter(
 
     class ViewHolder(itemView: View, private val context: Context?) : RecyclerView.ViewHolder(itemView) {
 
+        private var btn_item_click: RelativeLayout = itemView.btn_item_click
         private var txtTransactionType: TextView = itemView.txt_transaction_type
         private var txtDate: TextView = itemView.txt_date
         private var txtAmount: TextView = itemView.txt_amount
@@ -53,6 +57,15 @@ class TransactionsHistoryAdapter(
                 txtAmount.text = "PHP $transactionAmount"
                 val dateTime = convertTimeToDate(it.date)
                 txtDate.text = dateTime
+
+
+                btn_item_click.setOnClickListener {
+                    val transactionId = item.transactionId
+                    val intent = Intent(context, TransactionDetailsActivity::class.java)
+                    intent.putExtra("transactionId", transactionId)
+                    context?.startActivity(intent)
+//                    context?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                }
             }
         }
     }

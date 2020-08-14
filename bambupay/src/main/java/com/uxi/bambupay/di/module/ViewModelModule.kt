@@ -68,6 +68,11 @@ abstract class ViewModelModule {
     internal abstract fun bindVerifyViewModel(verifyViewModel: VerifyViewModel): ViewModel
 
     @Binds
+    @IntoMap
+    @ViewModelKey(InstaPayViewModel::class)
+    internal abstract fun bindInstaPayViewModel(instaPayViewModel: InstaPayViewModel): ViewModel
+
+    @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
 }

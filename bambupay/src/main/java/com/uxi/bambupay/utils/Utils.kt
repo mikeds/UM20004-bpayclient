@@ -7,6 +7,7 @@ import android.util.Patterns
 import androidx.core.util.PatternsCompat
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.uxi.bambupay.R
 import java.security.MessageDigest
 import java.text.DecimalFormat
 import java.util.regex.Matcher
@@ -186,6 +187,15 @@ class Utils constructor(private val context: Context?) {
 
     val userLastTransactionId: Long?
         get() = prefs.getLong(USER_LAST_TRANSACTION_ID, 0)
+
+    val ubpClientId: String?
+        get() = context?.getString(R.string.ubp_client_id)
+
+    val ubpClientSecret: String?
+        get() = context?.getString(R.string.ubp_client_secret)
+
+    val ubpPartnerId: String?
+        get() = context?.getString(R.string.ubp_partner_id)
     //---------------------------------------------------------------------------
 
 

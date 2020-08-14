@@ -13,6 +13,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import timber.log.Timber
 
 @Suppress("unused")
 class BambuPayApplication : DaggerApplication() {
@@ -26,6 +27,10 @@ class BambuPayApplication : DaggerApplication() {
         super.onCreate()
         instance = this
         appComponent.inject(this)
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
 
         initMicroblink()
         initRealm()
