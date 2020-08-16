@@ -108,13 +108,15 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
         }
         val phoneNumber = utils.getMobileNumber(tempNumber)
 
+        val encryptedPassword = utils.sha256(password)
+
         val requestBody = RequestRegister.Builder()
             .setFirstName(firstName)
             .setLastName(lastName)
             .setEmail(email)
             .setMobileNumber(phoneNumber!!)
             .setMobileCountryCode(countryIsoCode)
-            .setPassword(password)
+            .setPassword(encryptedPassword)
             .build()
 
         disposable?.add(repository.loadRegister(requestBody)

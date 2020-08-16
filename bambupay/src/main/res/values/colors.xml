@@ -7,7 +7,7 @@
     <color name="light_grey">#F1F3F6</color>
     <color name="gold">#FE9923</color>
     <color name="light_green">#41B797</color>
-    <color name="green">#16826A</color>
+    <color name="green">#2B7C3D</color>
     <color name="black">#282828</color>
     <color name="div_border">#D5D7D6</color>
     <color name="grey">#989898</color>
@@ -16,4 +16,5 @@
     <color name="ash_grey">#7A8FA6</color>
     <color name="darker_grey">#666666</color>
     <color name="background_loading">#dddddd</color>
+    <color name="white">#FFFFFF</color>
 </resources>
