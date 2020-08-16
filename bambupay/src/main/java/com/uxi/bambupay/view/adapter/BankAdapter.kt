@@ -37,7 +37,7 @@ class BankAdapter(private val context: Context, private var list: MutableList<Ba
         getItem(position)?.let { holder.bind(it) }
     }
 
-    private fun getItem(position: Int) : Bank? {
+    fun getItem(position: Int) : Bank? {
         return list?.get(position)
     }
 

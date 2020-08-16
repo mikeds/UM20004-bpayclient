@@ -1,16 +1,22 @@
 package com.uxi.bambupay.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.ubp.Bank
+import com.uxi.bambupay.utils.RecyclerItemClickListener
 import com.uxi.bambupay.view.adapter.BankAdapter
 import com.uxi.bambupay.viewmodel.InstaPayViewModel
 import kotlinx.android.synthetic.main.activity_select_bank.*
 import kotlinx.android.synthetic.main.app_toolbar.*
+import timber.log.Timber
 
 /**
  * Created by Eraño Payawal on 8/15/20.
@@ -79,6 +85,28 @@ class SelectBankActivity : BaseActivity() {
             isNestedScrollingEnabled = false
             layoutManager = linearLayoutManager
             adapter = bankAdapter
+            val itemDecorator = DividerItemDecoration(this@SelectBankActivity, DividerItemDecoration.VERTICAL)
+            itemDecorator.setDrawable(ContextCompat.getDrawable(this@SelectBankActivity, R.drawable.divider)!!)
+            addItemDecoration(itemDecorator)
+            addOnItemTouchListener(
+                RecyclerItemClickListener(
+                    this@SelectBankActivity,
+                    object : RecyclerItemClickListener.OnItemClickListener {
+
+                        override fun onItemClick(view: View?, position: Int) {
+                            val item = bankAdapter.getItem(position)
+
+                            item?.let {
+                                if (it.bank?.isNotEmpty()!! && it.bank == "UnionBank") {
+                                    Timber.tag("DEBUG").e("UnionBank")
+                                    val intent = Intent(this@SelectBankActivity, LoginUbpActivity::class.java)
+                                    startActivity(intent)
+                                    overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                                }
+                            }
+                        }
+                    })
+            )
         }
     }
 

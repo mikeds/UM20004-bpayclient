@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
+    android:foreground="?selectableItemBackground"
     android:orientation="vertical"
-    android:paddingTop="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_horizontal_margin">
+    android:padding="@dimen/activity_horizontal_margin">
 
     <TextView
         android:id="@+id/text_bank_name"
