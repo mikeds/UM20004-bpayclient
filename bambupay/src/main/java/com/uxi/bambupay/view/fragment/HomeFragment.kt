@@ -28,6 +28,10 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         setupAdapter()
         observeViewModel()
         events()
+
+        if (context is MainActivity) {
+            (context as MainActivity).setToolbarBgColor(R.color.colorPrimary)
+        }
     }
 
     override fun onResume() {
@@ -44,7 +48,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
-            R.id.btn_pay -> {
+            R.id.btn_send_money -> {
                 val intent = Intent(activity, TransactActivity::class.java)
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
@@ -100,7 +104,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
         homeViewModel.textBalance.observe(viewLifecycleOwner, Observer { textBalance ->
              if (!textBalance.isNullOrBlank()) {
-                 txt_current_balance.text = textBalance
+                 val balance = "₱$textBalance"
+                 txt_current_balance.text = balance
              }
         })
 
@@ -130,7 +135,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         refresh_layout?.finishLoadmore()
 
         btn_cash_in.setOnClickListener(this)
-        btn_pay.setOnClickListener(this)
+        btn_send_money.setOnClickListener(this)
         btn_cash_out.setOnClickListener(this)
         btn_view_all.setOnClickListener(this)
     }

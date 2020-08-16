@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.uxi.bambupay.R
 import com.uxi.bambupay.view.activity.LoginActivity
+import com.uxi.bambupay.view.activity.MainActivity
 import com.uxi.bambupay.viewmodel.SettingsViewModel
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -21,6 +22,10 @@ class SettingsFragment : BaseFragment() {
 
         btn_logout.setOnClickListener {
             showLogoutDialog()
+        }
+
+        if (context is MainActivity) {
+            (context as MainActivity).setToolbarBgColor(R.color.white)
         }
     }
 

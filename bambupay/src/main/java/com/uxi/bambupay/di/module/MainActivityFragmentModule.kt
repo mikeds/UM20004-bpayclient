@@ -1,5 +1,7 @@
 package com.uxi.bambupay.di.module
 
+import com.uxi.bambupay.view.fragment.AboutFragment
+import com.uxi.bambupay.view.fragment.FAQFragment
 import com.uxi.bambupay.view.fragment.HomeFragment
 import com.uxi.bambupay.view.fragment.SettingsFragment
 import dagger.Module
@@ -18,5 +20,11 @@ abstract class MainActivityFragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeHomeFragment(): HomeFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeAboutFragment(): AboutFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeFAQFragment(): FAQFragment
 
 }

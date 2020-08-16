@@ -3,9 +3,12 @@ package com.uxi.bambupay.view.activity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -70,6 +73,8 @@ class MainActivity : BaseActivity() {
 //        drawerLayout.addDrawerListener(toggle)
 //        toggle.syncState()
 
+//        toggle.drawerArrowDrawable.color = ResourcesCompat.getColor(resources, R.color.black, null)
+
         val navView: NavigationView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -122,6 +127,14 @@ class MainActivity : BaseActivity() {
                 mobileTextView?.text = it
             }
         })
+    }
+
+    fun setToolbarBgColor(color: Int) {
+        toolbar?.setBackgroundResource(color)
+    }
+
+    fun setToolbarElevation(elevation: Int) {
+        supportActionBar?.elevation = elevation.toFloat()
     }
 
 }

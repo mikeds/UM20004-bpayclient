@@ -10,13 +10,13 @@
     tools:context=".view.activity.TransactionDetailsActivity"
     tools:showIn="@layout/activity_transaction_details">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:alpha="0.75"
-        android:src="@drawable/bg_bambupay" />
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:alpha="0.75"-->
+<!--        android:src="@drawable/bg_bambupay" />-->
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
