@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">BambuPay</string>
-    <string name="demo_microblink_key">sRwAAAAQY29tLnV4aS5iYW1idXBhebZAofRiTBeMqaLJWyGFnbDKayGHoYaF8Rl5SDpsA7Nq/5Ei8qh6DC71hCy42hwKHRcDCZwNBYVSi6d4Q2G+XCXzUc+TzeS0/xs6UErNebCNdGfhaubvpk8EsifjDgUGXvESCA598aAYGDVEFNUtfnzGhFhm5kd3P+g/gq//gcNBTHlo7vNYJ5xqc88l3nbMR60V/kjLO9BheelskcV+oX7qluxBEpDdzSMIfzorjG5rkjQ0W5q0FCk2BPXM2RCDmANAn4R/xFK1yg==</string>
+    <string name="demo_microblink_key">sRwAAAAQY29tLnV4aS5iYW1idXBhebZAofRiTBeMqaLJWyVFm7CEX6YdI6thaZ35okaYVPGMGGJiLZb5yo8BmYY+GXr6h324PUPltGFg4UCL7Bd6G8FQE13zvnSVfhjbn1XogQ87HLo4zZ9ZBATiNEHjExH9jX+UEZ7cVeyR1SU742FW1RlQiNRPPmDq4SttzPlZEscOxZTEU8x90bINI7spTFp1Lot54phgPlXI4fzXRQo8HB0r+9miO72EqLrxf49cehrrSyBHQxQofseMFg62LnUIk1HyHIEbCKHjoA==</string>
     <string name="ubp_client_id">854b7778-c9d3-4b3e-9fd5-21c828f7df39</string>
     <string name="ubp_client_secret">mJ5bF5kG2mK8bV3wP5oV4qT6iQ0eW8cT4kG5yR3eD1nV4wP7uM</string>
-    <string name="ubp_partner_id">01bbb51e-1e6c-4bd4-af9c-450957522aac</string>
+<!--    <string name="ubp_partner_id">01bbb51e-1e6c-4bd4-af9c-450957522aac</string>-->
+    <string name="ubp_partner_id">5dff2cdf-ef15-48fb-a87b-375ebff415bb</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -120,6 +121,8 @@
     <string name="pay_qr_code">Pay QR</string>
     <string name="pay_bills">Pay Bills</string>
     <string name="show_more">Show More</string>
+    <string name="account_no">Recipient Account No.</string>
+    <string name="account_name">Recipient Account Name</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

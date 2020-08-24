@@ -10,6 +10,8 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.uxi.bambupay.R
 import java.security.MessageDigest
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -105,6 +107,11 @@ class Utils constructor(private val context: Context?) {
         return formatter.format(amount.toDouble())
     }
 
+    fun getIsoTimeStamp(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+        return sdf.format(Date())
+    }
+
     fun saveTokenPack(
         token: String?,
         expiryDate: Long,
@@ -173,6 +180,12 @@ class Utils constructor(private val context: Context?) {
         prefs.edit().putString(USER_SECRET_CODE, secretCode).apply()
     }
 
+    //---------------------------------------------------------------------------
+
+    fun saveUbnLoginCode(code: String?) {
+        prefs.edit().putString(USER_UBP_LOGIN_CODE, code).apply()
+    }
+
     val isUserTokenExpired: Boolean
         get() = prefs.getBoolean(IS_USER_TOKEN_EXPIRED, true)
 
@@ -196,6 +209,9 @@ class Utils constructor(private val context: Context?) {
 
     val ubpPartnerId: String?
         get() = context?.getString(R.string.ubp_partner_id)
+
+    val ubpLoginCode: String?
+        get() = prefs.getString(USER_UBP_LOGIN_CODE, "")
     //---------------------------------------------------------------------------
 
 
@@ -213,6 +229,7 @@ class Utils constructor(private val context: Context?) {
         const val USER_SECRET_KEY = "user_secret_key"
         const val USER_SECRET_CODE = "user_secret_code"
         const val USER_LAST_TRANSACTION_ID = "user_last_transaction_id"
+        const val USER_UBP_LOGIN_CODE = "user_ubp_login_code"
         val HEX_CHARS = "0123456789ABCDEF".toCharArray()
     }
 

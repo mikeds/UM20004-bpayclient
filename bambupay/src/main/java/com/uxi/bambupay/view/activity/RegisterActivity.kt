@@ -20,9 +20,7 @@ import com.uxi.bambupay.R
 import com.uxi.bambupay.viewmodel.LoginViewModel
 import com.uxi.bambupay.viewmodel.RegisterViewModel
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.content_forgot_password.*
 import kotlinx.android.synthetic.main.content_register.*
-import kotlinx.android.synthetic.main.content_register.input_email
 import java.text.DateFormat
 import java.util.*
 
