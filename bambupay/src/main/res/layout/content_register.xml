@@ -54,8 +54,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/activity_horizontal_margin"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitXY"
-                    android:background="@drawable/bg_img_preview" />
+                    android:background="@drawable/bg_img_preview"
+                    android:scaleType="fitXY" />
 
                 <TextView
                     android:id="@+id/txt_capture"
@@ -101,52 +101,6 @@
 
             <EditText
                 android:id="@+id/input_lname"
-                style="@style/EditTextViewSmall.Regular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textCapWords" />
-
-            <TextView
-                style="@style/TextViewSmall.SemiBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="@string/gender" />
-
-            <EditText
-                android:id="@+id/input_gender"
-                style="@style/EditTextViewSmall.Regular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:inputType="textCapWords" />
-
-            <TextView
-                style="@style/TextViewSmall.SemiBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="@string/date_of_birth" />
-
-            <EditText
-                android:id="@+id/input_date_of_birth"
-                style="@style/EditTextViewSmall.Regular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:inputType="textCapWords" />
-
-            <TextView
-                style="@style/TextViewSmall.SemiBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:text="@string/id_number" />
-
-            <EditText
-                android:id="@+id/input_id_number"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -212,6 +166,122 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:minLines="6" />
+
+            <TextView
+                style="@style/TextViewSmall.SemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/date_of_birth" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/input_date_of_birth"
+                    style="@style/EditTextViewSmall.Regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="textCapWords" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_calendar" />
+
+            </RelativeLayout>
+
+            <TextView
+                style="@style/TextViewSmall.SemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/gender" />
+
+            <EditText
+                android:id="@+id/input_gender"
+                style="@style/EditTextViewSmall.Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:inputType="textCapWords" />
+
+            <!-- Added Address -->
+            <TextView
+                style="@style/TextViewSmall.SemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/city" />
+
+            <EditText
+                style="@style/EditTextViewSmall.Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords" />
+
+            <TextView
+                style="@style/TextViewSmall.SemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/house_no" />
+
+            <EditText
+                style="@style/EditTextViewSmall.Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords" />
+
+            <TextView
+                style="@style/TextViewSmall.SemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/street" />
+
+            <EditText
+                style="@style/EditTextViewSmall.Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords" />
+
+            <TextView
+                style="@style/TextViewSmall.SemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/barangay" />
+
+            <EditText
+                style="@style/EditTextViewSmall.Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords" />
+
+            <!-- Id Number -->
+            <TextView
+                style="@style/TextViewSmall.SemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:text="@string/id_number"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/input_id_number"
+                style="@style/EditTextViewSmall.Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:visibility="gone" />
 
             <!--<TextView
                 style="@style/TextViewSmallBody"

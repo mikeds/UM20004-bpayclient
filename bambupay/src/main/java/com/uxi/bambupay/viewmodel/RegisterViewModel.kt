@@ -61,10 +61,10 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
             return
         }
 
-        if (idNumber.isNullOrEmpty()) {
+        /*if (idNumber.isNullOrEmpty()) {
             isIdNumberEmpty.value = true
             return
-        }
+        }*/
 
         if (!utils.isValidPhone(mobileNumber!!)) {
             isMobileNumberEmpty.value = true
