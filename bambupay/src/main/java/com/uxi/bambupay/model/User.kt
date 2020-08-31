@@ -35,4 +35,7 @@ open class User : RealmObject() {
     @SerializedName("secret_code")
     var secretCode: String? = null
 
+    @SerializedName("qr_code")
+    var qrCode: String? = null
+
 }

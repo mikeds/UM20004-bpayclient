@@ -17,6 +17,7 @@ constructor(private val repository: MainRepository, private val utils: Utils) : 
     val initials = MutableLiveData<String>()
     val fullName = MutableLiveData<String>()
     val mobileNumber = MutableLiveData<String>()
+    val qrCode = MutableLiveData<String>()
 
     fun getCurrUser() {
         val user = repository.loadCurrentUser()
@@ -26,6 +27,8 @@ constructor(private val repository: MainRepository, private val utils: Utils) : 
             fullName.value = buildName(it.firstName!!, it.lastName!!)
 
             mobileNumber.value = "+${it.mobileCountryCode}${it.mobileNumber}"
+
+            qrCode.value = it.qrCode
         }
     }
 

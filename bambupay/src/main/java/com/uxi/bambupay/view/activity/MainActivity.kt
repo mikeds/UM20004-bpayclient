@@ -1,5 +1,6 @@
 package com.uxi.bambupay.view.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,6 +18,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.amulyakhare.textdrawable.TextDrawable
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.navigation.NavigationView
 import com.uxi.bambupay.R
 import com.uxi.bambupay.viewmodel.MainViewModel
@@ -30,6 +33,7 @@ class MainActivity : BaseActivity() {
     private lateinit var toolbar: Toolbar
     private var initialDrawable: TextDrawable? = null
     private var avatarImageView: ImageView? = null
+    private var qrCodeImageView: ImageView? = null
     private var nameTextView: TextView? = null
     private var mobileTextView: TextView? = null
 
@@ -87,6 +91,7 @@ class MainActivity : BaseActivity() {
         navView.setupWithNavController(navController)
         val headerView = navView.getHeaderView(0)
         avatarImageView = headerView.findViewById(R.id.image_avatar)
+        qrCodeImageView = headerView.findViewById(R.id.image_qr_code)
         nameTextView = headerView.findViewById(R.id.text_full_name)
         mobileTextView = headerView.findViewById(R.id.text_mobile_num)
         if (initialDrawable != null) {
@@ -127,6 +132,12 @@ class MainActivity : BaseActivity() {
                 mobileTextView?.text = it
             }
         })
+
+        viewModelMain.qrCode.observe(this, Observer { qrCode ->
+            qrCode?.let {
+                qrCodeImageView?.let { it1 -> loadImage(it, it1) }
+            }
+        })
     }
 
     fun setToolbarBgColor(color: Int) {
@@ -135,6 +146,15 @@ class MainActivity : BaseActivity() {
 
     fun setToolbarElevation(elevation: Int) {
         supportActionBar?.elevation = elevation.toFloat()
+    }
+
+    private fun loadImage(imageUrl: String, imageView: ImageView) {
+        Glide.with(this@MainActivity)
+            .load(imageUrl)
+            .thumbnail(1.0f)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
     }
 
 }
