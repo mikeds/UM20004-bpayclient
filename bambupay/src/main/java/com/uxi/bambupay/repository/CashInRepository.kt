@@ -17,7 +17,7 @@ import javax.inject.Inject
 class CashInRepository @Inject
 constructor(private val webService: WebService) {
 
-    fun loadCashOut(request: Request) : Flowable<GenericApiResponse<CashIn>> {
+    fun loadCashIn(request: Request) : Flowable<GenericApiResponse<CashIn>> {
         return webService.cashIn(request)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

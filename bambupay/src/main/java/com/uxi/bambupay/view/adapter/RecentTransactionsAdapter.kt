@@ -4,12 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.RecentTransaction
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN
 import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
+import com.uxi.bambupay.utils.Constants.Companion.SCAN_PAY_QR
 import com.uxi.bambupay.utils.Constants.Companion.SEND_MONEY
 import com.uxi.bambupay.utils.Utils
 import com.uxi.bambupay.utils.convertTimeToDate
@@ -26,6 +28,7 @@ class RecentTransactionsAdapter(
 
     class ViewHolder(itemView: View, private val context: Context?) : RecyclerView.ViewHolder(itemView) {
 
+        private var btn_item_click: RelativeLayout = itemView.btn_item_click
         private var txtTransactionType: TextView = itemView.txt_transaction_type
         private var txtDate: TextView = itemView.txt_date
         private var txtAmount: TextView = itemView.txt_amount
@@ -37,21 +40,15 @@ class RecentTransactionsAdapter(
 
         fun bind(item: RecentTransaction?) {
             item?.let {
-                val transactionType = it.type
-                when {
-                    transactionType.equals(SEND_MONEY) -> {
-                        txtTransactionType.text = context?.getString(R.string.send_money)
-                    }
-                    transactionType.equals(CASH_IN) -> {
-                        txtTransactionType.text = context?.getString(R.string.cash_in)
-                    }
-                    transactionType.equals(CASH_OUT) -> {
-                        txtTransactionType.text = context?.getString(R.string.cash_out)
-                    }
+                when (it.transactionType) {
+                    SEND_MONEY -> txtTransactionType.text = context?.getString(R.string.send_money)
+                    CASH_IN -> txtTransactionType.text = context?.getString(R.string.cash_in)
+                    CASH_OUT -> txtTransactionType.text = context?.getString(R.string.cash_out)
+                    SCAN_PAY_QR -> txtTransactionType.text = context?.getString(R.string.scan_pay)
                 }
-                val transactionAmount = it.amount?.let { it1 -> utils?.currencyFormat(it1) }
+                val transactionAmount = it.debitCreditAmount?.let { it1 -> utils?.currencyFormat(it1) }
                 txtAmount.text = "PHP $transactionAmount"
-                val dateTime = convertTimeToDate(it.date)
+                val dateTime = convertTimeToDate(it.dateAdded)
                 txtDate.text = dateTime
             }
         }

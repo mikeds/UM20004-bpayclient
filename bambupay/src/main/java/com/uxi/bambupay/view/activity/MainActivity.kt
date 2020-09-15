@@ -116,9 +116,14 @@ class MainActivity : BaseActivity() {
                         R.color.light_green
                     ))
 
-                profile_image?.setImageDrawable(initialDrawable)
-                avatarImageView?.setImageDrawable(initialDrawable)
+//                profile_image?.setImageDrawable(initialDrawable)
+//                avatarImageView?.setImageDrawable(initialDrawable)
             }
+        })
+
+        viewModelMain.avatarUrl.observe(this, Observer {
+            loadImage(it, profile_image)
+            loadImage(it, avatarImageView!!)
         })
 
         viewModelMain.fullName.observe(this, Observer { fullName ->

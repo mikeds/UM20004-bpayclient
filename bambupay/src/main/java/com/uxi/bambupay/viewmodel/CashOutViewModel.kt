@@ -38,8 +38,8 @@ constructor(private val repository: CashOutRepository, private val utils: Utils)
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
-                if (it.value != null) {
-                    it.value?.let { cashOut ->
+                if (it.response != null) {
+                    it.response?.let { cashOut ->
                         Log.e("DEBUG", "CashOut :: ${cashOut.toString()}")
                         isCashOutSuccess.value = true
                     }

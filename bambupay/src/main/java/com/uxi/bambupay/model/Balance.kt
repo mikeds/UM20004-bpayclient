@@ -9,6 +9,9 @@ import io.realm.RealmObject
  */
 open class Balance : RealmObject() {
 
+    @SerializedName("account_number")
+    var accountNumber: String? = null
+
     @SerializedName("balance")
     var balance: String? = null
 

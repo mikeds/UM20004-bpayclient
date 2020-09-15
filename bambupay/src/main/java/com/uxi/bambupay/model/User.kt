@@ -23,9 +23,6 @@ open class User : RealmObject() {
     @SerializedName("last_name")
     var lastName: String? = null
 
-    @SerializedName("mobile_country_code")
-    var mobileCountryCode: String? = null
-
     @SerializedName("mobile_no")
     var mobileNumber: String? = null
 
@@ -37,5 +34,14 @@ open class User : RealmObject() {
 
     @SerializedName("qr_code")
     var qrCode: String? = null
+
+    @SerializedName("avatar_image")
+    var avatarImageUrl: String? = null
+
+    @SerializedName("account_status")
+    var accountStatus: String? = null
+
+    @SerializedName("email_status")
+    var emailStatus: String? = null
 
 }

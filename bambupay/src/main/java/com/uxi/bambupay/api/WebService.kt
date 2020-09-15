@@ -3,41 +3,39 @@ package com.uxi.bambupay.api
 import com.uxi.bambupay.model.*
 import io.reactivex.Flowable
 import okhttp3.ResponseBody
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface WebService {
 
     @POST("token")
     fun getToken(@Body map: HashMap<String, String>): Flowable<TokenResponse>
 
-    @POST("client/login")
+//    @Headers("Content-Type: text/html; charset=utf-8")
+    @POST("clients/login")
     fun login(@Body params: Request): Flowable<GenericApiResponse<User>>
 
-    @GET("client/balance")
+    @GET("clients/balance")
     fun balance(): Flowable<GenericApiResponse<Balance>>
 
-    @POST("client/cash-in")
+    @POST("transactions/client/cash-in")
     fun cashIn(@Body params: Request): Flowable<GenericApiResponse<CashIn>>
 
-    @POST("client/send-to")
+    @POST("transactions/client/send-to")
     fun sendTo(@Body params: Request): Flowable<GenericApiResponse<Pay>>
 
     @POST("client/cash-out")
     fun cashOut(@Body params: Request): Flowable<GenericApiResponse<CashOut>>
 
-    @GET("client/history/")
+    @GET("clients/ledger")
     fun history(): Flowable<GenericApiResponse<Transactions>>
 
-    @GET("client/history/{transactionId}")
-    fun historyMore(@Path("transactionId") transactionId: Long): Flowable<GenericApiResponse<Transactions>>
+    @GET("clients/ledger/{transactionId}")
+    fun historyMore(@Path("transactionId") transactionId: String): Flowable<GenericApiResponse<Transactions>>
 
-    @GET("client/history")
+    @GET("clients/ledger")
     fun recentTransactions(): Flowable<GenericApiResponse<RecentTransactions>>
 
-    @POST("client/registration")
+    @POST("clients/registration")
     fun register(@Body params: RequestRegister): Flowable<GenericApiResponse<User>>
 
     @POST("client/code-confirmation")

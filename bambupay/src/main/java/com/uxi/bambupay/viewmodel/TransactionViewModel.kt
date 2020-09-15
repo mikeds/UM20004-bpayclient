@@ -22,6 +22,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
     val isRecipientEmpty = MutableLiveData<Boolean>()
     val isSendMoneySuccess = MutableLiveData<Boolean>()
     val transactionData = MutableLiveData<Transaction>()
+    val transactionRecentData = MutableLiveData<RecentTransaction>()
 
     var isPullToRefresh: Boolean = false
     private var pageOffset: Int = 0
@@ -37,10 +38,10 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
         disposable?.add(repository.loadTransactions()
             .doAfterTerminate { loading.value = false }
             .subscribe({
-                if (it.value != null) {
-                    it.value?.let { transactions ->
-                        transactions.lastTransactionId?.let { it1 -> utils.saveLastTransactionId(it1) }
-                        transactions.history?.let { it1 -> repository.saveTransactions(it1) }
+                if (it.response != null) {
+                    it.response?.let { transactions ->
+                        transactions.lastId?.let { it1 -> utils.saveLastTransactionId(it1) }
+                        transactions.data?.let { it1 -> repository.saveTransactions(it1) }
                     }
                 } else {
                     it.message?.let { error ->
@@ -74,10 +75,10 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
                 disposable?.add(repository.loadTransactionsMore(transactionId!!)
                     .doAfterTerminate { loading.value = false }
                     .subscribe({
-                        if (it.value != null) {
-                            it.value?.let { transactions ->
-                                transactions.lastTransactionId?.let { it1 -> utils.saveLastTransactionId(it1) }
-                                transactions.history?.let { it1 -> repository.saveTransactions(it1) }
+                        if (it.response != null) {
+                            it.response?.let { transactions ->
+                                transactions.lastId?.let { it1 -> utils.saveLastTransactionId(it1) }
+                                transactions.data?.let { it1 -> repository.saveTransactions(it1) }
                             }
                         } else {
                             it.message?.let { error ->
@@ -108,10 +109,12 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
-                if (it.value != null) {
-                    it.value?.let { transactions ->
+                if (it.response != null) {
+                    it.response?.let { transactions ->
                         repository.deleteRecent()
-                        transactions.history?.let { it1 -> repository.saveRecentTransactions(it1) }
+
+                        Timber.tag("DEBUG").e("lastId ${transactions.lastId}")
+                        transactions.data?.let { it1 -> repository.saveRecentTransactions(it1) }
 
                     }
                 } else {
@@ -153,14 +156,14 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
 
         val requestBuilder = Request.Builder()
             .setAmount(amount)
-            .setSendTo(recipient).build()
+            .setEmail(recipient).build()
 
         disposable?.add(repository.loadSendMoney(requestBuilder)
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
-                if (it.value != null) {
-                    it.value?.let { pay ->
+                if (it.response != null) {
+                    it.response?.let { pay ->
                         isSendMoneySuccess.value = true
                     }
                 } else {
@@ -182,11 +185,14 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
 
     }
 
-    fun subscribeTransactionId(transactionId: Long?) {
+    fun subscribeTransactionId(transactionId: String?, historyType: String?) {
         transactionId?.let {
-            if (it > 0) {
+            if (historyType.isNullOrEmpty()) {
                 val transaction = repository.loadTransaction(it)
                 transactionData.value = transaction
+            } else if (!historyType.isNullOrEmpty() && historyType == "RECENT") {
+                val recentTransaction = repository.loadRecentTransaction(it)
+                transactionRecentData.value = recentTransaction
             }
         }
     }

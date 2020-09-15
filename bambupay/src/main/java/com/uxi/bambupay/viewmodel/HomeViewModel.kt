@@ -17,7 +17,7 @@ constructor(private val repository: HomeRepository, private val utils: Utils) : 
     fun rxUIBalance() {
         if (subscriptionUIBalance == null || subscriptionUIBalance!!.isDisposed) {
             subscriptionUIBalance = repository.filterBalance()
-                .subscribe({ it ->
+                .subscribe({
                     it?.let { results ->
                         if (results.size > 0 && results[0] != null) {
                             val balance = results[0]
@@ -36,8 +36,8 @@ constructor(private val repository: HomeRepository, private val utils: Utils) : 
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
-                if (it.value != null) {
-                    it.value?.let { userBalance ->
+                if (it.response != null) {
+                    it.response?.let { userBalance ->
                         repository.loadDeleteBalance()
                         repository.saveBalance(userBalance)
                     }

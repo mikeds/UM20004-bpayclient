@@ -29,6 +29,7 @@
     <string name="scan">Scan</string>
     <string name="cash_out">Cash Out</string>
     <string name="cash_in">Cash In</string>
+    <string name="scan_pay">ScanPayQR</string>
 
     <string name="sign_in">Sign In</string>
     <string name="sign_in_details">to access\nyour account</string>

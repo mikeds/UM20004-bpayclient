@@ -165,8 +165,8 @@ class Utils constructor(private val context: Context?) {
         prefs.edit().putBoolean(IS_TOKEN_EXPIRED, isExpired).apply()
     }
 
-    fun saveLastTransactionId(transactionId: Long) {
-        prefs.edit().putLong(USER_LAST_TRANSACTION_ID, transactionId).apply()
+    fun saveLastTransactionId(transactionId: String) {
+        prefs.edit().putString(USER_LAST_TRANSACTION_ID, transactionId).apply()
     }
 
     //---------------------------------------------------------------------------
@@ -198,8 +198,8 @@ class Utils constructor(private val context: Context?) {
     val userSecretCode: String?
         get() = prefs.getString(USER_SECRET_CODE, "")
 
-    val userLastTransactionId: Long?
-        get() = prefs.getLong(USER_LAST_TRANSACTION_ID, 0)
+    val userLastTransactionId: String?
+        get() = prefs.getString(USER_LAST_TRANSACTION_ID, "")
 
     val ubpClientId: String?
         get() = context?.getString(R.string.ubp_client_id)

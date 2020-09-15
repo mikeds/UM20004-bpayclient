@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uxi.bambupay.R
+import com.uxi.bambupay.utils.RecyclerItemClickListener
 import com.uxi.bambupay.view.activity.*
 import com.uxi.bambupay.view.adapter.RecentTransactionsAdapter
 import com.uxi.bambupay.viewmodel.HomeViewModel
@@ -49,7 +50,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             R.id.btn_send_money -> {
-                val intent = Intent(activity, TransactActivity::class.java)
+                val intent = Intent(activity, SendMoneyActivity::class.java)
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
@@ -68,12 +69,28 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setupAdapter() {
-        val adapter = activity?.let { RecentTransactionsAdapter(it, transactionViewModel.filterRecentTransactions()) }
-        recycler_view_recent?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL ,false)
-        recycler_view_recent?.adapter = adapter
-        val decorator = DividerItemDecoration(activity, LinearLayoutManager.VERTICAL)
-        decorator.setDrawable(activity?.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
-        recycler_view_recent?.addItemDecoration(decorator)
+        recycler_view_recent?.apply {
+            val adapter = activity?.let { RecentTransactionsAdapter(it, transactionViewModel.filterRecentTransactions()) }
+            recycler_view_recent?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL ,false)
+            recycler_view_recent?.adapter = adapter
+            val decorator = DividerItemDecoration(activity, LinearLayoutManager.VERTICAL)
+            decorator.setDrawable(activity?.let { ContextCompat.getDrawable(it, R.drawable.divider) }!!)
+            addItemDecoration(decorator)
+            addOnItemTouchListener(
+                RecyclerItemClickListener(activity, object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View?, position: Int) {
+                        val item = adapter?.getItem(position)
+                        val intent = Intent(context, TransactionDetailsActivity::class.java)
+                        val transactionId = item?.transactionId
+                        intent.putExtra("transactionId", transactionId)
+                        intent.putExtra("history_type", "RECENT")
+                        startActivity(intent)
+                        activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                    }
+                })
+            )
+        }
+
     }
 
     private fun observeViewModel() {
@@ -81,8 +98,13 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
 
         homeViewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
-
+                container_balance.visibility = View.GONE
+                shimmer_view_container.visibility = View.VISIBLE
+                shimmer_view_container.startShimmer()
             } else {
+                container_balance.visibility = View.VISIBLE
+                shimmer_view_container.visibility = View.GONE
+                shimmer_view_container.stopShimmer()
                 refresh_layout?.finishRefresh()
                 refresh_layout?.finishLoadmore()
             }
@@ -105,6 +127,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         homeViewModel.textBalance.observe(viewLifecycleOwner, Observer { textBalance ->
              if (!textBalance.isNullOrBlank()) {
                  val balance = "₱$textBalance"
+                 txt_current_balance.visibility = View.VISIBLE
                  txt_current_balance.text = balance
              }
         })

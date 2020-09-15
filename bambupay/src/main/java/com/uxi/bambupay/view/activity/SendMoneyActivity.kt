@@ -7,9 +7,9 @@ import com.uxi.bambupay.R
 import com.uxi.bambupay.viewmodel.TransactionViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
-import kotlinx.android.synthetic.main.content_transaction.*
+import kotlinx.android.synthetic.main.content_send_money.*
 
-class TransactActivity : BaseActivity() {
+class SendMoneyActivity : BaseActivity() {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val transactionViewModel by viewModel<TransactionViewModel>()
@@ -21,7 +21,7 @@ class TransactActivity : BaseActivity() {
         events()
     }
 
-    override fun getLayoutId() = R.layout.activity_transact
+    override fun getLayoutId() = R.layout.activity_send_money
 
     override fun finish() {
         super.finish()

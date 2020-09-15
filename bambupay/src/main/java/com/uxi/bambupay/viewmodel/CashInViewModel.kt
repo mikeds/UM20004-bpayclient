@@ -34,12 +34,12 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
             .setMerchant(recipient)
             .setAmount(amount).build()
 
-        disposable?.add(repository.loadCashOut(requestBuilder)
+        disposable?.add(repository.loadCashIn(requestBuilder)
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
-                if (it.value != null) {
-                    it.value?.let { cashIn ->
+                if (it.response != null) {
+                    it.response?.let { cashIn ->
                         Log.e("DEBUG", "CashIn :: ${cashIn.toString()}")
                         isCashOutSuccess.value = true
                     }

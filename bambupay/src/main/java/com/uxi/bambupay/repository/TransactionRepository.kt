@@ -25,7 +25,7 @@ class TransactionRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun loadTransactionsMore(transactionId: Long): Flowable<GenericApiResponse<Transactions>> {
+    fun loadTransactionsMore(transactionId: String): Flowable<GenericApiResponse<Transactions>> {
         return webService.historyMore(transactionId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -63,8 +63,12 @@ class TransactionRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun loadTransaction(transactionId: Long) : Transaction? {
+    fun loadTransaction(transactionId: String) : Transaction? {
         return transactionDao.getTransaction(transactionId)
+    }
+
+    fun loadRecentTransaction(transactionId: String) : RecentTransaction? {
+        return transactionDao.getRecentTransaction(transactionId)
     }
 
     fun loadLastTransaction() : Transaction? {

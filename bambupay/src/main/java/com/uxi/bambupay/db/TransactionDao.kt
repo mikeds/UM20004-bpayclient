@@ -21,7 +21,7 @@ class TransactionDao(val realm: Realm) {
 
     fun query(): RealmResults<Transaction> {
         return realm.where(Transaction::class.java)
-            .sort("date", Sort.DESCENDING)
+            .sort("dateAdded", Sort.DESCENDING)
             .findAllAsync()
     }
 
@@ -33,7 +33,7 @@ class TransactionDao(val realm: Realm) {
 
     fun queryRecent(): RealmResults<RecentTransaction> {
         return realm.where(RecentTransaction::class.java)
-            .sort("date", Sort.DESCENDING)
+            .sort("dateAdded", Sort.DESCENDING)
             .findAllAsync()
     }
 
@@ -43,8 +43,14 @@ class TransactionDao(val realm: Realm) {
         }
     }
 
-    fun getTransaction(transactionId: Long) : Transaction? {
+    fun getTransaction(transactionId: String) : Transaction? {
         return realm.where(Transaction::class.java)
+            .equalTo("transactionId", transactionId)
+            .findFirst()
+    }
+
+    fun getRecentTransaction(transactionId: String) : RecentTransaction? {
+        return realm.where(RecentTransaction::class.java)
             .equalTo("transactionId", transactionId)
             .findFirst()
     }

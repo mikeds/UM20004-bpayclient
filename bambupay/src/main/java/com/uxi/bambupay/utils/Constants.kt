@@ -2,9 +2,10 @@ package com.uxi.bambupay.utils
 
 class Constants {
     companion object {
-        const val SEND_MONEY = "transfer"
-        const val CASH_IN = "cash_in"
+        const val SEND_MONEY = "Transfer"
+        const val CASH_IN = "Cash-in (OTC)"
         const val CASH_OUT = "cash_out"
+        const val SCAN_PAY_QR = "ScanPayQR"
 
         const val PENDING = "pending"
         const val APPROVED = "approved"

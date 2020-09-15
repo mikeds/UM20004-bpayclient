@@ -1,7 +1,6 @@
 package com.uxi.bambupay.viewmodel
 
 import android.util.Log
-import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.repository.LoginRepository
@@ -31,7 +30,7 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
         disposable?.add(repository.loadToken()
             .subscribe({
                 it.let { token ->
-                    // Log.e("DEBUG", "accessToken:: ${token.accessToken}")
+                     Log.e("DEBUG", "accessToken:: ${token.accessToken}")
                     utils.saveTokenPack(token.accessToken, false)
 
                     if (isSuccessLoggedIn.value == false) {
@@ -59,8 +58,8 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
                 .doAfterTerminate { loading.value = false }
                 .subscribe({
 
-                    if (it.value != null) {
-                        it.value?.let { user ->
+                    if (it.response != null) {
+                        it.response?.let { user ->
                             repository.saveUser(user)
                             utils.saveLoggedIn(true)
                             utils.saveUserKeyPack(user.secretKey, user.secretCode)

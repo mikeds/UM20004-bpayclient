@@ -15,6 +15,7 @@ class MainViewModel @Inject
 constructor(private val repository: MainRepository, private val utils: Utils) : BaseViewModel() {
 
     val initials = MutableLiveData<String>()
+    val avatarUrl = MutableLiveData<String>()
     val fullName = MutableLiveData<String>()
     val mobileNumber = MutableLiveData<String>()
     val qrCode = MutableLiveData<String>()
@@ -23,11 +24,9 @@ constructor(private val repository: MainRepository, private val utils: Utils) : 
         val user = repository.loadCurrentUser()
         user?.let {
             initials.value = getNameInitial(it.firstName!!, it.lastName!!)
-
+            avatarUrl.value = it.avatarImageUrl
             fullName.value = buildName(it.firstName!!, it.lastName!!)
-
-            mobileNumber.value = "+${it.mobileCountryCode}${it.mobileNumber}"
-
+            mobileNumber.value = it.mobileNumber
             qrCode.value = it.qrCode
         }
     }

@@ -32,7 +32,7 @@ constructor(private val repository: VerifyRepository, private val utils: Utils) 
             .doAfterTerminate { loading.value = false }
             .subscribe({
 
-                if (it.value != null) {
+                if (it.response != null) {
 
                 } else {
                     if (it.error == true) {
@@ -76,7 +76,7 @@ constructor(private val repository: VerifyRepository, private val utils: Utils) 
             .doAfterTerminate { loading.value = false }
             .subscribe({
 
-                if (it.value != null) {
+                if (it.response != null) {
 
                 } else {
                     if (it.error == true) {

@@ -1,6 +1,5 @@
 package com.uxi.bambupay.api
 
-import android.util.Log
 import com.uxi.bambupay.BuildConfig
 import com.uxi.bambupay.utils.Utils
 import okhttp3.Credentials
@@ -23,10 +22,8 @@ class AuthenticationInterceptor
         val original = chain.request()
         val builder: Request.Builder
 
-        if (BuildConfig.DEBUG) {
-            Timber.tag("DEBUG").e("TOKEN:: ${utils?.token}")
-            Log.e("DEBUG", "USER TOKEN:: ${utils?.userToken}")
-        }
+        Timber.tag("DEBUG").e("TOKEN:: ${utils?.token}")
+        Timber.tag("DEBUG").e("USER TOKEN:: ${utils?.userToken}")
 
         var token = ""
         utils?.let {
@@ -41,7 +38,8 @@ class AuthenticationInterceptor
                 }
             } else {
                 token = if (it.userToken.isNullOrBlank() && it.isUserTokenExpired) {
-                    val userAuth = Credentials.basic(it.userSecretKey, it.userSecretCode)
+                    val userAuth = Credentials.basic(it.userSecretCode!!, it.userSecretKey!!)
+                    Timber.tag("DEBUG").e("userAuth:: $userAuth")
                     "".plus(userAuth)
                 } else {
                     "Bearer ${it.userToken}"
@@ -50,7 +48,7 @@ class AuthenticationInterceptor
         }
 
         if (BuildConfig.DEBUG) {
-            Log.e("Authentication", "Bearer Token:: $token")
+            Timber.tag("Authentication").e("Bearer Token:: $token")
         }
 
         builder = original.newBuilder()
@@ -62,8 +60,10 @@ class AuthenticationInterceptor
     }
 
     private fun getBasicAuth() : String {
-        val username = "ecf3662266040ba80bfa49d925f74999e56d7f80f0b3b14e430a5d526c591dcf"
-        val password = "9326fdf58cfe187a90ba4a1c7bcabbbdb72afb1ad0495472a1befa6c4a0c61f9"
+//        val username = "ecf3662266040ba80bfa49d925f74999e56d7f80f0b3b14e430a5d526c591dcf"
+//        val password = "9326fdf58cfe187a90ba4a1c7bcabbbdb72afb1ad0495472a1befa6c4a0c61f9"
+        val username = "dc18e7f96c1704c90a2e58a528cd944e06b26ccf237aa12aba335b62e11a9b20"
+        val password = "0246d7444d1407e9ad2ea42f7b4aa4bf2d1ead63131cb4c0c72badfa218f2a6e"
         return Credentials.basic(username, password)
     }
 

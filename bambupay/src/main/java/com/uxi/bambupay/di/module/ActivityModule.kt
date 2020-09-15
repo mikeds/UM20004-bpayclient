@@ -31,7 +31,7 @@ abstract class ActivityModule {
     internal abstract fun contributeForgotPasswordActivity(): ForgotPasswordActivity
 
     @ContributesAndroidInjector()
-    internal abstract fun contributeTransactActivity(): TransactActivity
+    internal abstract fun contributeTransactActivity(): SendMoneyActivity
 
     @ContributesAndroidInjector()
     internal abstract fun contributeTransactionDetailsActivity(): TransactionDetailsActivity

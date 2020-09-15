@@ -2,7 +2,6 @@ package com.uxi.bambupay.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.api.RequestRegister
 import com.uxi.bambupay.repository.RegisterRepository
 import com.uxi.bambupay.utils.Constants.Companion.PASSWORD_MIN_LENGTH
@@ -124,7 +123,7 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
             .doAfterTerminate { loading.value = false }
             .subscribe({
 
-                if (it.value != null) {
+                if (it.response != null) {
 
                 } else {
                     if (it.error == true) {

@@ -11,16 +11,47 @@ import io.realm.annotations.PrimaryKey
  */
 open class Transactions : RealmObject() {
 
-    @SerializedName("last_transaction_id")
-    var lastTransactionId: Long? = null
+    @PrimaryKey
+    @SerializedName("last_id")
+    var lastId: String? = null
 
-    var history: RealmList<Transaction>? = null
+    var data: RealmList<Transaction>? = null
 
 }
 
 open class Transaction : RealmObject() {
 
+    @PrimaryKey
+    var id: String? = null
+
     @SerializedName("transaction_id")
+    var transactionId: String? = null
+
+    @SerializedName("sender_ref_id")
+    var senderRefId: String? = null
+
+    @SerializedName("transaction_type")
+    var transactionType: String? = null
+
+    @SerializedName("transaction_code")
+    var transactionCode: String? = null
+
+    @SerializedName("transaction_requested_by")
+    var transactionRequestedBy: String? = null
+
+    @SerializedName("old_balance")
+    var oldBalance: String? = null
+
+    @SerializedName("debit_credit_amount")
+    var debitCreditAmount: String? = null
+
+    @SerializedName("new_balance")
+    var newBalance: String? = null
+
+    @SerializedName("date_added")
+    var dateAdded: String? = null
+
+    /*@SerializedName("transaction_id")
     @PrimaryKey
     var transactionId: Long? = null
 
@@ -39,6 +70,6 @@ open class Transaction : RealmObject() {
     var date: String? = null
 
     @SerializedName("date_expiration")
-    var dateExpiration: String? = null
+    var dateExpiration: String? = null*/
 
 }

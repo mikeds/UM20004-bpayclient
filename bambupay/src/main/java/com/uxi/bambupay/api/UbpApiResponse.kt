@@ -9,7 +9,7 @@ import com.google.gson.reflect.TypeToken
  * Created by Eraño Payawal on 6/28/20.
  * hunterxer31@gmail.com
  */
-open class GenericApiResponse<T> {
+open class UbpApiResponse<T> {
 
     var error: Boolean? = null
 
@@ -19,11 +19,11 @@ open class GenericApiResponse<T> {
     @SerializedName("message")
     var successMessage: String? = null
 
-    var response: T? = null
+    var value: T? = null
 
     companion object {
-        fun <T> create(body: String): GenericApiResponse<T> {
-            val collectionType = object : TypeToken<GenericApiResponse<T>>() {}.type
+        fun <T> create(body: String): UbpApiResponse<T> {
+            val collectionType = object : TypeToken<UbpApiResponse<T>>() {}.type
             return Gson().fromJson(body, collectionType)
         }
     }
