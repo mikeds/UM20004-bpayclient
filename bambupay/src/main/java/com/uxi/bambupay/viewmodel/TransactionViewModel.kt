@@ -67,7 +67,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
         val lastTransactionId = utils.userLastTransactionId
 
         if (transaction != null) {
-            val transactionId = transaction.transactionId
+            val transactionId = transaction.id
 
             if (lastTransactionId == transactionId) {
                 loading.value = false

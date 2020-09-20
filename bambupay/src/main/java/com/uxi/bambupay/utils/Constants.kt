@@ -12,5 +12,8 @@ class Constants {
         const val CANCELLED = "cancelled"
 
         const val PASSWORD_MIN_LENGTH = 8
+
+        const val DEBIT = "debit"
+        const val CREDIT = "credit"
     }
 }

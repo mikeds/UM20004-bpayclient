@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.Transaction
 import com.uxi.bambupay.utils.Constants
@@ -74,28 +76,42 @@ class TransactionDetailsActivity : BaseActivity() {
 
         transactionViewModel.transactionData.observe(this, Observer { transactionData ->
             transactionData?.let {
-                setTransactionType(it.transactionType)
-                setTransactionAmount(it.debitCreditAmount)
-                setDate(it.dateAdded)
+                setTransactionType(it.transactionType, it.balanceType)
+                setTransactionAmount(it.amount)
+                setDate(it.dateCreated)
                 setReferenceNumber(it.senderRefId)
+                setQrCode(it.qrCode)
+                setStatus(it.status)
+                setFee(it.fee)
+                setSender(it.sender)
+                setRecipient(it.recipient)
             }
         })
 
         transactionViewModel.transactionRecentData.observe(this, Observer { transactionData ->
             transactionData?.let {
-                setTransactionType(it.transactionType)
-                setTransactionAmount(it.debitCreditAmount)
-                setDate(it.dateAdded)
+                setTransactionType(it.transactionType, it.balanceType)
+                setTransactionAmount(it.amount)
+                setDate(it.dateCreated)
                 setReferenceNumber(it.senderRefId)
+                setQrCode(it.qrCode)
+                setStatus(it.status)
+                setFee(it.fee)
+                setSender(it.sender)
+                setRecipient(it.recipient)
             }
         })
     }
 
-    private fun setTransactionType(transactionType: String?) {
+    private fun setTransactionType(transactionType: String?, balanceType: String?) {
         when (transactionType) {
             Constants.SEND_MONEY -> {
                 txt_transaction_type.text = getString(R.string.send_money)
-                txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.red))
+                if (balanceType == Constants.DEBIT) {
+                    txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.red))
+                } else {
+                    txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.black))
+                }
             }
             Constants.CASH_IN -> {
                 txt_transaction_type.text = getString(R.string.cash_in)
@@ -114,8 +130,14 @@ class TransactionDetailsActivity : BaseActivity() {
 
     private fun setTransactionAmount(amount: String?) {
         amount?.let {
-            val transactionAmount = "PHP ${transactionViewModel.formatAmount(it)}"
-            txt_amount?.text = transactionAmount
+            val transactionAmount = transactionViewModel.formatAmount(it)
+            txt_amount?.text = getString(R.string.ph_currency, transactionAmount)
+        }
+    }
+
+    private fun setFee(fee: String?) {
+        fee?.let {
+            txt_fee.text = getString(R.string.ph_currency, fee)
         }
     }
 
@@ -129,6 +151,43 @@ class TransactionDetailsActivity : BaseActivity() {
     private fun setReferenceNumber(refNo: String?) {
         refNo?.let {
             txt_reference_id?.text = it
+        }
+    }
+
+    private fun setQrCode(imageUrl: String?) {
+        imageUrl?.let {
+            Glide.with(this).load(it)
+                .thumbnail(1f)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(image_qr)
+        }
+    }
+
+    private fun setStatus(status: String?) {
+        when (status) {
+            Constants.PENDING -> {
+                txt_status?.text = getString(R.string.pending)
+            }
+            Constants.APPROVED -> {
+                txt_status?.text = getString(R.string.approved)
+                txt_status?.setTextColor(ContextCompat.getColor(this, R.color.light_green))
+            }
+            Constants.CANCELLED -> {
+                txt_status?.text = getString(R.string.cancelled)
+                txt_status?.setTextColor(ContextCompat.getColor(this, R.color.red))
+            }
+        }
+    }
+
+    private fun setSender(sender: String?) {
+        sender?.let {
+            txt_sender.text = it
+        }
+    }
+
+    private fun setRecipient(recipient: String?) {
+        recipient?.let {
+            txt_recipient.text = it
         }
     }
 

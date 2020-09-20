@@ -22,54 +22,38 @@ open class Transactions : RealmObject() {
 open class Transaction : RealmObject() {
 
     @PrimaryKey
+    @SerializedName("tx_id")
     var id: String? = null
-
-    @SerializedName("transaction_id")
-    var transactionId: String? = null
 
     @SerializedName("sender_ref_id")
     var senderRefId: String? = null
 
-    @SerializedName("transaction_type")
-    var transactionType: String? = null
+    @SerializedName("tx_created_by")
+    var createdBy: String? = null
 
-    @SerializedName("transaction_code")
-    var transactionCode: String? = null
+    @SerializedName("tx_from")
+    var sender: String? = null
 
-    @SerializedName("transaction_requested_by")
-    var transactionRequestedBy: String? = null
-
-    @SerializedName("old_balance")
-    var oldBalance: String? = null
-
-    @SerializedName("debit_credit_amount")
-    var debitCreditAmount: String? = null
-
-    @SerializedName("new_balance")
-    var newBalance: String? = null
-
-    @SerializedName("date_added")
-    var dateAdded: String? = null
-
-    /*@SerializedName("transaction_id")
-    @PrimaryKey
-    var transactionId: Long? = null
-
-    @SerializedName("transaction_number")
-    var transactionNumber: String? = null
-
-    @SerializedName("transactionn_qr_code")
-    var transactionQrCode: String? = null
-
-    var status: String? = null
-
-    var type: String? = null
+    @SerializedName("tx_to")
+    var recipient: String? = null
 
     var amount: String? = null
 
-    var date: String? = null
+    var fee: String? = null
 
-    @SerializedName("date_expiration")
-    var dateExpiration: String? = null*/
+    @SerializedName("tx_type")
+    var transactionType: String? = null
+
+    @SerializedName("date_created")
+    var dateCreated: String? = null
+
+    @SerializedName("tx_status")
+    var status: String? = null
+
+    @SerializedName("balance_type")
+    var balanceType: String? = null
+
+    @SerializedName("qr_code")
+    var qrCode: String? = null
 
 }

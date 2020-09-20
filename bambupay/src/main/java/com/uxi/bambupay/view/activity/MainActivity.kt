@@ -159,6 +159,7 @@ class MainActivity : BaseActivity() {
             .thumbnail(1.0f)
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(initialDrawable)
             .into(imageView)
     }
 

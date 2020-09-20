@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.Transaction
@@ -42,14 +43,26 @@ class TransactionsHistoryAdapter(
         fun bind(item: Transaction?) {
             item?.let {
                 when (it.transactionType) {
-                    SEND_MONEY -> txtTransactionType.text = context?.getString(R.string.send_money)
-                    CASH_IN -> txtTransactionType.text = context?.getString(R.string.cash_in)
+                    SEND_MONEY -> {
+                        txtTransactionType.text = context?.getString(R.string.send_money)
+                        if (it.balanceType == Constants.DEBIT) {
+                            context?.let {
+                                txtAmount.setTextColor((ContextCompat.getColor(context, R.color.red)))
+                            }
+                        }
+                    }
+                    CASH_IN -> {
+                        txtTransactionType.text = context?.getString(R.string.cash_in)
+                        context?.let {
+                            txtAmount.setTextColor((ContextCompat.getColor(context, R.color.light_green)))
+                        }
+                    }
                     CASH_OUT -> txtTransactionType.text = context?.getString(R.string.cash_out)
                     SCAN_PAY_QR -> txtTransactionType.text = context?.getString(R.string.scan_pay)
                 }
-                val transactionAmount = it.debitCreditAmount?.let { it1 -> utils?.currencyFormat(it1) }
-                txtAmount.text = "PHP $transactionAmount"
-                val dateTime = convertTimeToDate(it.dateAdded)
+                val transactionAmount = it.amount?.let { it1 -> utils?.currencyFormat(it1) }
+                txtAmount.text = context?.getString(R.string.ph_currency, transactionAmount)
+                val dateTime = convertTimeToDate(it.dateCreated)
                 txtDate.text = dateTime
             }
         }

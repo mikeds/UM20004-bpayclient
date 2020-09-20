@@ -86,7 +86,7 @@ class TransactionHistoryActivity : BaseActivity() {
                 override fun onItemClick(view: View?, position: Int) {
                     val item = adapter.getItem(position)
                     if (item != null) {
-                        val transactionId = item.transactionId
+                        val transactionId = item.id
                         val intent = Intent(this@TransactionHistoryActivity, TransactionDetailsActivity::class.java)
                         intent.putExtra("transactionId", transactionId)
                         startActivity(intent)

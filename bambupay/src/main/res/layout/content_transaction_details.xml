@@ -78,6 +78,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:text="@string/fee" />
+
+                    <TextView
+                        android:id="@+id/txt_fee"
+                        style="@style/TextViewSmall.Regular2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Testing"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        style="@style/TextViewSmall.SemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
                         android:text="@string/date" />
 
                     <TextView
@@ -110,10 +126,26 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/activity_horizontal_margin"
-                        android:text="@string/mobile_number" />
+                        android:text="@string/sender" />
 
                     <TextView
-                        android:id="@+id/txt_mobile_number"
+                        android:id="@+id/txt_sender"
+                        style="@style/TextViewSmall.Regular2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Testing"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        style="@style/TextViewSmall.SemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:text="@string/recipient" />
+
+                    <TextView
+                        android:id="@+id/txt_recipient"
                         style="@style/TextViewSmall.Regular2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -81,7 +81,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                     override fun onItemClick(view: View?, position: Int) {
                         val item = adapter?.getItem(position)
                         val intent = Intent(context, TransactionDetailsActivity::class.java)
-                        val transactionId = item?.transactionId
+                        val transactionId = item?.id
                         intent.putExtra("transactionId", transactionId)
                         intent.putExtra("history_type", "RECENT")
                         startActivity(intent)

@@ -26,13 +26,13 @@ interface WebService {
     @POST("client/cash-out")
     fun cashOut(@Body params: Request): Flowable<GenericApiResponse<CashOut>>
 
-    @GET("clients/ledger")
+    @GET("clients/transactions")
     fun history(): Flowable<GenericApiResponse<Transactions>>
 
-    @GET("clients/ledger/{transactionId}")
+    @GET("clients/transactions/{transactionId}")
     fun historyMore(@Path("transactionId") transactionId: String): Flowable<GenericApiResponse<Transactions>>
 
-    @GET("clients/ledger")
+    @GET("clients/transactions")
     fun recentTransactions(): Flowable<GenericApiResponse<RecentTransactions>>
 
     @POST("clients/registration")
