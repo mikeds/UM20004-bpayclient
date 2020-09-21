@@ -42,6 +42,7 @@
     <string name="disclaimer">Disclaimer</string>
     <string name="register_details">Please fill up this form to create an account.</string>
     <string name="capture_id">Capture ID card</string>
+    <string name="capture_photo">Upload Profile Picture</string>
     <string name="account_details">Account Details</string>
     <string name="fname">First Name</string>
     <string name="lname">Last Name</string>
@@ -60,12 +61,15 @@
     <string name="house_no">House No. / Unit No. / Building</string>
     <string name="street">Street</string>
     <string name="barangay">Barangay</string>
+    <string name="state">State / Province / Region</string>
+    <string name="others">Others</string>
 
     <string name="send_money">Send Money</string>
     <string name="transact">Transaction</string>
     <string name="amount">Amount</string>
     <string name="send_mobile">Send to Mobile Number</string>
     <string name="optional_msg">Optional Message</string>
+    <string name="optional">(Optional)</string>
     <string name="cancel">Cancel</string>
 
     <string name="cash_out_details">Cash Out Details</string>
@@ -131,6 +135,16 @@
     <string name="fee">Fee</string>
     <string name="sender">Sender</string>
     <string name="recipient">Recipient</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_image">Choose from library</string>
+
+    <string name="me_permission_gallery_title">Gallery unavailable</string>
+    <string name="me_permission_gallery_msg">You can grant access to the photos from within the Android Settings screen</string>
+    <string name="me_permission_camera_title">Camera unavailable</string>
+    <string name="me_permission_camera_msg">You can grant access to the camera from within the Android Settings screen</string>
+    <string name="me_permission_document_title">Document picker unavailable</string>
+    <string name="me_permission_document_msg">You can grant access to the documents from within the Android Settings screen</string>
+    <string name="me_permission_btn">Got it</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

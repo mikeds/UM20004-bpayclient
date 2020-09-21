@@ -3,6 +3,7 @@ package com.uxi.bambupay.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.uxi.bambupay.api.RequestRegister
+import com.uxi.bambupay.model.Province
 import com.uxi.bambupay.repository.RegisterRepository
 import com.uxi.bambupay.utils.Constants.Companion.PASSWORD_MIN_LENGTH
 import com.uxi.bambupay.utils.Utils
@@ -14,12 +15,14 @@ import javax.inject.Inject
  * hunterxer31@gmail.com
  */
 class RegisterViewModel @Inject
-constructor(private val repository: RegisterRepository, private val utils: Utils) : BaseViewModel() {
+constructor(private val repository: RegisterRepository, private val utils: Utils) :
+    BaseViewModel() {
 
     val isFirstNameEmpty = MutableLiveData<Boolean>()
     val isLastNameEmpty = MutableLiveData<Boolean>()
-    val isGenderEmpty = MutableLiveData<Boolean>()
-    val isDobEmpty = MutableLiveData<Boolean>()
+
+    //    val isGenderEmpty = MutableLiveData<Boolean>()
+//    val isDobEmpty = MutableLiveData<Boolean>()
     val isIdNumberEmpty = MutableLiveData<Boolean>()
     val isMobileNumberEmpty = MutableLiveData<Boolean>()
     val isEmailEmpty = MutableLiveData<Boolean>()
@@ -27,18 +30,20 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
     val isConfirmPasswordEmpty = MutableLiveData<Boolean>()
     val isPasswordMismatch = MutableLiveData<Boolean>()
     val isPolicyCheck = MutableLiveData<Boolean>()
+    val provinces = MutableLiveData<MutableList<Province>>()
 
-
-    fun subscribeRegister(firstName: String?,
-                          lastName: String?,
-                          gender: String?,
-                          dateOfBirth: String?,
-                          idNumber: String?,
-                          mobileNumber: String?,
-                          email: String?,
-                          password: String?,
-                          confirmPassword: String?,
-                          isAccepted: Boolean) {
+    fun subscribeRegister(
+        firstName: String?,
+        lastName: String?,
+        gender: String?,
+        dateOfBirth: String?,
+        idNumber: String?,
+        mobileNumber: String?,
+        email: String?,
+        password: String?,
+        confirmPassword: String?,
+        isAccepted: Boolean
+    ) {
 
         if (firstName.isNullOrEmpty()) {
             isFirstNameEmpty.value = true
@@ -51,12 +56,12 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
         }
 
         if (gender.isNullOrEmpty()) {
-            isGenderEmpty.value = true
+//            isGenderEmpty.value = true
             return
         }
 
         if (dateOfBirth.isNullOrEmpty()) {
-            isDobEmpty.value = true
+//            isDobEmpty.value = true
             return
         }
 
@@ -149,6 +154,23 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
             })
         )
 
+    }
+
+    fun subscribeProvince() {
+        disposable?.add(
+            repository.loadProvinces()
+                .subscribe({
+                    it.response?.let { it1 ->
+                        provinces.value = it1.toMutableList()
+                    }
+                }, {
+                    Timber.e(it)
+                    if (refreshToken(it)) {
+                        isSuccess.value = false
+                    }
+                })
+
+        )
     }
 
 }

@@ -4,6 +4,7 @@ import com.uxi.bambupay.api.GenericApiResponse
 import com.uxi.bambupay.api.RequestRegister
 import com.uxi.bambupay.api.WebService
 import com.uxi.bambupay.db.UserDao
+import com.uxi.bambupay.model.Province
 import com.uxi.bambupay.model.User
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,6 +23,12 @@ constructor(
 
     fun loadRegister(request: RequestRegister) : Flowable<GenericApiResponse<User>> {
         return webService.register(request)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun loadProvinces() : Flowable<GenericApiResponse<List<Province>>> {
+        return webService.getProvinces()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

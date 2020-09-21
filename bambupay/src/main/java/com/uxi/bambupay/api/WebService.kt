@@ -44,4 +44,7 @@ interface WebService {
     @POST("client/resend-code-confirmation")
     fun resendVerificationCode(@Body params: Request): Flowable<GenericApiResponse<User>>
 
+    @GET("tools/provinces/169")
+    fun getProvinces(): Flowable<GenericApiResponse<List<Province>>>
+
 }

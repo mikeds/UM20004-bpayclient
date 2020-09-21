@@ -154,6 +154,8 @@ dependencies {
 
     // DP to all density
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    // Camera/Gallery/Documents Permission
+    implementation 'com.github.miguelbcr:RxPaparazzo:0.6.1-2.x'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

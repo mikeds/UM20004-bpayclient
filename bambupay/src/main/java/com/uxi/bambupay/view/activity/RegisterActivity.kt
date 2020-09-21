@@ -8,19 +8,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.microblink.entities.recognizers.RecognizerBundle
 import com.microblink.entities.recognizers.blinkid.generic.BlinkIdCombinedRecognizer
 import com.microblink.entities.recognizers.blinkid.imageoptions.FullDocumentImageOptions
-import com.microblink.uisettings.ActivityRunner
-import com.microblink.uisettings.BlinkIdUISettings
 import com.uxi.bambupay.R
+import com.uxi.bambupay.model.Province
+import com.uxi.bambupay.view.adapter.ProvinceAdapter
 import com.uxi.bambupay.viewmodel.LoginViewModel
 import com.uxi.bambupay.viewmodel.RegisterViewModel
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.content_register.*
+import timber.log.Timber
 import java.text.DateFormat
 import java.util.*
 
@@ -40,6 +45,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
+        iniSpinner()
         observeViewModel()
         events()
         setupMicroBlink()
@@ -98,9 +104,18 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_register -> {
-                registerViewModel.subscribeRegister(input_fname.text.toString(), input_lname.text.toString(), input_gender.text.toString(),
-                    input_date_of_birth.text.toString(), input_id_number.text.toString(), input_mobile_number.text.toString(),
-                    input_email.text.toString(), input_password.text.toString(), input_confirm_password.text.toString(), input_policy.isChecked)
+                registerViewModel.subscribeRegister(
+                    input_fname.text.toString(),
+                    input_lname.text.toString(),
+                    input_gender.text.toString(),
+                    input_date_of_birth.text.toString(),
+                    input_id_number.text.toString(),
+                    input_mobile_number.text.toString(),
+                    input_email.text.toString(),
+                    input_password.text.toString(),
+                    input_confirm_password.text.toString(),
+                    input_policy.isChecked
+                )
             }
             R.id.input_gender -> {
                 showGenderDialog()
@@ -114,10 +129,25 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     private fun events() {
         //input_card_expiry.addTextChangedListener(CreditCardExpiryTextWatcher(input_card_expiry))
         btn_image_document.setOnClickListener {
-            // use default UI for scanning documents
-            val uiSettings = BlinkIdUISettings(recognizerBundle)
-            // start scan activity based on UI settings
-            ActivityRunner.startActivityForResult(this, MY_BLINKID_REQUEST_CODE, uiSettings)
+//            // use default UI for scanning documents
+//            val uiSettings = BlinkIdUISettings(recognizerBundle)
+//            // start scan activity based on UI settings
+//            ActivityRunner.startActivityForResult(this, MY_BLINKID_REQUEST_CODE, uiSettings)
+
+            // using BottomSheetDialog
+            val dialogView: View = layoutInflater.inflate(R.layout.bottom_sheet, null)
+            val dialog = BottomSheetDialog(this)
+            dialog.setContentView(dialogView)
+            val btnTakePhoto = dialogView.findViewById<TextView>(R.id.btn_take_photo)
+            val btnChooseGallery = dialogView.findViewById<TextView>(R.id.btn_choose_gallery)
+            btnTakePhoto?.setOnClickListener {
+                dialog.dismiss()
+            }
+            btnChooseGallery?.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
+
         }
 
         btn_register.setOnClickListener(this)
@@ -226,7 +256,8 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                 mCalendar.set(Calendar.YEAR, year)
                 mCalendar.set(Calendar.MONTH, monthOfYear)
                 mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                val date: String = DateFormat.getDateInstance(DateFormat.MEDIUM).format(mCalendar.time)
+                val date: String =
+                    DateFormat.getDateInstance(DateFormat.MEDIUM).format(mCalendar.time)
                 input_date_of_birth.setText(date)
                 input_date_of_birth.error = null
             },
@@ -241,6 +272,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
     private fun observeViewModel() {
         viewModelLogin.subscribeToken()
+        registerViewModel.subscribeProvince()
 
         registerViewModel.loading.observe(this, Observer { isLoading ->
             if (isLoading) {
@@ -260,7 +292,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             nested_scroll_view.requestChildFocus(input_lname, input_lname)
         })
 
-        registerViewModel.isGenderEmpty.observe(this, Observer { isGenderEmpty ->
+        /*registerViewModel.isGenderEmpty.observe(this, Observer { isGenderEmpty ->
             if (isGenderEmpty) input_gender.error = getString(R.string.signup_no_gender)
             nested_scroll_view.requestChildFocus(input_gender, input_gender)
         })
@@ -268,14 +300,15 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         registerViewModel.isDobEmpty.observe(this, Observer { isDobEmpty ->
             if (isDobEmpty) input_date_of_birth.error = getString(R.string.signup_no_dob)
             nested_scroll_view.requestChildFocus(input_date_of_birth, input_date_of_birth)
-        })
+        })*/
 
         registerViewModel.isIdNumberEmpty.observe(this, Observer { isIdNumberEmpty ->
             if (isIdNumberEmpty) input_id_number.error = getString(R.string.signup_no_id)
         })
 
         registerViewModel.isMobileNumberEmpty.observe(this, Observer { isMobileNumberEmpty ->
-            if (isMobileNumberEmpty) input_mobile_number.error = getString(R.string.signup_no_mobile)
+            if (isMobileNumberEmpty) input_mobile_number.error =
+                getString(R.string.signup_no_mobile)
             nested_scroll_view.requestChildFocus(input_mobile_number, input_mobile_number)
         })
 
@@ -288,18 +321,24 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         })
 
         registerViewModel.isConfirmPasswordEmpty.observe(this, Observer { isConfirmPasswordEmpty ->
-            if (isConfirmPasswordEmpty) input_confirm_password.error = getString(R.string.signup_no_password)
+            if (isConfirmPasswordEmpty) input_confirm_password.error =
+                getString(R.string.signup_no_password)
         })
 
         registerViewModel.isPasswordMismatch.observe(this, Observer { isPasswordMismatch ->
             if (isPasswordMismatch) {
-                Toast.makeText(this, getString(R.string.signup_password_mismatch), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.signup_password_mismatch),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
         registerViewModel.isPolicyCheck.observe(this, Observer { isPolicyCheck ->
             if (!isPolicyCheck) {
-                Toast.makeText(this, getString(R.string.signup_no_consent), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.signup_no_consent), Toast.LENGTH_SHORT)
+                    .show()
             }
         })
 
@@ -320,11 +359,45 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         viewModelLogin.refreshLogin.observe(this, Observer { isRefreshLogin ->
             if (isRefreshLogin) {
                 Log.e("DEBUG", "isRefreshLogin")
-                registerViewModel.subscribeRegister(input_fname.text.toString(), input_lname.text.toString(), input_gender.text.toString(),
-                    input_date_of_birth.text.toString(), input_id_number.text.toString(), input_mobile_number.text.toString(),
-                    input_email.text.toString(), input_password.text.toString(), input_confirm_password.text.toString(), input_policy.isChecked)
+                registerViewModel.subscribeRegister(
+                    input_fname.text.toString(),
+                    input_lname.text.toString(),
+                    input_gender.text.toString(),
+                    input_date_of_birth.text.toString(),
+                    input_id_number.text.toString(),
+                    input_mobile_number.text.toString(),
+                    input_email.text.toString(),
+                    input_password.text.toString(),
+                    input_confirm_password.text.toString(),
+                    input_policy.isChecked
+                )
             }
         })
+
+        val customDropDownAdapter = ProvinceAdapter(this@RegisterActivity, arrayListOf(Province("", "---------- Select ----------")))
+        spinner.apply {
+            spinner.adapter = customDropDownAdapter
+            spinner.onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+                    val item = customDropDownAdapter.getItem(position) as Province
+                    Timber.tag("DEBUG").e("item ${item.provinceName}")
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                }
+            }
+        }
+
+        registerViewModel.provinces.observe(this, {
+            if (it.isNotEmpty()) {
+                customDropDownAdapter.updateAdapter(it)
+            }
+        })
+
+    }
+
+    private fun iniSpinner() {
 
     }
 
