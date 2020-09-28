@@ -215,7 +215,6 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="false"
-                    android:hint="@string/optional"
                     android:inputType="textCapWords" />
 
                 <ImageView
@@ -260,6 +259,7 @@
                 android:text="@string/house_no" />
 
             <EditText
+                android:id="@+id/input_text_house_no"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -277,6 +277,7 @@
                 android:text="@string/street" />
 
             <EditText
+                android:id="@+id/input_text_street"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -294,6 +295,7 @@
                 android:text="@string/barangay" />
 
             <EditText
+                android:id="@+id/input_text_brgy"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -311,6 +313,7 @@
                 android:text="@string/city" />
 
             <EditText
+                android:id="@+id/input_text_city"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -351,6 +354,7 @@
                 android:text="@string/others" />
 
             <EditText
+                android:id="@+id/input_text_others"
                 style="@style/EditTextViewSmall.Regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

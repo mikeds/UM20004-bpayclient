@@ -23,3 +23,16 @@ fun convertTimeToDate(isoTime: String?): String? {
     }
     return formattedDate
 }
+
+fun convertDoB(date: String): String? {
+    val sdfOrigin = SimpleDateFormat("MMM dd, yyyy")
+    val sdfOutput = SimpleDateFormat("yyyy-MM-dd")
+    var outputDate: String? = null
+    try {
+        val dateSource = sdfOrigin.parse(date)
+        outputDate = sdfOutput.format(dateSource)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+    return outputDate
+}

@@ -33,7 +33,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://maven.microblink.com' }
+//        maven { url 'https://maven.microblink.com' }
         maven { url 'https://github.com/WickeDev/stetho-realm/raw/master/maven-repo' }
         maven { url "https://jitpack.io" }
     }

@@ -34,6 +34,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555366316576:android:63b8dd3c3cf74862ee1a45",
+        "android_client_info": {
+          "package_name": "com.uxi.bambupay.surgemobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555366316576-cvimmbmregoian7mf279d5uko0g0lnbb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp-6AgedfcGKy7MaPzjoDWBQm5-mG0VBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555366316576-cvimmbmregoian7mf279d5uko0g0lnbb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

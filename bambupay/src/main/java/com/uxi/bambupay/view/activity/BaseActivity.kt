@@ -14,6 +14,7 @@ import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -23,6 +24,8 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
     protected var progressDialog: ProgressDialog? = null
+
+    protected val disposeBag: CompositeDisposable by lazy { CompositeDisposable() }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> {
         return fragmentInjector
@@ -38,6 +41,11 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
         setContentView(getLayoutId())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposeBag.dispose()
     }
 
     abstract fun getLayoutId(): Int

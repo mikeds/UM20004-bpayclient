@@ -1,0 +1,18 @@
+<network-security-config>
+    <!--<debug-overrides>-->
+        <!-- Allow http connection in debug mode -->
+        <!--<base-config cleartextTrafficPermitted="true">-->
+            <!--<trust-anchors>-->
+                <!--&lt;!&ndash; Trust user added CAs while debuggable only &ndash;&gt;-->
+                <!--<certificates src="user" />-->
+                <!--<certificates src="system" />-->
+            <!--</trust-anchors>-->
+        <!--</base-config>-->
+    <!--</debug-overrides>-->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="user" />
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

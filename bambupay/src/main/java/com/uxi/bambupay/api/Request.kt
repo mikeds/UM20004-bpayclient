@@ -8,23 +8,37 @@ import com.google.gson.annotations.SerializedName
  */
 open class Request private constructor(
     private val merchant: String?,
+
     private val amount: String?,
+
     @SerializedName("send_to")
     private val sentTo: String?,
+
     private val username: String?,
+
     private val password: String?,
+
+    @SerializedName("pin")
     private val code: String?,
+
     @SerializedName("email_address")
     private val email: String?) {
 
     data class Builder(
         private var merchant: String? = null,
+
         private var amount: String? = null,
+
         @SerializedName("send_to")
         private var sentTo: String? = null,
+
         private var username: String? = null,
+
         private var password: String? = null,
+
+        @SerializedName("pin")
         private var code: String? = null,
+
         @SerializedName("email_address")
         private var email: String? = null) {
 

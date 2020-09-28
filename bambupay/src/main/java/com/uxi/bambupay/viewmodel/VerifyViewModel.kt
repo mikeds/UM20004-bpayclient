@@ -25,7 +25,7 @@ constructor(private val repository: VerifyRepository, private val utils: Utils) 
         }
 
         val requestBody = Request.Builder()
-            .setUsername(email).build()
+            .setEmail(email).build()
 
         disposable?.add(repository.loadResendVerification(requestBody)
             .doOnSubscribe { loading.value = true }
@@ -69,7 +69,7 @@ constructor(private val repository: VerifyRepository, private val utils: Utils) 
 
         val requestBody = Request.Builder()
             .setCode(code)
-            .setUsername(email!!).build()
+            .setEmail(email!!).build()
 
         disposable?.add(repository.loadVerifyCode(requestBody)
             .doOnSubscribe { loading.value = true }

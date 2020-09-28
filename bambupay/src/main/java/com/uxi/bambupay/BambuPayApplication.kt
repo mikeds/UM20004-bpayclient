@@ -2,8 +2,9 @@ package com.uxi.bambupay
 
 import android.content.Context
 import com.facebook.stetho.Stetho
-import com.microblink.MicroblinkSDK
-import com.microblink.intent.IntentDataTransferMode
+import com.miguelbcr.ui.rx_paparazzo2.RxPaparazzo
+//import com.microblink.MicroblinkSDK
+//import com.microblink.intent.IntentDataTransferMode
 import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter
@@ -32,7 +33,7 @@ class BambuPayApplication : DaggerApplication() {
             Timber.plant(Timber.DebugTree())
         }
 
-        initMicroblink()
+//        initMicroblink()
         initRealm()
         initStetho()
 
@@ -43,6 +44,10 @@ class BambuPayApplication : DaggerApplication() {
         ClassicsFooter.REFRESH_FOOTER_FINISH = ""
         ClassicsFooter.REFRESH_FOOTER_FAILED = "Unable to load"//this.resources.getString(R.string.refresh_footer_failed)
         ClassicsFooter.REFRESH_FOOTER_ALLLOADED = ""
+
+        RxPaparazzo.register(this)
+            .withFileProviderAuthority(BuildConfig.APPLICATION_ID + ".provider")
+            .withFileProviderPath("BambuPay/")
     }
 
     override fun attachBaseContext(base: Context) {
@@ -54,13 +59,13 @@ class BambuPayApplication : DaggerApplication() {
         return appComponent
     }
 
-    private fun initMicroblink() {
+    /*private fun initMicroblink() {
         // Micro-Blink ID
         MicroblinkSDK.setLicenseKey(getString(R.string.demo_microblink_key), this)
         // use optimised way for transferring RecognizerBundle between activities, while ensuring
         // data does not get lost when Android restarts the scanning activity
         MicroblinkSDK.setIntentDataTransferMode(IntentDataTransferMode.PERSISTED_OPTIMISED)
-    }
+    }*/
 
     private fun initRealm() {
         Realm.init(this)

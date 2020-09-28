@@ -15,19 +15,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.microblink.entities.recognizers.RecognizerBundle
-import com.microblink.entities.recognizers.blinkid.generic.BlinkIdCombinedRecognizer
-import com.microblink.entities.recognizers.blinkid.imageoptions.FullDocumentImageOptions
+//import com.microblink.entities.recognizers.RecognizerBundle
+//import com.microblink.entities.recognizers.blinkid.generic.BlinkIdCombinedRecognizer
+//import com.microblink.entities.recognizers.blinkid.imageoptions.FullDocumentImageOptions
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.Province
+import com.uxi.bambupay.utils.BitmapUtils
+import com.uxi.bambupay.utils.FilePickerManager
 import com.uxi.bambupay.view.adapter.ProvinceAdapter
 import com.uxi.bambupay.viewmodel.LoginViewModel
 import com.uxi.bambupay.viewmodel.RegisterViewModel
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.content_register.*
 import timber.log.Timber
 import java.text.DateFormat
 import java.util.*
+import javax.inject.Inject
 
 
 class RegisterActivity : BaseActivity(), View.OnClickListener {
@@ -35,20 +39,22 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     private val registerViewModel by viewModel<RegisterViewModel>()
     private val viewModelLogin by viewModel<LoginViewModel>()
 
+    @Inject
+    lateinit var filePickerManager: FilePickerManager
+
     companion object {
         const val MY_BLINKID_REQUEST_CODE = 123
     }
 
-    private var recognizer: BlinkIdCombinedRecognizer? = null
-    private var recognizerBundle: RecognizerBundle? = null
+//    private var recognizer: BlinkIdCombinedRecognizer? = null
+//    private var recognizerBundle: RecognizerBundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
-        iniSpinner()
         observeViewModel()
         events()
-        setupMicroBlink()
+//        setupMicroBlink()
     }
 
     override fun getLayoutId() = R.layout.activity_register
@@ -86,7 +92,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         if (resultCode == Activity.RESULT_OK) {
             // OK result code means scan was successful
             if (data != null) {
-                onScanSuccess(data)
+//                onScanSuccess(data)
             }
         } else {
             // user probably pressed Back button and cancelled scanning
@@ -109,12 +115,17 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     input_lname.text.toString(),
                     input_gender.text.toString(),
                     input_date_of_birth.text.toString(),
-                    input_id_number.text.toString(),
                     input_mobile_number.text.toString(),
                     input_email.text.toString(),
                     input_password.text.toString(),
                     input_confirm_password.text.toString(),
-                    input_policy.isChecked
+                    input_policy.isChecked,
+                    input_text_house_no.text.toString(),
+                    input_text_street.text.toString(),
+                    input_text_brgy.text.toString(),
+                    input_text_city.text.toString(),
+                    provinceSelected?.provinceId,
+                    input_text_others.text.toString()
                 )
             }
             R.id.input_gender -> {
@@ -141,9 +152,11 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             val btnTakePhoto = dialogView.findViewById<TextView>(R.id.btn_take_photo)
             val btnChooseGallery = dialogView.findViewById<TextView>(R.id.btn_choose_gallery)
             btnTakePhoto?.setOnClickListener {
+                takeFile(FilePickerManager.Type.CAMERA)
                 dialog.dismiss()
             }
             btnChooseGallery?.setOnClickListener {
+                takeFile(FilePickerManager.Type.GALLERY)
                 dialog.dismiss()
             }
             dialog.show()
@@ -156,7 +169,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 //            showVerificationScreen()
     }
 
-    private fun setupMicroBlink() {
+    /*private fun setupMicroBlink() {
         // we'll use Machine Readable Travel Document recognizer
         recognizer = BlinkIdCombinedRecognizer()
 
@@ -165,9 +178,9 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
         // put our recognizer in bundle so that it can be sent via intent
         recognizerBundle = RecognizerBundle(recognizer)
-    }
+    }*/
 
-    private fun onScanSuccess(data: Intent) {
+    /*private fun onScanSuccess(data: Intent) {
         // update recognizer results with scanned data
         recognizerBundle!!.loadFromIntent(data)
 
@@ -215,7 +228,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             input_id_number.setText(idNumber)
         }
 
-    }
+    }*/
 
     private fun onScanCanceled() {
         Toast.makeText(this, "Scan cancelled!", Toast.LENGTH_SHORT).show()
@@ -295,12 +308,12 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         /*registerViewModel.isGenderEmpty.observe(this, Observer { isGenderEmpty ->
             if (isGenderEmpty) input_gender.error = getString(R.string.signup_no_gender)
             nested_scroll_view.requestChildFocus(input_gender, input_gender)
-        })
+        })*/
 
         registerViewModel.isDobEmpty.observe(this, Observer { isDobEmpty ->
             if (isDobEmpty) input_date_of_birth.error = getString(R.string.signup_no_dob)
             nested_scroll_view.requestChildFocus(input_date_of_birth, input_date_of_birth)
-        })*/
+        })
 
         registerViewModel.isIdNumberEmpty.observe(this, Observer { isIdNumberEmpty ->
             if (isIdNumberEmpty) input_id_number.error = getString(R.string.signup_no_id)
@@ -358,18 +371,22 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
         viewModelLogin.refreshLogin.observe(this, Observer { isRefreshLogin ->
             if (isRefreshLogin) {
-                Log.e("DEBUG", "isRefreshLogin")
                 registerViewModel.subscribeRegister(
                     input_fname.text.toString(),
                     input_lname.text.toString(),
                     input_gender.text.toString(),
                     input_date_of_birth.text.toString(),
-                    input_id_number.text.toString(),
                     input_mobile_number.text.toString(),
                     input_email.text.toString(),
                     input_password.text.toString(),
                     input_confirm_password.text.toString(),
-                    input_policy.isChecked
+                    input_policy.isChecked,
+                    input_text_house_no.text.toString(),
+                    input_text_street.text.toString(),
+                    input_text_brgy.text.toString(),
+                    input_text_city.text.toString(),
+                    provinceSelected?.provinceId,
+                    input_text_others.text.toString()
                 )
             }
         })
@@ -379,8 +396,8 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             spinner.adapter = customDropDownAdapter
             spinner.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                    val item = customDropDownAdapter.getItem(position) as Province
-                    Timber.tag("DEBUG").e("item ${item.provinceName}")
+                    provinceSelected = customDropDownAdapter.getItem(position) as Province
+                    Timber.tag("DEBUG").e("item ${provinceSelected.provinceName}")
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -395,10 +412,29 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
+        registerViewModel.postImageFile.observe(this, Observer { file ->
+            when (file) {
+                null -> btn_image_document.setImageResource(R.drawable.bg_img_preview)
+                else -> {
+                    btn_image_document.setImageBitmap(BitmapUtils.getBitmap(file.absolutePath))
+                }
+            }
+        })
+
     }
 
-    private fun iniSpinner() {
+    private lateinit var provinceSelected: Province
 
+    private fun takeFile(type: FilePickerManager.Type) {
+        filePickerManager.pickFile(this, type)
+            .subscribe({ result ->
+                when (result) {
+                    is FilePickerManager.Result.Image -> registerViewModel.setPostImageFile(result.file)
+                    is FilePickerManager.Result.Document -> registerViewModel.setPostDocumentFile(result)
+                    FilePickerManager.Result.Cancelled -> Timber.d("file picker cancelled")
+                }
+            }, Timber::e)
+            .addTo(disposeBag)
     }
 
 }
