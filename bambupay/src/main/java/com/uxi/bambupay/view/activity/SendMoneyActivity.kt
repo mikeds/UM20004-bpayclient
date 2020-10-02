@@ -57,7 +57,7 @@ class SendMoneyActivity : BaseActivity() {
         }
 
         btn_transact.setOnClickListener {
-            transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString())
+            transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString(), input_message.text.toString())
         }
     }
 
@@ -101,7 +101,7 @@ class SendMoneyActivity : BaseActivity() {
 
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
-                transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString())
+                transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString(), input_message.text.toString())
             }
         })
 

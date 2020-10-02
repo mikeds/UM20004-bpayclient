@@ -22,7 +22,11 @@ open class Request private constructor(
     private val code: String?,
 
     @SerializedName("email_address")
-    private val email: String?) {
+    private val email: String?,
+
+    private val type: String?,
+
+    private val message: String?) {
 
     data class Builder(
         private var merchant: String? = null,
@@ -40,7 +44,11 @@ open class Request private constructor(
         private var code: String? = null,
 
         @SerializedName("email_address")
-        private var email: String? = null) {
+        private var email: String? = null,
+
+        private var type: String? = null,
+
+        private var message: String? = null) {
 
         fun setUsername(username: String) = apply { this.username = username }
         fun setCode(code: String) = apply { this.code = code }
@@ -49,8 +57,10 @@ open class Request private constructor(
         fun setAmount(amount: String) = apply { this.amount = amount }
         fun setSendTo(sentTo: String?) = apply { this.sentTo = sentTo }
         fun setEmail(email: String?) = apply { this.email = email }
+        fun setType(type: String?) = apply { this.type = type }
+        fun setMessage(message: String?) = apply { this.message = message }
 
-        fun build() = Request(merchant, amount, sentTo, username, password, code, email)
+        fun build() = Request(merchant, amount, sentTo, username, password, code, email, type, message)
     }
 
 }

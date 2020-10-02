@@ -15,5 +15,7 @@ class Constants {
 
         const val DEBIT = "debit"
         const val CREDIT = "credit"
+
+        const val TYPE_OTC = "otc"
     }
 }

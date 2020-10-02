@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.repository.CashInRepository
+import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.Utils
 import timber.log.Timber
 import javax.inject.Inject
@@ -31,7 +32,8 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
         }
 
         val requestBuilder = Request.Builder()
-            .setMerchant(recipient)
+//            .setMerchant(recipient)
+            .setType(Constants.TYPE_OTC)
             .setAmount(amount).build()
 
         disposable?.add(repository.loadCashIn(requestBuilder)

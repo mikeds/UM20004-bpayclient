@@ -143,7 +143,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
         return repository.filterRecent()
     }
 
-    fun subscribeSendMoney(amount: String?, recipient: String?) {
+    fun subscribeSendMoney(amount: String?, recipient: String?, message: String?) {
         if (amount.isNullOrEmpty()) {
             isAmountEmpty.value = true
             return
@@ -156,9 +156,13 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
 
         val requestBuilder = Request.Builder()
             .setAmount(amount)
-            .setEmail(recipient).build()
+            .setUsername(recipient)
 
-        disposable?.add(repository.loadSendMoney(requestBuilder)
+        if (!message.isNullOrEmpty()) {
+            requestBuilder.setMessage(message)
+        }
+
+        disposable?.add(repository.loadSendMoney(requestBuilder.build())
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
