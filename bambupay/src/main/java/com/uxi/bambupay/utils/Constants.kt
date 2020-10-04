@@ -17,5 +17,9 @@ class Constants {
         const val CREDIT = "credit"
 
         const val TYPE_OTC = "otc"
+
+        const val AMOUNT = "amount"
+        const val SCREEN_FROM = "screen_from"
+        const val QUICK_SCAN_SCREEN = "screen_from"
     }
 }

@@ -64,6 +64,11 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
+            R.id.btn_pay_qr -> {
+                val intent = Intent(activity, PayQRActivity::class.java)
+                startActivity(intent)
+                activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+            }
 
         }
     }
@@ -161,6 +166,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
         btn_send_money.setOnClickListener(this)
         btn_cash_out.setOnClickListener(this)
         btn_view_all.setOnClickListener(this)
+        btn_pay_qr.setOnClickListener(this)
     }
 
 }

@@ -30,6 +30,8 @@
     <string name="cash_out">Cash Out</string>
     <string name="cash_in">Cash In</string>
     <string name="scan_pay">ScanPayQR</string>
+    <string name="create_qr">CreatePayQR</string>
+    <string name="quick_qr">QuickPayQR</string>
 
     <string name="sign_in">Sign In</string>
     <string name="sign_in_details">to access\nyour account</string>
@@ -150,6 +152,8 @@
     <string name="make_new_transaction">Make New Transaction</string>
     <string name="go_back_to_dashboard">Go to Dashboard</string>
     <string name="amount_value">₱ %s</string>
+    <string name="retry">Retry</string>
+    <string name="generate_qr">Generate QR Code</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

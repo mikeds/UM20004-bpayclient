@@ -57,4 +57,13 @@ abstract class ActivityModule {
     @ContributesAndroidInjector()
     internal abstract fun contributeCashInBankActivity(): CashInBankActivity
 
+    @ContributesAndroidInjector()
+    internal abstract fun contributeScanPayQRActivity(): ScanPayQRActivity
+
+    @ContributesAndroidInjector()
+    internal abstract fun contributeCreateQRActivity(): CreateQRActivity
+
+    @ContributesAndroidInjector()
+    internal abstract fun contributeQuickScanQRActivity(): QuickScanQRActivity
+
 }
