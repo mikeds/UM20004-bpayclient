@@ -79,6 +79,7 @@
     <string name="send">Send</string>
     <string name="transaction_history">Transaction History</string>
     <string name="date">Date</string>
+    <string name="date_time">Date / Time </string>
     <string name="message">Message</string>
     <string name="reference_id">Reference ID</string>
     <string name="transaction_details">Transaction Details</string>
@@ -145,6 +146,10 @@
     <string name="me_permission_document_title">Document picker unavailable</string>
     <string name="me_permission_document_msg">You can grant access to the documents from within the Android Settings screen</string>
     <string name="me_permission_btn">Got it</string>
+
+    <string name="make_new_transaction">Make New Transaction</string>
+    <string name="go_back_to_dashboard">Go to Dashboard</string>
+    <string name="amount_value">₱ %s</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.TransactionViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
@@ -93,9 +94,21 @@ class SendMoneyActivity : BaseActivity() {
             }
         })
 
-        transactionViewModel.isSendMoneySuccess.observe(this, Observer { isSendMoneySuccess ->
-            if (isSendMoneySuccess) {
-                finish()
+        transactionViewModel.sendMoneySuccessMsg.observe(this, Observer { message ->
+            if (!message.isNullOrEmpty()) {
+                val successDialog = SuccessDialog(this, message, text_input_amount.text.toString(), "Oct 03, 2020 | 10:00PM")
+                successDialog.setOnSuccessDialogClickListener(object : SuccessDialog.OnSuccessDialogClickListener {
+                    override fun onDashBoardClicked() {
+                        finish()
+                    }
+
+                    override fun onNewClicked() {
+                        text_input_amount.setText("")
+                        text_input_mobile.setText("")
+                        input_message.setText("")
+                    }
+                })
+                successDialog.show()
             }
         })
 

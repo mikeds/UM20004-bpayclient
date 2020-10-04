@@ -20,7 +20,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
 
     val isAmountEmpty = MutableLiveData<Boolean>()
     val isRecipientEmpty = MutableLiveData<Boolean>()
-    val isSendMoneySuccess = MutableLiveData<Boolean>()
+    val sendMoneySuccessMsg = MutableLiveData<String>()
     val transactionData = MutableLiveData<Transaction>()
     val transactionRecentData = MutableLiveData<RecentTransaction>()
 
@@ -167,9 +167,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
             .doAfterTerminate { loading.value = false }
             .subscribe({
                 if (it.response != null) {
-                    it.response?.let { pay ->
-                        isSendMoneySuccess.value = true
-                    }
+                    sendMoneySuccessMsg.value = it.successMessage
                 } else {
                     it.message?.let { error ->
                         errorMessage.value = error
