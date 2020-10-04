@@ -3,7 +3,11 @@ package com.uxi.bambupay.view.fragment.dialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.view.Window
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uxi.bambupay.R
 import kotlinx.android.synthetic.main.dialog_message_result.*
 
@@ -15,7 +19,8 @@ class SuccessDialog(
     private val ctx: Context,
     private val message: String?,
     private val amount: String?,
-    private val date: String?) : Dialog(ctx) {
+    private val date: String?,
+    private val qrCodeUrl: String?) : Dialog(ctx) {
 
     private lateinit var clickListener: OnSuccessDialogClickListener
 
@@ -43,6 +48,11 @@ class SuccessDialog(
             text_date.text = it
         }
 
+        if (!qrCodeUrl.isNullOrEmpty()) {
+            image_view_qr_code.visibility = View.VISIBLE
+            loadImage(qrCodeUrl, image_view_qr_code)
+        }
+
         btn_new_transaction.setOnClickListener {
             if (this::clickListener.isInitialized) {
                 dismiss()
@@ -56,6 +66,15 @@ class SuccessDialog(
                 clickListener.onDashBoardClicked()
             }
         }
+    }
+
+    private fun loadImage(imageUrl: String, imageView: ImageView) {
+        Glide.with(ctx)
+            .load(imageUrl)
+            .thumbnail(1.0f)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
     }
 
     interface OnSuccessDialogClickListener {

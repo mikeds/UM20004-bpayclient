@@ -149,11 +149,12 @@
     <string name="me_permission_document_msg">You can grant access to the documents from within the Android Settings screen</string>
     <string name="me_permission_btn">Got it</string>
 
-    <string name="make_new_transaction">Make New Transaction</string>
+    <string name="make_new_transaction">New Transaction</string>
     <string name="go_back_to_dashboard">Go to Dashboard</string>
     <string name="amount_value">₱ %s</string>
     <string name="retry">Retry</string>
     <string name="generate_qr">Generate QR Code</string>
+    <string name="amount_required">Amount Required</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

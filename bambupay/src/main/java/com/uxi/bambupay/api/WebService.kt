@@ -55,4 +55,13 @@ interface WebService {
     @GET("tools/provinces/169")
     fun getProvinces(): Flowable<GenericApiResponse<List<Province>>>
 
+    @POST("transactions/client/scanpayqr")
+    fun scanPayQR(@Body params: Request): Flowable<GenericApiResponse<User>>
+
+    @GET("transactions/client/quickpayqr/scan/{merchantId}")
+    fun quickPayQRMerchant(@Path("merchantId") merchantId: String): Flowable<GenericApiResponse<MerchantInfo>>
+
+    @POST("transactions/client/quickpayqr/accept")
+    fun quickPayQRAccept(@Body params: Request): Flowable<GenericApiResponse<ScanQr>>
+
 }

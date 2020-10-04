@@ -73,6 +73,11 @@ abstract class ViewModelModule {
     internal abstract fun bindInstaPayViewModel(instaPayViewModel: InstaPayViewModel): ViewModel
 
     @Binds
+    @IntoMap
+    @ViewModelKey(QRCodeViewModel::class)
+    internal abstract fun bindQRCodeViewModel(qrCodeViewModel: QRCodeViewModel): ViewModel
+
+    @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
 }

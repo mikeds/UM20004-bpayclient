@@ -52,6 +52,13 @@
         android:layout_marginBottom="@dimen/_10sdp"
         android:text="June 19, 1970 04:00 PM" />
 
+    <ImageView
+        android:id="@+id/image_view_qr_code"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/btn_new_transaction"
         style="@style/TextViewSmallBody.Bold"

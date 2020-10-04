@@ -140,6 +140,13 @@
         <item name="android:datePickerMode">spinner</item>
     </style>
 
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:windowTitleStyle">@style/TextViewTitle</item>
+    </style>
+
 
 <!--    <style name="EditTextHint" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">-->
 <!--        <item name="colorAccent">@android:color/white</item>-->

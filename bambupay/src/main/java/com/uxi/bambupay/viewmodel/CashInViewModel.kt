@@ -32,7 +32,6 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
         }
 
         val requestBuilder = Request.Builder()
-//            .setMerchant(recipient)
             .setType(Constants.TYPE_OTC)
             .setAmount(amount).build()
 

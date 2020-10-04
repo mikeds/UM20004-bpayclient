@@ -96,7 +96,7 @@ class SendMoneyActivity : BaseActivity() {
 
         transactionViewModel.sendMoneySuccessMsg.observe(this, Observer { message ->
             if (!message.isNullOrEmpty()) {
-                val successDialog = SuccessDialog(this, message, text_input_amount.text.toString(), "Oct 03, 2020 | 10:00PM")
+                val successDialog = SuccessDialog(this, message, text_input_amount.text.toString(), "Oct 03, 2020 | 10:00PM", null)
                 successDialog.setOnSuccessDialogClickListener(object : SuccessDialog.OnSuccessDialogClickListener {
                     override fun onDashBoardClicked() {
                         finish()

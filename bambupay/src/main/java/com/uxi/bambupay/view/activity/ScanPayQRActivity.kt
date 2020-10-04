@@ -1,22 +1,31 @@
 package com.uxi.bambupay.view.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.view.SurfaceHolder
 import android.view.View
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.uxi.bambupay.R
+import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.view.widget.CircleOverlay
 import com.uxi.bambupay.view.widget.QRDetector
+import com.uxi.bambupay.viewmodel.QRCodeViewModel
+import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.activity_scan_qr_code.*
+import kotlinx.android.synthetic.main.activity_scan_qr_code.btn_cancel
 import kotlinx.android.synthetic.main.app_toolbar.*
+import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
 /**
@@ -25,10 +34,14 @@ import timber.log.Timber
  */
 class ScanPayQRActivity : BaseActivity() {
 
+    private val userTokenModel by viewModel<UserTokenViewModel>()
+    private val qrCodeViewModel by viewModel<QRCodeViewModel>()
+
     private var scannedQR: Boolean = false
     private var cameraSource: CameraSource? = null
     private var qrDetector: QRDetector? = null
     private var surfaceHolder: SurfaceHolder? = null
+    private var currScanValue: String? = null
 
     private val fromScreen by lazy {
         intent?.extras?.getString(Constants.SCREEN_FROM)
@@ -43,6 +56,7 @@ class ScanPayQRActivity : BaseActivity() {
         setupToolbar()
         initViews()
         events()
+        observeViewModel()
     }
 
     override fun getLayoutId() = R.layout.activity_scan_qr_code
@@ -87,6 +101,68 @@ class ScanPayQRActivity : BaseActivity() {
             startBarcodeScanning()
             container_buttons.visibility = View.GONE
         }
+    }
+
+    private fun observeViewModel() {
+        userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
+            if (isTokenRefresh) {
+                if (fromScreen.isNullOrEmpty()) {
+                    // scan to pay
+                } else {
+                    // quick scan to pay
+                    qrCodeViewModel.subscriptionQuickPay(currScanValue, amount)
+                }
+            }
+        })
+
+        qrCodeViewModel.isSuccess.observe(this, Observer { isSuccess ->
+            if (!isSuccess) {
+                // call token refresher
+                userTokenModel.subscribeToken()
+            }
+        })
+
+        qrCodeViewModel.loading.observe(this, Observer { isLoading ->
+            if (isLoading) {
+                showProgressDialog("Loading...")
+            } else {
+                dismissProgressDialog()
+            }
+        })
+
+        qrCodeViewModel.errorMessage.observe(this, Observer { errorMessage ->
+            showMessageDialog(errorMessage)
+        })
+
+        var message = ""
+        qrCodeViewModel.quickPaySuccessMsg.observe(this, Observer { successMessage ->
+            message = successMessage
+        })
+        qrCodeViewModel.quickPayData.observe(this, Observer {
+            val successDialog = SuccessDialog(this, message, amount, "Oct 03, 2020 | 10:00PM", it.qrCode)
+            successDialog.setOnSuccessDialogClickListener(object : SuccessDialog.OnSuccessDialogClickListener {
+                override fun onDashBoardClicked() {
+                    showMain()
+                }
+
+                override fun onNewClicked() {
+                    EventBus.getDefault().post(NewTransactionEvent())
+                    finish()
+                }
+            })
+            successDialog.show()
+        })
+
+    }
+
+    private fun showMain() {
+        val handler = Handler()
+        handler.postDelayed(Runnable {
+            val intent = Intent(this@ScanPayQRActivity, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+        }, 300)
     }
 
     private val callback = object : SurfaceHolder.Callback {
@@ -140,6 +216,7 @@ class ScanPayQRActivity : BaseActivity() {
             override fun receiveDetections(p0: Detector.Detections<Barcode>?) {
                 if (p0?.detectedItems?.size()!! > 0 && !scannedQR) {
                     val displayValue = p0.detectedItems.valueAt(0).displayValue
+                    currScanValue = displayValue
                     Timber.tag("DEBUG").e("displayValue:: $displayValue")
                     Timber.tag("DEBUG").e("fromScreen:: $fromScreen")
                     overlayView.post {
@@ -151,6 +228,7 @@ class ScanPayQRActivity : BaseActivity() {
                             // scan to pay
                         } else {
                             // quick scan to pay
+                            qrCodeViewModel.subscriptionQuickPay(displayValue, amount)
                         }
                     }
                 }
