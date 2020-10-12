@@ -3,7 +3,12 @@ package com.uxi.bambupay.view.activity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
+import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uxi.bambupay.R
+import com.uxi.bambupay.viewmodel.QRCodeViewModel
 import kotlinx.android.synthetic.main.activity_create_qrcode.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
@@ -13,10 +18,13 @@ import kotlinx.android.synthetic.main.app_toolbar.*
  */
 class CreateQRActivity : BaseActivity() {
 
+    private val qrCodeViewModel by viewModel<QRCodeViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
         events()
+        observeViewModel()
     }
 
     override fun getLayoutId() = R.layout.activity_create_qrcode
@@ -61,9 +69,42 @@ class CreateQRActivity : BaseActivity() {
         }
 
         btn_generate.setOnClickListener {
+            it.hideKeyboard()
             btn_generate.visibility = View.GONE
             container_buttons.visibility = View.VISIBLE
+            qrCodeViewModel.subscribeCreatePayQr(text_input_amount.text.toString())
         }
+    }
+
+    private fun observeViewModel() {
+        qrCodeViewModel.isAmountEmpty.observe(this, Observer {
+            if (it) {
+                showDialogMessage("Amount Required")
+            }
+        })
+
+        qrCodeViewModel.createPayQrData.observe(this, Observer { scanQR ->
+            scanQR?.let {
+                loadImage(it.qrCode!!, image_view_qr_code)
+            }
+        })
+
+        qrCodeViewModel.loading.observe(this, Observer {
+            if (it) {
+                showProgressDialog("Loading...")
+            } else {
+                dismissProgressDialog()
+            }
+        })
+    }
+
+    private fun loadImage(imageUrl: String, imageView: ImageView) {
+        Glide.with(this@CreateQRActivity)
+            .load(imageUrl)
+            .thumbnail(1.0f)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
     }
 
 }

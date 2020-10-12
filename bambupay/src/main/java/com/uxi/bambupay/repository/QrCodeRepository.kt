@@ -18,6 +18,12 @@ import javax.inject.Singleton
 @Singleton
 class QrCodeRepository @Inject constructor(private val webService: WebService) {
 
+    fun loadCreatePayQr(request: Request) : Flowable<GenericApiResponse<ScanQr>> {
+        return webService.createPayQr(request)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     fun loadScanPayQr(request: Request) {
 
     }

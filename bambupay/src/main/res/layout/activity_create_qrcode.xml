@@ -74,7 +74,7 @@
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_rounded_green"
-                    android:text="@string/retry"
+                    android:text="@string/clear"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white" />
 

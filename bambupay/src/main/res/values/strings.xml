@@ -153,6 +153,7 @@
     <string name="go_back_to_dashboard">Go to Dashboard</string>
     <string name="amount_value">₱ %s</string>
     <string name="retry">Retry</string>
+    <string name="clear">Clear</string>
     <string name="generate_qr">Generate QR Code</string>
     <string name="amount_required">Amount Required</string>
 

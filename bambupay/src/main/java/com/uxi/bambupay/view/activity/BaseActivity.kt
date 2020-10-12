@@ -3,6 +3,8 @@ package com.uxi.bambupay.view.activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -83,6 +85,11 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
         builder.setMessage(message)
         builder.setPositiveButton(getString(R.string.action_okay), null)
         builder.create().show()
+    }
+
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
 }

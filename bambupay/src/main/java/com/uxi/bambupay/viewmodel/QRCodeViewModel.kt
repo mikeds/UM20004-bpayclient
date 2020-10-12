@@ -1,5 +1,6 @@
 package com.uxi.bambupay.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.model.ScanQr
@@ -19,6 +20,8 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
 
     val quickPaySuccessMsg = MutableLiveData<String>()
     val quickPayData = MutableLiveData<ScanQr>()
+    val createPayQrData = MutableLiveData<ScanQr>()
+    val isAmountEmpty = MutableLiveData<Boolean>()
 
     fun subscriptionQuickPay(merchantId: String?, amount: String?) {
 
@@ -60,6 +63,41 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
 
         )
 
+    }
+
+    fun subscribeCreatePayQr(amount: String?) {
+        if (amount.isNullOrEmpty()) {
+            isAmountEmpty.value = true
+            return
+        }
+
+        val request = Request.Builder()
+            .setAmount(amount).build()
+
+        disposable?.add(repository.loadCreatePayQr(request)
+            .doOnSubscribe { loading.value = true }
+            .doAfterTerminate { loading.value = false }
+            .subscribe({
+                if (it.response != null) {
+                    it.response?.let { it1 ->
+                        createPayQrData.value = it1
+                    }
+                } else {
+                    it.message?.let { error ->
+                        errorMessage.value = error
+                        Log.e("DEBUG", "error message:: $error")
+                    }
+                }
+
+            }, {
+                Timber.e(it)
+                if (refreshToken(it)) {
+                    Log.e("DEBUG", "error refreshToken")
+                    utils.saveUserTokenPack("", true)
+                    isSuccess.value = false
+                }
+            })
+        )
     }
 
 }
