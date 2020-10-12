@@ -23,6 +23,9 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
     val createPayQrData = MutableLiveData<ScanQr>()
     val isAmountEmpty = MutableLiveData<Boolean>()
 
+    val isTransactionNumberEmpty = MutableLiveData<Boolean>()
+    val successMessage = MutableLiveData<String>()
+
     fun subscriptionQuickPay(merchantId: String?, amount: String?) {
 
         Timber.tag("DEBUG").e("merchantId:: $merchantId")
@@ -98,6 +101,44 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
                 }
             })
         )
+    }
+
+    fun subscribeScanPayQr(refIdNumber: String) {
+        if (refIdNumber.isNullOrEmpty()) {
+            isTransactionNumberEmpty.value = true
+            return
+        }
+
+        val requestBuilder = Request.Builder()
+            .setSenderRefId(refIdNumber).build()
+
+        disposable?.add(repository.loadAcceptPayQr(requestBuilder)
+            .doOnSubscribe { loading.value = true }
+            .doAfterTerminate { loading.value = false }
+            .subscribe({
+                if (it.response != null) {
+                    quickPaySuccessMsg.value = it.successMessage
+                    quickPayData.value = it.response
+                } else {
+                    it.message?.let { error ->
+                        errorMessage.value = error
+                        Log.e("DEBUG", "error message:: $error")
+                    }
+                    it.successMessage?.let { message ->
+                        successMessage.value = message
+                    }
+                }
+
+            }, {
+                Timber.e(it)
+                if (refreshToken(it)) {
+                    Log.e("DEBUG", "error refreshToken")
+                    utils.saveUserTokenPack("", true)
+                    isSuccess.value = false
+                }
+            })
+        )
+
     }
 
 }

@@ -29,7 +29,10 @@ open class Request private constructor(
     private val message: String?,
 
     @SerializedName("account_number")
-    private val accountNum: String?) {
+    private val accountNum: String?,
+
+    @SerializedName("sender_ref_id")
+    private val senderRefId: String?) {
 
     data class Builder(
         private var merchant: String? = null,
@@ -54,7 +57,10 @@ open class Request private constructor(
         private var message: String? = null,
 
         @SerializedName("account_number")
-        private var accountNum: String? = null) {
+        private var accountNum: String? = null,
+
+        @SerializedName("sender_ref_id")
+        private var senderRefId: String? = null) {
 
         fun setUsername(username: String) = apply { this.username = username }
         fun setCode(code: String) = apply { this.code = code }
@@ -66,8 +72,9 @@ open class Request private constructor(
         fun setType(type: String?) = apply { this.type = type }
         fun setMessage(message: String?) = apply { this.message = message }
         fun setAccountNum(accountNum: String?) = apply { this.accountNum = accountNum }
+        fun setSenderRefId(senderRefId: String?) = apply { this.senderRefId = senderRefId }
 
-        fun build() = Request(merchant, amount, sentTo, username, password, code, email, type, message, accountNum)
+        fun build() = Request(merchant, amount, sentTo, username, password, code, email, type, message, accountNum, senderRefId)
     }
 
 }

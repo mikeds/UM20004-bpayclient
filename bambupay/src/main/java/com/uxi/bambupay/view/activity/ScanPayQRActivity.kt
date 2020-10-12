@@ -1,10 +1,8 @@
 package com.uxi.bambupay.view.activity
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
 import android.view.MenuItem
 import android.view.SurfaceHolder
 import android.view.View
@@ -23,7 +21,6 @@ import com.uxi.bambupay.view.widget.QRDetector
 import com.uxi.bambupay.viewmodel.QRCodeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.activity_scan_qr_code.*
-import kotlinx.android.synthetic.main.activity_scan_qr_code.btn_cancel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
@@ -153,16 +150,6 @@ class ScanPayQRActivity : BaseActivity() {
             successDialog.show()
         })
 
-    }
-
-    private fun showMain() {
-        val handler = Handler()
-        handler.postDelayed(Runnable {
-            val intent = Intent(this@ScanPayQRActivity, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            finish()
-        }, 300)
     }
 
     private val callback = object : SurfaceHolder.Callback {

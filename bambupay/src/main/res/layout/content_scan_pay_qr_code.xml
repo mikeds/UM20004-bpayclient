@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".view.activity.ScanPayQrCodeActivity"
+    tools:showIn="@layout/activity_scan_pay_qr_code">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/transaction_number" />
+
+        <EditText
+            android:id="@+id/text_input_ref_num"
+            style="@style/TextViewSmall.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/underline"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_scan_qr_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="50dp"
+            app:contentPadding="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_scan_large" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/scan" />
+
+        <Button
+            android:id="@+id/btn_transact"
+            style="@style/TextViewSmallBody.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@drawable/bg_rounded_green"
+            android:text="@string/proceed"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/TextViewSmallBody.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_rounded_white_border_green"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/green" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -156,6 +156,9 @@
     <string name="clear">Clear</string>
     <string name="generate_qr">Generate QR Code</string>
     <string name="amount_required">Amount Required</string>
+    <string name="transaction_number">Transaction Number</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="proceed">Proceed</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>
