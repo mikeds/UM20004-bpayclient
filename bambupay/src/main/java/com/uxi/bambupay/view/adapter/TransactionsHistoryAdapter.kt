@@ -13,6 +13,8 @@ import com.uxi.bambupay.model.Transaction
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN
 import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
+import com.uxi.bambupay.utils.Constants.Companion.CREATE_SCAN_QR
+import com.uxi.bambupay.utils.Constants.Companion.QUICK_PAY_QR
 import com.uxi.bambupay.utils.Constants.Companion.SCAN_PAY_QR
 import com.uxi.bambupay.utils.Constants.Companion.SEND_MONEY
 import com.uxi.bambupay.utils.Utils
@@ -59,6 +61,8 @@ class TransactionsHistoryAdapter(
                     }
                     CASH_OUT -> txtTransactionType.text = context?.getString(R.string.cash_out)
                     SCAN_PAY_QR -> txtTransactionType.text = context?.getString(R.string.scan_pay)
+                    CREATE_SCAN_QR -> txtTransactionType.text = context?.getString(R.string.create_scan_qr)
+                    QUICK_PAY_QR -> txtTransactionType.text = context?.getString(R.string.quick_qr)
                 }
                 val transactionAmount = it.amount?.let { it1 -> utils?.currencyFormat(it1) }
                 txtAmount.text = context?.getString(R.string.ph_currency, transactionAmount)
