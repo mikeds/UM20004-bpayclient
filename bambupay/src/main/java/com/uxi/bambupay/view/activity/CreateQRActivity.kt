@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uxi.bambupay.R
 import com.uxi.bambupay.viewmodel.QRCodeViewModel
+import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.activity_create_qrcode.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
@@ -19,6 +20,7 @@ import kotlinx.android.synthetic.main.app_toolbar.*
 class CreateQRActivity : BaseActivity() {
 
     private val qrCodeViewModel by viewModel<QRCodeViewModel>()
+    private val userTokenModel by viewModel<UserTokenViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +98,20 @@ class CreateQRActivity : BaseActivity() {
                 dismissProgressDialog()
             }
         })
+
+        qrCodeViewModel.isSuccess.observe(this, Observer { isSuccess ->
+            if (!isSuccess) {
+                // call token refresher
+                userTokenModel.subscribeToken()
+            }
+        })
+
+        userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
+            if (isTokenRefresh) {
+                qrCodeViewModel.subscribeCreatePayQr(text_input_amount.text.toString())
+            }
+        })
+
     }
 
     private fun loadImage(imageUrl: String, imageView: ImageView) {
