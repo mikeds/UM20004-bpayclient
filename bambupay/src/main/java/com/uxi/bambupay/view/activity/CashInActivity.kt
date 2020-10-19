@@ -56,14 +56,14 @@ class CashInActivity : BaseActivity() {
         }
 
         btn_transact.setOnClickListener {
-            cashInViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
+            cashInViewModel.subscribeCashIn(text_input_amount.text.toString()/*, text_input_mobile.text.toString()*/)
         }
     }
 
     private fun observeViewModel() {
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
-                cashInViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
+                cashInViewModel.subscribeCashIn(text_input_amount.text.toString()/*, text_input_mobile.text.toString()*/)
             }
         })
 

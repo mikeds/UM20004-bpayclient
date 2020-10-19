@@ -20,16 +20,16 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
     val isRecipientEmpty = MutableLiveData<Boolean>()
     val isCashOutSuccess = MutableLiveData<Boolean>()
 
-    fun subscribeCashOut(amount: String?, recipient: String?) {
+    fun subscribeCashIn(amount: String?/*, recipient: String?*/) {
         if (amount.isNullOrEmpty()) {
             isAmountEmpty.value = true
             return
         }
 
-        if (recipient.isNullOrEmpty()) {
+        /*if (recipient.isNullOrEmpty()) {
             isRecipientEmpty.value = true
             return
-        }
+        }*/
 
         val requestBuilder = Request.Builder()
             .setType(Constants.TYPE_OTC)
