@@ -23,5 +23,18 @@ class Constants {
         const val AMOUNT = "amount"
         const val SCREEN_FROM = "screen_from"
         const val QUICK_SCAN_SCREEN = "screen_from"
+
+        // TRANSACTION TYPE ID
+        const val TX_TYPE_CASH_IN_OTC_ID = "txtype_cashin1"
+        const val TX_TYPE_CASH_IN_DP_ID = "txtype_cashin2"
+        const val TX_TYPE_CASH_OUT_OTC_ID = "txtype_cashout1"
+        const val TX_TYPE_CREATE_SCAN_QR_ID = "txtype_createpayqr1"
+        const val TX_TYPE_EN_CASH_ID = "txtype_encash1"
+        const val TX_TYPE_INCOME_SHARES_ID = "txtype_income_shares"
+        const val TX_TYPE_QUICK_PAY_QR_ID = "txtype_quickpayqr1"
+        const val TX_TYPE_SCAN_PAY_QR_ID = "txtype_scanpayqr1"
+        const val TX_TYPE_TOP_UP_OTC_ID = "txtype_topup1"
+        const val TX_TYPE_TRANSFER_ID = "txtype_transfer1"
+        const val TX_TYPE_VAULT_ID = "txtype_vault1"
     }
 }

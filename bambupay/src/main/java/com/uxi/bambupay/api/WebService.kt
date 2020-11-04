@@ -70,4 +70,10 @@ interface WebService {
     @POST("transactions/client/scanpayqr/accept")
     fun acceptPayQr(@Body params: Request): Flowable<GenericApiResponse<ScanQr>>
 
+    @GET("lookup/client/tx-fee")
+    fun transactionFee(
+        @Query("tx_type_id") txTypeId: String,
+        @Query("amount") amount: String
+    ): Flowable<GenericApiResponse<FeeResponse>>
+
 }

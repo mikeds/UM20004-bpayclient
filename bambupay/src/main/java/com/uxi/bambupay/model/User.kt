@@ -10,8 +10,10 @@ import io.realm.annotations.PrimaryKey
  */
 open class User : RealmObject() {
 
-    @SerializedName("email_address")
     @PrimaryKey
+    var id: String? = null
+
+    @SerializedName("email_address")
     var emailAddress: String? = null
 
     @SerializedName("first_name")

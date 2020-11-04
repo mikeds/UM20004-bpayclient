@@ -67,7 +67,7 @@ constructor(private val repository: InstaPayRepository, private val utils: Utils
 
     fun subscribePartnerToken() {
         disposable?.add(repository.loadPartnerCustomerToken("authorization_code",
-            utils.ubpClientId!!, utils.ubpLoginCode!!, "https://dev-api.resolveitthrough.us/customer/callback/token")
+            utils.ubpClientId!!, utils.ubpLoginCode!!, "https://dev-api.resolveitthrough.us/callback/ubp/code")
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({

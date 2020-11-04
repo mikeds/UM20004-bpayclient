@@ -24,6 +24,9 @@ open class RecentTransaction : RealmObject() {
     @SerializedName("sender_ref_id")
     var senderRefId: String? = null
 
+    @SerializedName("tx_account_no_by")
+    var accountNoBy: String? = null
+
     @SerializedName("tx_created_by")
     var createdBy: String? = null
 
@@ -36,6 +39,12 @@ open class RecentTransaction : RealmObject() {
     var amount: String? = null
 
     var fee: String? = null
+
+    @SerializedName("tx_message")
+    var message: String? = null
+
+    @SerializedName("tx_type_code")
+    var typeCode: String? = null
 
     @SerializedName("tx_type")
     var transactionType: String? = null

@@ -2,9 +2,13 @@ package com.uxi.bambupay.view.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
+import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.TransactionViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
@@ -14,6 +18,7 @@ class SendMoneyActivity : BaseActivity() {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val transactionViewModel by viewModel<TransactionViewModel>()
+    private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +64,10 @@ class SendMoneyActivity : BaseActivity() {
 
         btn_transact.setOnClickListener {
             transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString(), input_message.text.toString())
+        }
+
+        text_input_amount.doAfterTextChanged {
+            feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_TRANSFER_ID)
         }
     }
 
@@ -115,6 +124,12 @@ class SendMoneyActivity : BaseActivity() {
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
                 transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString(), input_message.text.toString())
+            }
+        })
+
+        feeViewModel.fees.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { fee ->
+                text_fee.text = fee
             }
         })
 

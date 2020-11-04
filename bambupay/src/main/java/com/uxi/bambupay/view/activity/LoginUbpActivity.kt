@@ -104,9 +104,10 @@ class LoginUbpActivity : BaseActivity() {
 //        web_view.loadUrl("https://api-uat.unionbankph.com/partners/sb/customers/v1/oauth2/authorize?client_id=854b7778-c9d3-4b3e-9fd5-21c828f7df39&response_type=code&scope=payments&redirect_uri=https://api.resolveitthrough.us&type=single&partnerId=5dff2cdf-ef15-48fb-a87b-375ebff415bb")
 //        web_view.loadUrl("https://api-uat.unionbankph.com/partners/sb/convergent/v1/oauth2/authorize?response_type=code&client_id=854b7778-c9d3-4b3e-9fd5-21c828f7df39&redirect_uri=https://api.resolveitthrough.us&scope=payments")
 
-        web_view.loadUrl("https://api-uat.unionbankph.com/partners/sb/customers/v1/oauth2/authorize?client_id=854b7778-c9d3-4b3e-9fd5-21c828f7df39&response_type=code&scope=transfers&redirect_uri=https://dev-api.resolveitthrough.us/customer/callback/token&type=single&partnerId=5dff2cdf-ef15-48fb-a87b-375ebff415bb")
+//        web_view.loadUrl("https://api-uat.unionbankph.com/partners/sb/customers/v1/oauth2/authorize?client_id=854b7778-c9d3-4b3e-9fd5-21c828f7df39&response_type=code&scope=transfers&redirect_uri=https://dev-api.resolveitthrough.us/customer/callback/token&type=single&partnerId=5dff2cdf-ef15-48fb-a87b-375ebff415bb")
 //        web_view.loadUrl("https://dev-api.resolveitthrough.us/customer/callback/token?code=AAKLsjgPXBnPwBS357MW-F1ZUkjpQua7oe2n-u9LBGYTtTS2NUMe366kHLVd75EXauJ45CBCKWazlrRTQsX1HsqCC8kqeVX6sQKxo0VVd-CsWcd9qCpE7KSDGBfrM8fOWjHiY2ttW0prDqmS2VvyjLSMMog3Ioi-Ue5BpmPhNVDcKMyxjhKiZlr8_z8zgjBcqXAcxCD8Tqi10Nrh437qHZIyS_j-xjTW2UaARRNakFLdidg4HHUe0GaJU0d71ccj_yb6zOpszwIKm7kTZS1mcNrnu3vJWRo8mLGdAKlR25y5OxUJBRpY_KjrhbamViQtxnpY4yYTrLzZlixzmsrMcTt0IeW84qnabyxXB2Ybfr8x3g")
 
+        web_view.loadUrl("https://api-uat.unionbankph.com/partners/sb/customers/v1/oauth2/authorize?client_id=854b7778-c9d3-4b3e-9fd5-21c828f7df39&response_type=code&scope=transfers&redirect_uri=https://dev-api.resolveitthrough.us/callback/ubp/code&type=single&partnerId=5dff2cdf-ef15-48fb-a87b-375ebff415bb")
     }
 
     private fun parseUrl(url: String?) {

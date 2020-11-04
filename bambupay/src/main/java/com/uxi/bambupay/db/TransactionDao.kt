@@ -34,6 +34,7 @@ class TransactionDao(val realm: Realm) {
     fun queryRecent(): RealmResults<RecentTransaction> {
         return realm.where(RecentTransaction::class.java)
             .sort("dateCreated", Sort.DESCENDING)
+            .limit(10)
             .findAllAsync()
     }
 

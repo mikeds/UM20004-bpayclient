@@ -2,9 +2,14 @@ package com.uxi.bambupay.view.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.viewmodel.CashInViewModel
+import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_cash_in.*
@@ -13,6 +18,7 @@ class CashInActivity : BaseActivity() {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val cashInViewModel by viewModel<CashInViewModel>()
+    private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +64,10 @@ class CashInActivity : BaseActivity() {
         btn_transact.setOnClickListener {
             cashInViewModel.subscribeCashIn(text_input_amount.text.toString()/*, text_input_mobile.text.toString()*/)
         }
+
+        text_input_amount.doAfterTextChanged {
+            feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_CASH_IN_OTC_ID)
+        }
     }
 
     private fun observeViewModel() {
@@ -97,6 +107,12 @@ class CashInActivity : BaseActivity() {
             if (!isSuccess) {
                 // call token refresher
                 userTokenModel.subscribeToken()
+            }
+        })
+
+        feeViewModel.fees.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { fee ->
+                text_fee.text = fee
             }
         })
 

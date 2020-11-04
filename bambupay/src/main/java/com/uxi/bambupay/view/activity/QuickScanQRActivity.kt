@@ -5,11 +5,15 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.viewmodel.FeeViewModel
 import kotlinx.android.synthetic.main.activity_quick_scan_qr.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 import org.greenrobot.eventbus.EventBus
@@ -22,9 +26,12 @@ import org.greenrobot.eventbus.ThreadMode
  */
 class QuickScanQRActivity : BaseActivity() {
 
+    private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
+        observeViewModel()
         events()
         EventBus.getDefault().register(this)
     }
@@ -63,6 +70,14 @@ class QuickScanQRActivity : BaseActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
+    private fun observeViewModel() {
+        feeViewModel.fees.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { fee ->
+                text_fee.text = fee
+            }
+        })
+    }
+
     private fun  events() {
         btn_cancel.setOnClickListener {
             onBackPressed()
@@ -70,6 +85,10 @@ class QuickScanQRActivity : BaseActivity() {
 
         btn_scan_qr_code.setOnClickListener {
             showScanPayQr()
+        }
+
+        text_input_amount.doAfterTextChanged {
+            feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_QUICK_PAY_QR_ID)
         }
     }
 

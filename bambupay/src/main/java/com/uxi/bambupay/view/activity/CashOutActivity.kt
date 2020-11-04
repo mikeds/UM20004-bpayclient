@@ -2,20 +2,22 @@ package com.uxi.bambupay.view.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.viewmodel.CashOutViewModel
+import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_cash_out.*
-import kotlinx.android.synthetic.main.content_cash_out.btn_cancel
-import kotlinx.android.synthetic.main.content_cash_out.btn_transact
-import kotlinx.android.synthetic.main.content_cash_out.text_input_mobile
 
 class CashOutActivity : BaseActivity() {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val cashOutViewModel by viewModel<CashOutViewModel>()
+    private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +63,10 @@ class CashOutActivity : BaseActivity() {
         btn_transact.setOnClickListener {
             cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
         }
+
+        text_input_amount.doAfterTextChanged {
+            feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_CASH_OUT_OTC_ID)
+        }
     }
 
     private fun observeViewModel() {
@@ -100,6 +106,12 @@ class CashOutActivity : BaseActivity() {
             if (!isSuccess) {
                 // call token refresher
                 userTokenModel.subscribeToken()
+            }
+        })
+
+        feeViewModel.fees.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { fee ->
+                text_fee.text = fee
             }
         })
 

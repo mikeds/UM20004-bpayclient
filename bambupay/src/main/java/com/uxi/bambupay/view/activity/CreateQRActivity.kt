@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.viewModels
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uxi.bambupay.R
+import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.QRCodeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.activity_create_qrcode.*
@@ -21,6 +25,7 @@ class CreateQRActivity : BaseActivity() {
 
     private val qrCodeViewModel by viewModel<QRCodeViewModel>()
     private val userTokenModel by viewModel<UserTokenViewModel>()
+    private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +81,10 @@ class CreateQRActivity : BaseActivity() {
             container_buttons.visibility = View.VISIBLE
             qrCodeViewModel.subscribeCreatePayQr(text_input_amount.text.toString())
         }
+
+        text_input_amount.doAfterTextChanged {
+            feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_CREATE_SCAN_QR_ID)
+        }
     }
 
     private fun observeViewModel() {
@@ -109,6 +118,13 @@ class CreateQRActivity : BaseActivity() {
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
                 qrCodeViewModel.subscribeCreatePayQr(text_input_amount.text.toString())
+            }
+        })
+
+
+        feeViewModel.fees.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { fee ->
+                text_fee.text = fee
             }
         })
 

@@ -103,10 +103,13 @@ class AppModule  {
     @Singleton
     @NonNull
     fun provideUbpService(): UbpService {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        val okHttpBuilder = OkHttpClient.Builder()
-        okHttpBuilder.addInterceptor { chain ->
+        val httpClientBuilder = OkHttpClient.Builder()
+        httpClientBuilder.connectTimeout(2, TimeUnit.MINUTES)
+            .writeTimeout(2, TimeUnit.MINUTES)
+            .readTimeout(2, TimeUnit.MINUTES)
+            .connectionPool(ConnectionPool(3, 10, TimeUnit.MINUTES))
+
+        httpClientBuilder.addInterceptor { chain ->
             val original = chain.request()
             val builder: Request.Builder
             builder = original.newBuilder()
@@ -116,9 +119,11 @@ class AppModule  {
             chain.proceed(request)
         }
         if (BuildConfig.DEBUG) {
-            okHttpBuilder.addInterceptor(loggingInterceptor)
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            httpClientBuilder.addInterceptor(loggingInterceptor)
         }
-        val client = okHttpBuilder.build()
+        val client = httpClientBuilder.build()
         val retroBuilder = Retrofit.Builder()
             .baseUrl("https://api-uat.unionbankph.com/")
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
