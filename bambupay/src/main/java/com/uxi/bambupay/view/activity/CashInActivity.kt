@@ -91,7 +91,8 @@ class CashInActivity : BaseActivity() {
 
         cashInViewModel.isCashOutSuccess.observe(this, Observer { isCashOutSuccess ->
             if (isCashOutSuccess) {
-                finish()
+//                finish()
+                showMain()
             }
         })
 

@@ -90,7 +90,8 @@ class CashOutActivity : BaseActivity() {
 
         cashOutViewModel.isCashOutSuccess.observe(this, Observer { isCashOutSuccess ->
             if (isCashOutSuccess) {
-                finish()
+//                finish()
+                showMain()
             }
         })
 

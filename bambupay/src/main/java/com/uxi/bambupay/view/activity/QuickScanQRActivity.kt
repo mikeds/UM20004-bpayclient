@@ -106,7 +106,7 @@ class QuickScanQRActivity : BaseActivity() {
             )
         } else {
             val intent = Intent(this@QuickScanQRActivity, ScanPayQRActivity::class.java)
-            intent.putExtra(Constants.SCREEN_FROM, Constants.QUICK_SCAN_SCREEN)
+            intent.putExtra(Constants.SCREEN_FROM, Constants.QUICK_PAY_SCAN_SCREEN)
             intent.putExtra(Constants.AMOUNT, text_input_amount.text.toString())
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)

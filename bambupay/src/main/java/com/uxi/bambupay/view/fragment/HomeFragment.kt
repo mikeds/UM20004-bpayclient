@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uxi.bambupay.R
+import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.RecyclerItemClickListener
 import com.uxi.bambupay.view.activity.*
 import com.uxi.bambupay.view.adapter.RecentTransactionsAdapter
@@ -50,12 +51,16 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             R.id.btn_send_money -> {
-                val intent = Intent(activity, SendMoneyActivity::class.java)
+//                val intent = Intent(activity, SendMoneyActivity::class.java)
+                val intent = Intent(activity, OtpActivity::class.java)
+                intent.putExtra(Constants.SCREEN_FROM, Constants.SEND_MONEY_SCREEN)
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             R.id.btn_cash_out -> {
-                val intent = Intent(activity, CashOutActivity::class.java)
+//                val intent = Intent(activity, CashOutActivity::class.java)
+                val intent = Intent(activity, OtpActivity::class.java)
+                intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_OUT_SCREEN)
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }

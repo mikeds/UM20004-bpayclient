@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.uxi.bambupay.R
+import com.uxi.bambupay.utils.Constants
 import kotlinx.android.synthetic.main.activity_select_cash_in.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 
@@ -50,7 +51,8 @@ class SelectCashInActivity : AppCompatActivity() {
 
     private fun events() {
         btn_cash_in_merchant.setOnClickListener {
-            val intent = Intent(this@SelectCashInActivity, CashInActivity::class.java)
+            val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
+            intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_IN_OTC_SCREEN)
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         }

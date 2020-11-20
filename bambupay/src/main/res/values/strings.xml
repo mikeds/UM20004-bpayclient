@@ -107,6 +107,10 @@
     <string name="verification_title">Enter verification code we just sent you via email</string>
     <string name="verification">Verification</string>
 
+    <string name="otp_title">Please enter OTP number</string>
+    <string name="otp">OTP</string>
+    <string name="resend_otp">Re-send OTP Number</string>
+
     <string name="pending">Pending</string>
     <string name="approved">Approved</string>
     <string name="cancelled">Cancelled</string>

@@ -108,7 +108,8 @@ class SendMoneyActivity : BaseActivity() {
                 val successDialog = SuccessDialog(this, message, text_input_amount.text.toString(), "Oct 03, 2020 | 10:00PM", null)
                 successDialog.setOnSuccessDialogClickListener(object : SuccessDialog.OnSuccessDialogClickListener {
                     override fun onDashBoardClicked() {
-                        finish()
+//                        finish()
+                        showMain()
                     }
 
                     override fun onNewClicked() {
