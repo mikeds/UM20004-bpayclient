@@ -66,7 +66,7 @@ constructor(private val repository: LoginRepository, private val utils: Utils) :
                             isSuccessLoggedIn.value = true
                         }
                     } else {
-                        it.message?.let { error ->
+                        it.errorMessage?.let { error ->
                             errorMessage.value = error
                             Log.e("DEBUG", "error message:: $error")
                         }

@@ -196,7 +196,7 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
 
                 } else {
                     if (it.error == true) {
-                        it.message?.let { error ->
+                        it.errorMessage?.let { error ->
                             errorMessage.value = error
                             Log.e("DEBUG", "error message:: $error")
                         }

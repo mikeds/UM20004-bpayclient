@@ -49,7 +49,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
                     quickPayData.value = it.response
 
                 } else {
-                    it.message?.let { error ->
+                    it.errorMessage?.let { error ->
                         errorMessage.value = error
                     }
                 }
@@ -86,7 +86,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
                         createPayQrData.value = it1
                     }
                 } else {
-                    it.message?.let { error ->
+                    it.errorMessage?.let { error ->
                         errorMessage.value = error
                         Log.e("DEBUG", "error message:: $error")
                     }
@@ -120,7 +120,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
                     quickPaySuccessMsg.value = it.successMessage
                     quickPayData.value = it.response
                 } else {
-                    it.message?.let { error ->
+                    it.errorMessage?.let { error ->
                         errorMessage.value = error
                         Log.e("DEBUG", "error message:: $error")
                     }

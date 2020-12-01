@@ -14,7 +14,7 @@ open class GenericApiResponse<T> {
     var error: Boolean? = null
 
     @SerializedName("error_description")
-    var message: String? = null
+    var errorMessage: String? = null
 
     @SerializedName("message")
     var successMessage: String? = null

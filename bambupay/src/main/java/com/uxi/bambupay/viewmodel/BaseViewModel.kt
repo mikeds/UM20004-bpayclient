@@ -14,22 +14,15 @@ import timber.log.Timber
  */
 open class BaseViewModel : ViewModel() {
 
-    protected var disposable: CompositeDisposable? = null
+    protected var disposable: CompositeDisposable = CompositeDisposable()
     val error = MutableLiveData<Error>()
     val errorMessage = MutableLiveData<String>()
     val loading = MutableLiveData<Boolean>(false)
     val isSuccess = MutableLiveData<Boolean>()
 
-    init {
-        disposable = CompositeDisposable()
-    }
-
     override fun onCleared() {
         super.onCleared()
-        if (disposable != null) {
-            disposable?.clear()
-            disposable = null
-        }
+        disposable.clear()
     }
 
     fun refreshToken(error: Throwable) : Boolean {
@@ -56,7 +49,7 @@ open class BaseViewModel : ViewModel() {
                     val responseBody = GenericApiResponse.create<Any>(body.string())
                     when (responseBody.error) {
                         true -> {
-                            Log.e("DEBUG", "ERROR message:: ${responseBody.message}")
+                            Log.e("DEBUG", "ERROR message:: ${responseBody.errorMessage}")
                         }
                         else -> Timber.e(error)
                     }

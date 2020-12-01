@@ -44,7 +44,7 @@ constructor(private val repository: CashOutRepository, private val utils: Utils)
                         isCashOutSuccess.value = true
                     }
                 } else {
-                    it.message?.let { error ->
+                    it.errorMessage?.let { error ->
                         errorMessage.value = error
                         Log.e("DEBUG", "error message:: $error")
                     }

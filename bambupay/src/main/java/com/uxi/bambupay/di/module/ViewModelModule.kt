@@ -83,6 +83,11 @@ abstract class ViewModelModule {
     internal abstract fun bindFeeViewModel(feeViewModel: FeeViewModel): ViewModel
 
     @Binds
+    @IntoMap
+    @ViewModelKey(OtpViewModel::class)
+    internal abstract fun bindOtpViewModel(otpViewModel: OtpViewModel): ViewModel
+
+    @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
 }

@@ -44,7 +44,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
                         transactions.data?.let { it1 -> repository.saveTransactions(it1) }
                     }
                 } else {
-                    it.message?.let { error ->
+                    it.errorMessage?.let { error ->
                         errorMessage.value = error
                         Log.e("DEBUG", "error message:: $error")
                     }
@@ -81,7 +81,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
                                 transactions.data?.let { it1 -> repository.saveTransactions(it1) }
                             }
                         } else {
-                            it.message?.let { error ->
+                            it.errorMessage?.let { error ->
                                 errorMessage.value = error
                                 Log.e("DEBUG", "error message:: $error")
                             }
@@ -118,7 +118,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
 
                     }
                 } else {
-                    it.message?.let { error ->
+                    it.errorMessage?.let { error ->
                         errorMessage.value = error
                         Log.e("DEBUG", "error message:: $error")
                     }
@@ -169,7 +169,7 @@ constructor(private val repository: TransactionRepository, private val utils: Ut
                 if (it.response != null) {
                     sendMoneySuccessMsg.value = it.successMessage
                 } else {
-                    it.message?.let { error ->
+                    it.errorMessage?.let { error ->
                         errorMessage.value = error
                         Log.e("DEBUG", "error message:: $error")
                     }

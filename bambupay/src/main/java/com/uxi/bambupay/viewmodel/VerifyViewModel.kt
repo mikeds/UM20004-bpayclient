@@ -36,7 +36,7 @@ constructor(private val repository: VerifyRepository, private val utils: Utils) 
 
                 } else {
                     if (it.error == true) {
-                        it.message?.let { error ->
+                        it.errorMessage?.let { error ->
                             errorMessage.value = error
                             Log.e("DEBUG", "error message:: $error")
                         }
@@ -80,7 +80,7 @@ constructor(private val repository: VerifyRepository, private val utils: Utils) 
 
                 } else {
                     if (it.error == true) {
-                        it.message?.let { error ->
+                        it.errorMessage?.let { error ->
                             errorMessage.value = error
                             Log.e("DEBUG", "error message:: $error")
                         }

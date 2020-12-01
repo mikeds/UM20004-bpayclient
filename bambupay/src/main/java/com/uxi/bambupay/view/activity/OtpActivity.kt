@@ -5,16 +5,22 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.viewmodel.OtpViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_otp.*
+import timber.log.Timber
 
 /**
  * Created by Eraño Payawal on 11/18/20.
  * hunterxer31@gmail.com
  */
 class OtpActivity : BaseActivity() {
+
+    private val otpViewModel by viewModels<OtpViewModel> { viewModelFactory }
 
     private val fromScreen by lazy {
         intent?.getStringExtra(Constants.SCREEN_FROM)
@@ -24,6 +30,8 @@ class OtpActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setupToolbar()
         events()
+        observeViewModel()
+        otpViewModel.subscribeRequestOtp()
     }
 
     override fun getLayoutId() = R.layout.activity_otp
@@ -77,12 +85,50 @@ class OtpActivity : BaseActivity() {
         })
 
         btn_send.setOnClickListener {
-            screenIntent()
+            otpViewModel.subscribeSubmitOTP(pin_view.text.toString())
         }
 
         btn_cancel.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == SUBSCRIBE_GLOBE_TOKEN) {
+            val code = data?.getStringExtra("GLOBE_CODE")
+            Timber.tag("DEBUG").e("globe token:: $code")
+            otpViewModel.subscribeOtpCode(code)
+        }
+    }
+
+    private fun observeViewModel() {
+        otpViewModel.isLoading.observe(this, Observer {
+            if (it) {
+                showProgressDialog("Loading...")
+            } else {
+                dismissProgressDialog()
+            }
+        })
+        otpViewModel.redirectUrl.observe(this, Observer {
+            if (!it.isNullOrEmpty()) {
+                val intent = Intent(this@OtpActivity, WebviewOtpActivity::class.java)
+                intent.putExtra(Constants.REDIRECT_URL, it)
+                startActivityForResult(intent, SUBSCRIBE_GLOBE_TOKEN)
+                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+            }
+        })
+        otpViewModel.isSuccessOtp.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {  success ->
+                if (success) {
+                    screenIntent()
+                }
+            }
+        })
+        otpViewModel.errorMsg.observe(this, Observer {
+            showDialogMessage(it)
+        })
     }
 
     private fun screenIntent() {
@@ -126,6 +172,10 @@ class OtpActivity : BaseActivity() {
             }
 
         }
+    }
+
+    companion object {
+        const val SUBSCRIBE_GLOBE_TOKEN = 0x0001
     }
 
 }

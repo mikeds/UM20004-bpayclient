@@ -42,7 +42,7 @@ constructor(private val repository: HomeRepository, private val utils: Utils) : 
                         repository.saveBalance(userBalance)
                     }
                 } else {
-                    it.message?.let { error ->
+                    it.errorMessage?.let { error ->
                         errorMessage.value = error
                         Log.e("DEBUG", "error message:: $error")
                     }
