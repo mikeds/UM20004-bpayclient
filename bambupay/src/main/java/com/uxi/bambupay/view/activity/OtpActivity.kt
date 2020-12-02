@@ -91,6 +91,10 @@ class OtpActivity : BaseActivity() {
         btn_cancel.setOnClickListener {
             onBackPressed()
         }
+
+        btn_resend_otp.setOnClickListener {
+            otpViewModel.subscribeRequestOtp()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

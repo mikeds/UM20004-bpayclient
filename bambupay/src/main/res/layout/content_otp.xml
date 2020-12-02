@@ -41,6 +41,14 @@
             android:textIsSelectable="false"
             android:textSize="50sp" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_resend_otp"
+            style="@style/ButtonBorderlessColored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/resend_otp" />
+
         <Button
             android:id="@+id/btn_send"
             style="@style/TextViewSmallBody.Bold"
