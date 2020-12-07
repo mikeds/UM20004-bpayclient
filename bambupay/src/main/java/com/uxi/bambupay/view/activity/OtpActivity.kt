@@ -175,6 +175,14 @@ class OtpActivity : BaseActivity() {
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
 
+            Constants.REGISTRATION_SCREEN -> {
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                finish()
+            }
+
         }
     }
 

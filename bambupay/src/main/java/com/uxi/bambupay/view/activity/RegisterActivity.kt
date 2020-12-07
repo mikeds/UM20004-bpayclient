@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.Province
 import com.uxi.bambupay.utils.BitmapUtils
+import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.FilePickerManager
 import com.uxi.bambupay.view.adapter.ProvinceAdapter
 import com.uxi.bambupay.viewmodel.LoginViewModel
@@ -357,7 +358,8 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
         registerViewModel.isSuccess.observe(this, Observer { isSuccess ->
             if (isSuccess) {
-                showVerificationScreen()
+//                showVerificationScreen()
+                showOtpScreen()
             } else {
                 viewModelLogin.subscribeToken()
             }
@@ -435,6 +437,13 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                 }
             }, Timber::e)
             .addTo(disposeBag)
+    }
+
+    private fun showOtpScreen() {
+        val intent = Intent(this, OtpActivity::class.java)
+        intent.putExtra(Constants.SCREEN_FROM, Constants.REGISTRATION_SCREEN)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
 
 }

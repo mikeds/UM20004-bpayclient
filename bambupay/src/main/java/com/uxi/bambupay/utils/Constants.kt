@@ -42,6 +42,7 @@ class Constants {
         const val SCAN_PAY_QR_SCREEN = "scan_pay_qr_screen"
         const val CREATE_PAY_QR_SCREEN = "create_pay_qr_screen"
         const val QUICK_PAY_SCAN_SCREEN = "quick_pay_scan_screen"
+        const val REGISTRATION_SCREEN = "registration_screen"
 
         const val REDIRECT_URL = "redirect_url"
     }
