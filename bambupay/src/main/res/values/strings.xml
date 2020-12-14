@@ -41,6 +41,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="email_verification">Email Verification</string>
+    <string name="mobile_verification">Mobile Verification</string>
     <string name="register">Register</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="register_details">Please fill up this form to create an account.</string>

@@ -26,12 +26,21 @@ class OtpActivity : BaseActivity() {
         intent?.getStringExtra(Constants.SCREEN_FROM)
     }
 
+    private val mobileNumber by lazy {
+        intent?.getStringExtra(Constants.MOBILE_NUMBER)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
         events()
         observeViewModel()
-        otpViewModel.subscribeRequestOtp()
+
+        if (!fromScreen.isNullOrEmpty() && fromScreen == Constants.REGISTRATION_SCREEN) {
+            otpViewModel.subscribeRequestOtp(mobileNum = mobileNumber, module = "reg")
+        } else {
+            otpViewModel.subscribeRequestOtp(mobileNum = mobileNumber)
+        }
     }
 
     override fun getLayoutId() = R.layout.activity_otp
@@ -93,7 +102,7 @@ class OtpActivity : BaseActivity() {
         }
 
         btn_resend_otp.setOnClickListener {
-            otpViewModel.subscribeRequestOtp()
+            otpViewModel.subscribeRequestOtp(mobileNum = mobileNumber)
         }
     }
 

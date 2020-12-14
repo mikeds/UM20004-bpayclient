@@ -33,29 +33,49 @@ constructor(
     private val _errorMessage = MutableLiveData<String>()
     val errorMsg: LiveData<String> = _errorMessage
 
-    fun subscribeRequestOtp() {
+    private var mobileNum: String? = null
+    private var module: String? = null//"login" // default
+    private var userMobileNum: String? = null
+
+    fun subscribeRequestOtp(mobileNum: String? = null, module: String? = null) {
+        this.mobileNum = mobileNum
+
+        Timber.tag("DEBUG").e("before module:: $module")
+        if (!module.isNullOrEmpty()) {
+           this.module = module
+        }
+        Timber.tag("DEBUG").e("after module:: ${this.module}")
         val user = mainRepo.loadCurrentUser()
 
-        user?.let { it1 ->
-            val mobileNumber = it1.mobileNumber
-            if (mobileNumber.isNullOrEmpty()) return
+        val tempNum = this.mobileNum ?: user?.mobileNumber
+        Timber.tag("DEBUG").e("mobileNumber:: $tempNum")
 
-            var phoneNumber = ""
-            if (mobileNumber.startsWith("63")) {
-                phoneNumber = mobileNumber.removeRange(0, 2)
+        if (tempNum.isNullOrEmpty()) return
+
+        val phoneNumber = when {
+            tempNum.startsWith("63") -> {
+                tempNum.removeRange(0, 2)
             }
-
-            repository.loadRequestOTP(phoneNumber)
-                .doOnSubscribe { _isLoading.value = true }
-                .doAfterTerminate { _isLoading.value = false }
-                .subscribe({ res->
-                    res?.redirectUrl?.let {
-                        Timber.tag("DEBUG").e("redirectUrl=> $it")
-                        _redirectUrl.postValue(it)
-                    }
-                }, Timber::e)
-                .addTo(disposable)
+            tempNum.startsWith("09") -> {
+                tempNum.removeRange(0, 1)
+            }
+            else -> { tempNum }
         }
+
+        Timber.tag("DEBUG").e("PASSED! phoneNumber => $phoneNumber")
+
+        userMobileNum = phoneNumber
+
+        repository.loadRequestOTP(phoneNumber, this.module)
+            .doOnSubscribe { _isLoading.value = true }
+            .doAfterTerminate { _isLoading.value = false }
+            .subscribe({ res->
+                res?.redirectUrl?.let {
+                    Timber.tag("DEBUG").e("redirectUrl=> $it")
+                    _redirectUrl.postValue(it)
+                }
+            }, Timber::e)
+            .addTo(disposable)
     }
 
     fun subscribeOtpCode(code: String?) {
@@ -69,8 +89,9 @@ constructor(
                 res?.response?.let {
                     Timber.tag("DEBUG").e("token => ${it.accessToken}")
                     Timber.tag("DEBUG").e("subsNum => ${it.subscriberNumber}")
+                    userMobileNum = it.subscriberNumber
                     if (!it.accessToken.isNullOrEmpty()) {
-                        subscribeRequestOtp()
+                        subscribeRequestOtp(mobileNum = it.subscriberNumber)
                     }
                 }
             }, Timber::e)
@@ -79,9 +100,10 @@ constructor(
 
     fun subscribeSubmitOTP(otp: String?) {
         Timber.tag("DEBUG").e("OTP CODE:: $otp")
-        if (otp.isNullOrEmpty()) return
+        Timber.tag("DEBUG").e("OTP userMobileNum:: $userMobileNum")
+        if (otp.isNullOrEmpty() || userMobileNum.isNullOrEmpty()) return
 
-        repository.loadSubmitOTP(otp)
+        repository.loadSubmitOTP(otp, userMobileNum!!)
             .doOnSubscribe { _isLoading.value = true }
             .doAfterTerminate { _isLoading.value = false }
             .subscribe({ it1 ->

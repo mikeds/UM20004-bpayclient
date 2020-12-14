@@ -22,8 +22,8 @@ class AuthenticationInterceptor
         val original = chain.request()
         val builder: Request.Builder
 
-        Timber.tag("DEBUG").e("TOKEN:: ${utils?.token}")
-        Timber.tag("DEBUG").e("USER TOKEN:: ${utils?.userToken}")
+        Timber.tag("Authentication").e("TOKEN:: ${utils?.token}")
+        Timber.tag("Authentication").e("USER TOKEN:: ${utils?.userToken}")
 
         var token = ""
         utils?.let {
@@ -39,7 +39,7 @@ class AuthenticationInterceptor
             } else {
                 token = if (it.userToken.isNullOrBlank() && it.isUserTokenExpired) {
                     val userAuth = Credentials.basic(it.userSecretCode!!, it.userSecretKey!!)
-                    Timber.tag("DEBUG").e("userAuth:: $userAuth")
+                    Timber.tag("Authentication").e("userAuth:: $userAuth")
                     "".plus(userAuth)
                 } else {
                     "Bearer ${it.userToken}"

@@ -45,5 +45,6 @@ class Constants {
         const val REGISTRATION_SCREEN = "registration_screen"
 
         const val REDIRECT_URL = "redirect_url"
+        const val MOBILE_NUMBER = "mobile_number"
     }
 }

@@ -43,11 +43,18 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             R.id.btn_verification -> {
-                val intent = Intent(this, VerificationEmailActivity::class.java)
+                /*val intent = Intent(this, VerificationEmailActivity::class.java)
                 startActivity(intent)
-                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)*/
+                showMobileVerification()
             }
         }
+    }
+
+    private fun showMobileVerification() {
+        val intent = Intent(this, VerificationMobileActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
 
     private fun observeViewModel() {

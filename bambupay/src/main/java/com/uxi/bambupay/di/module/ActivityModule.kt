@@ -72,4 +72,7 @@ abstract class ActivityModule {
     @ContributesAndroidInjector()
     internal abstract fun contributeOtpActivity(): OtpActivity
 
+    @ContributesAndroidInjector()
+    internal abstract fun contributeVerificationMobileActivity(): VerificationMobileActivity
+
 }

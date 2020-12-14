@@ -17,9 +17,13 @@ import javax.inject.Singleton
 @Singleton
 class OtpRepository @Inject constructor(private val webService: WebService) {
 
-    fun loadRequestOTP(mobileNumber: String): Flowable<OtpResponse> {
+    fun loadRequestOTP(mobileNumber: String, module: String?): Flowable<OtpResponse> {
         val map = HashMap<String, String>()
         map["mobile_no"] = mobileNumber
+
+        if (!module.isNullOrEmpty()) {
+            map["module"] = module
+        }
         return webService.requestOTP(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -31,9 +35,10 @@ class OtpRepository @Inject constructor(private val webService: WebService) {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun loadSubmitOTP(otp: String): Flowable<GenericApiResponse<Void>> {
+    fun loadSubmitOTP(otp: String, mobileNumber: String): Flowable<GenericApiResponse<Void>> {
         val map = HashMap<String, String>()
         map["otp"] = otp
+        map["mobile_no"] = mobileNumber
         return webService.submitOTP(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

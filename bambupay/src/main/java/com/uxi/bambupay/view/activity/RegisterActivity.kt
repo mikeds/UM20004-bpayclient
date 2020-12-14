@@ -442,6 +442,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     private fun showOtpScreen() {
         val intent = Intent(this, OtpActivity::class.java)
         intent.putExtra(Constants.SCREEN_FROM, Constants.REGISTRATION_SCREEN)
+        intent.putExtra(Constants.MOBILE_NUMBER, input_mobile_number.text.toString())
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
