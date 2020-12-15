@@ -159,37 +159,37 @@ class OtpActivity : BaseActivity() {
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
-
             Constants.SEND_MONEY_SCREEN -> {
                 val intent = Intent(this@OtpActivity, SendMoneyActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
-
             Constants.SCAN_PAY_QR_SCREEN -> {
                 val intent = Intent(this@OtpActivity, ScanPayQrCodeActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
-
             Constants.CREATE_PAY_QR_SCREEN -> {
                 val intent = Intent(this@OtpActivity, CreateQRActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
-
             Constants.QUICK_PAY_SCAN_SCREEN -> {
                 val intent = Intent(this@OtpActivity, QuickScanQRActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
-
             Constants.REGISTRATION_SCREEN -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
                 finish()
+            }
+            Constants.CASH_IN_CARD_SCREEN -> {
+                val intent = Intent(this@OtpActivity, CashInCardActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
 
         }

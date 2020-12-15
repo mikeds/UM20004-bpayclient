@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".view.activity.CashInCardActivity"
+    tools:showIn="@layout/activity_cash_in_card">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextViewSmallBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cash_in_details"
+            android:textColor="@color/green" />
+
+        <TextView
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/amount" />
+
+        <EditText
+            android:id="@+id/text_input_amount"
+            style="@style/TextViewSmall.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/underline"
+            android:gravity="center_vertical"
+            android:hint="0"
+            android:inputType="number"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp" />
+
+        <TextView
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/fee" />
+
+        <TextView
+            android:id="@+id/text_fee"
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="0"
+            android:textColor="@color/darker_grey" />
+
+        <TextView
+            style="@style/TextViewSmallBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="Card Details"
+            android:textColor="@color/green" />
+
+        <com.braintreepayments.cardform.view.CardEditText
+            android:hint="Card Number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.braintreepayments.cardform.view.ExpirationDateEditText
+                android:layout_width="0dp"
+                android:hint="MM / YYYY"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.braintreepayments.cardform.view.CvvEditText
+                android:layout_width="0dp"
+                android:hint="CVV"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <com.braintreepayments.cardform.view.CardholderNameEditText
+            android:hint="Cardholder's Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="@string/send_mobile"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/text_input_mobile"
+            style="@style/TextViewSmall.Regular2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/underline"
+            android:gravity="center_vertical"
+            android:hint="639xxxxxxxxx"
+            android:inputType="text"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/black"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_transact"
+            style="@style/TextViewSmallBody.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:background="@drawable/bg_rounded_green"
+            android:text="@string/transact"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/TextViewSmallBody.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_rounded_white_border_green"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/green" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

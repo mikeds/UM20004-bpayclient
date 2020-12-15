@@ -62,6 +62,13 @@ class SelectCashInActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(R.anim.slide_up, R.anim.stay)
         }
+
+        btn_card.setOnClickListener {
+            val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
+            intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_IN_CARD_SCREEN)
+            startActivity(intent)
+            overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+        }
     }
 
 }

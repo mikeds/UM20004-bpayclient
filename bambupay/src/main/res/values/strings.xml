@@ -132,6 +132,7 @@
 
     <string name="cash_in_merchant">Cash In via Merchant (Over The Counter)</string>
     <string name="cash_in_bank">Cash In via Bank</string>
+    <string name="cash_in_card">Cash In via Credit or Debit Card</string>
     <string name="select_bank">Select a Bank</string>
     <string name="union_bank_login">Unionbank Login</string>
     <string name="bank_transfer">Bank Transfer</string>

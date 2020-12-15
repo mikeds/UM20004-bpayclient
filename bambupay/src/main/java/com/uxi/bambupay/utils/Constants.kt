@@ -37,6 +37,7 @@ class Constants {
 
         const val SCREEN_FROM = "screen_from"
         const val CASH_IN_OTC_SCREEN = "cash_in_otc_screen"
+        const val CASH_IN_CARD_SCREEN = "cash_in_card_screen"
         const val CASH_OUT_SCREEN = "cash_out_screen"
         const val SEND_MONEY_SCREEN = "send_money_screen"
         const val SCAN_PAY_QR_SCREEN = "scan_pay_qr_screen"
