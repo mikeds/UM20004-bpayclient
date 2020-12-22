@@ -23,6 +23,7 @@ import com.uxi.bambupay.model.Province
 import com.uxi.bambupay.utils.BitmapUtils
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.FilePickerManager
+import com.uxi.bambupay.utils.formatDate
 import com.uxi.bambupay.view.adapter.ProvinceAdapter
 import com.uxi.bambupay.viewmodel.LoginViewModel
 import com.uxi.bambupay.viewmodel.RegisterViewModel
@@ -270,8 +271,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                 mCalendar.set(Calendar.YEAR, year)
                 mCalendar.set(Calendar.MONTH, monthOfYear)
                 mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                val date: String =
-                    DateFormat.getDateInstance(DateFormat.MEDIUM).format(mCalendar.time)
+                val date: String = formatDate(mCalendar.time)
                 input_date_of_birth.setText(date)
                 input_date_of_birth.error = null
             },

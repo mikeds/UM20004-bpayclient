@@ -78,10 +78,10 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
             return
         }
 
-        /*if (idNumber.isNullOrEmpty()) {
-            isIdNumberEmpty.value = true
-            return
-        }*/
+//        if (idNumber.isNullOrEmpty()) {
+//            isIdNumberEmpty.value = true
+//            return
+//        }
 
         if (!utils.isValidPhone(mobileNumber!!)) {
             isMobileNumberEmpty.value = true
@@ -138,10 +138,10 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
             }
         }
 
-        /*var countryIsoCode = utils.getCountryIsoCode(mobileNumber)
-        if (countryIsoCode == null) {
-            countryIsoCode = "63"
-        }*/
+//        var countryIsoCode = utils.getCountryIsoCode(mobileNumber)
+//        if (countryIsoCode == null) {
+//            countryIsoCode = "63"
+//        }
 
         val tempNumber: String = if (mobileNumber.startsWith("09")) {
             mobileNumber.replaceFirst("0", "63")
@@ -155,7 +155,8 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
 
         val image = postImageFile.value
 
-        val dob = convertDoB(dateOfBirth)
+        Timber.tag("DEBUG").e("dateOfBirth:: $dateOfBirth")
+        val dob = convertDoB(dateOfBirth!!)
         Timber.tag("DEBUG").e("DOB:: $dob")
         Timber.tag("DEBUG").e("GENDER:: $gender")
         Timber.tag("DEBUG").e("phoneNumber:: $phoneNumber")
