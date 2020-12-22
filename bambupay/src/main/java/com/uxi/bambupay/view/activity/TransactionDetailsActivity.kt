@@ -113,7 +113,7 @@ class TransactionDetailsActivity : BaseActivity() {
                     txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.black))
                 }
             }
-            Constants.CASH_IN -> {
+            Constants.CASH_IN, Constants.CASH_IN_PAYNAMICS -> {
                 txt_transaction_type.text = getString(R.string.cash_in)
                 txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.light_green))
             }

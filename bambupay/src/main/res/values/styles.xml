@@ -172,5 +172,23 @@
 <!--        <item name="android:fontFamily">@font/open_sans_regular</item>-->
 <!--    </style>-->
 
+    <style name="TextLayoutHintAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
+    </style>
+
+    <style name="TextInputView" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:inputType">textCapWords</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">@dimen/text_input_padding_top</item>
+        <item name="android:paddingBottom">@dimen/text_input_padding_bottom</item>
+        <item name="android:background">@drawable/bg_underline_selector</item>
+    </style>
+
 
 </resources>

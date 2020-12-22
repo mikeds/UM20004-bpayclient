@@ -66,35 +66,92 @@
             android:text="Card Details"
             android:textColor="@color/green" />
 
-        <com.braintreepayments.cardform.view.CardEditText
-            android:hint="Card Number"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:hint="@string/hint_card_numbers"
+            app:hintTextAppearance="@style/TextLayoutHintAppearance">
+
+            <com.egpayawal.card_library.view.CardTextInputEditText
+                android:id="@+id/text_input_card_number"
+                style="@style/TextInputView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                app:displayCardIcon="true"
+                app:separatorState="spaceSpan" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <com.braintreepayments.cardform.view.ExpirationDateEditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
-                android:hint="MM / YYYY"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginEnd="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:hint="@string/hint_card_date"
+                app:endIconCheckable="true"
+                app:endIconMode="clear_text"
+                app:hintTextAppearance="@style/TextLayoutHintAppearance">
 
-            <com.braintreepayments.cardform.view.CvvEditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_card_expiration"
+                    style="@style/TextInputView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789"
+                    android:inputType="number"
+                    android:maxLength="5" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
-                android:hint="CVV"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginStart="@dimen/_8sdp"
+                android:layout_weight="1"
+                android:hint="@string/hint_cvv"
+                app:hintTextAppearance="@style/TextLayoutHintAppearance"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/black_25">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/text_input_cvv"
+                    style="@style/TextInputView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="0123456789"
+                    android:inputType="numberPassword"
+                    android:maxLength="4" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <com.braintreepayments.cardform.view.CardholderNameEditText
-            android:hint="Cardholder's Name"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:hint="@string/hint_card_holder"
+            app:endIconCheckable="true"
+            app:endIconMode="clear_text"
+            app:hintTextAppearance="@style/TextLayoutHintAppearance">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_card_name"
+                style="@style/TextInputView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:inputType="textCapWords" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             style="@style/TextViewSmall.SemiBold"

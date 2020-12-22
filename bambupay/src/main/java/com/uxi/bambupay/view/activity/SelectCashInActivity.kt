@@ -65,6 +65,8 @@ class SelectCashInActivity : AppCompatActivity() {
 
         btn_card.setOnClickListener {
             val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
+            // For testing only
+            // val intent = Intent(this@SelectCashInActivity, CashInCardActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_IN_CARD_SCREEN)
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)

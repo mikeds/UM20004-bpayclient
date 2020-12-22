@@ -12,6 +12,7 @@ import com.uxi.bambupay.R
 import com.uxi.bambupay.model.RecentTransaction
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN
+import com.uxi.bambupay.utils.Constants.Companion.CASH_IN_PAYNAMICS
 import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
 import com.uxi.bambupay.utils.Constants.Companion.CREATE_SCAN_QR
 import com.uxi.bambupay.utils.Constants.Companion.DEBIT
@@ -54,7 +55,7 @@ class RecentTransactionsAdapter(
                             }
                         }
                     }
-                    CASH_IN -> {
+                    CASH_IN, CASH_IN_PAYNAMICS -> {
                         txtTransactionType.text = context?.getString(R.string.cash_in)
                         context?.let {
                             txtAmount.setTextColor((ContextCompat.getColor(context, R.color.light_green)))

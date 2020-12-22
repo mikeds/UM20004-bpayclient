@@ -167,6 +167,11 @@
     <string name="scan_qr_code">Scan QR Code</string>
     <string name="proceed">Proceed</string>
 
+    <string name="hint_card_numbers">Card numbers</string>
+    <string name="hint_card_date">MM/YY</string>
+    <string name="hint_cvv">CVV</string>
+    <string name="hint_card_holder">Cardholder\'s Name</string>
+
     <string-array name="gender_choice_array">
         <item>Male</item>
         <item>Female</item>

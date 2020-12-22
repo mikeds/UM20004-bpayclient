@@ -51,6 +51,8 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
             }
             R.id.btn_send_money -> {
                 val intent = Intent(activity, OtpActivity::class.java)
+                // for testing only
+                // val intent = Intent(activity, SendMoneyActivity::class.java)
                 intent.putExtra(Constants.SCREEN_FROM, Constants.SEND_MONEY_SCREEN)
                 // note: for testing purposes only
                 // intent.putExtra(Constants.MOBILE_NUMBER, "09266959071")

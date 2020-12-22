@@ -14,6 +14,8 @@ import com.uxi.bambupay.viewmodel.QRCodeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_scan_pay_qr_code.*
+import kotlinx.android.synthetic.main.content_scan_pay_qr_code.btn_cancel
+import kotlinx.android.synthetic.main.content_scan_pay_qr_code.btn_transact
 
 /**
  * Created by Eraño Payawal on 10/12/20.
@@ -128,19 +130,25 @@ class ScanPayQrCodeActivity : BaseActivity() {
             message = successMessage
         })
         qrCodeViewModel.quickPayData.observe(this, {
-            val successDialog =
-                SuccessDialog(this, message, "", "Oct 03, 2020 | 10:00PM", it.qrCode)
-            successDialog.setOnSuccessDialogClickListener(object : SuccessDialog.OnSuccessDialogClickListener {
-                override fun onDashBoardClicked() {
-                    showMain()
-                }
-
-                override fun onNewClicked() {
-                    text_input_ref_num.setText("")
-                }
-            })
-            successDialog.show()
+            val dialog = SuccessDialog(
+                ctx = this,
+                message = message,
+                amount = "",
+                date = "Oct 03, 2020 | 10:00PM",
+                qrCodeUrl = it.qrCode,
+                onNewClicked = ::viewNewClick,
+                onDashBoardClicked = ::viewDashboardClick
+            )
+            dialog.show()
         })
+    }
+
+    private fun viewNewClick() {
+        text_input_ref_num.setText("")
+    }
+
+    private fun viewDashboardClick() {
+        showMain()
     }
 
     private fun cameraPermission() {

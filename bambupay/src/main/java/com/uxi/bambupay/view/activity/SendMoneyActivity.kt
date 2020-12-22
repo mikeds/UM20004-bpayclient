@@ -13,6 +13,11 @@ import com.uxi.bambupay.viewmodel.TransactionViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_send_money.*
+import kotlinx.android.synthetic.main.content_send_money.btn_cancel
+import kotlinx.android.synthetic.main.content_send_money.btn_transact
+import kotlinx.android.synthetic.main.content_send_money.text_fee
+import kotlinx.android.synthetic.main.content_send_money.text_input_amount
+import kotlinx.android.synthetic.main.content_send_money.text_input_mobile
 
 class SendMoneyActivity : BaseActivity() {
 
@@ -105,20 +110,16 @@ class SendMoneyActivity : BaseActivity() {
 
         transactionViewModel.sendMoneySuccessMsg.observe(this, Observer { message ->
             if (!message.isNullOrEmpty()) {
-                val successDialog = SuccessDialog(this, message, text_input_amount.text.toString(), "Oct 03, 2020 | 10:00PM", null)
-                successDialog.setOnSuccessDialogClickListener(object : SuccessDialog.OnSuccessDialogClickListener {
-                    override fun onDashBoardClicked() {
-//                        finish()
-                        showMain()
-                    }
-
-                    override fun onNewClicked() {
-                        text_input_amount.setText("")
-                        text_input_mobile.setText("")
-                        input_message.setText("")
-                    }
-                })
-                successDialog.show()
+                val dialog = SuccessDialog(
+                    ctx = this,
+                    message = message,
+                    amount = text_input_amount.text.toString(),
+                    date = "Oct 03, 2020 | 10:00PM",
+                    qrCodeUrl = null,
+                    onNewClicked = ::viewNewClick,
+                    onDashBoardClicked = ::viewDashboardClick
+                )
+                dialog.show()
             }
         })
 
@@ -134,6 +135,16 @@ class SendMoneyActivity : BaseActivity() {
             }
         })
 
+    }
+
+    private fun viewNewClick() {
+        text_input_amount.setText("")
+        text_input_mobile.setText("")
+        input_message.setText("")
+    }
+
+    private fun viewDashboardClick() {
+        showMain()
     }
 
 }

@@ -3,6 +3,7 @@ package com.uxi.bambupay.api
 import com.uxi.bambupay.model.*
 import com.uxi.bambupay.model.otp.OtpResponse
 import com.uxi.bambupay.model.otp.OtpTokenResponse
+import com.uxi.bambupay.model.paynamics.Paynamics
 import io.reactivex.Flowable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -86,5 +87,8 @@ interface WebService {
 
     @GET("otp/token")
     fun tokenOTP(@Query("code") code: String): Flowable<GenericApiResponse<OtpTokenResponse>>
+
+    @POST("transactions/client/cash-in")
+    fun cashInPaynamics(@Body payload: HashMap<String, String>): Flowable<GenericApiResponse<Paynamics>>
 
 }

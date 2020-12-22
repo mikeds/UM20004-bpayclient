@@ -21,6 +21,7 @@ import com.uxi.bambupay.view.widget.QRDetector
 import com.uxi.bambupay.viewmodel.QRCodeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.activity_scan_qr_code.*
+import kotlinx.android.synthetic.main.activity_scan_qr_code.btn_cancel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
@@ -136,20 +137,27 @@ class ScanPayQRActivity : BaseActivity() {
             message = successMessage
         })
         qrCodeViewModel.quickPayData.observe(this, Observer {
-            val successDialog = SuccessDialog(this, message, amount, "Oct 03, 2020 | 10:00PM", it.qrCode)
-            successDialog.setOnSuccessDialogClickListener(object : SuccessDialog.OnSuccessDialogClickListener {
-                override fun onDashBoardClicked() {
-                    showMain()
-                }
-
-                override fun onNewClicked() {
-                    EventBus.getDefault().post(NewTransactionEvent())
-                    finish()
-                }
-            })
-            successDialog.show()
+            val dialog = SuccessDialog(
+                ctx = this,
+                message = message,
+                amount = amount,
+                date = "Oct 03, 2020 | 10:00PM",
+                qrCodeUrl = it.qrCode,
+                onNewClicked = ::viewNewClick,
+                onDashBoardClicked = ::viewDashboardClick
+            )
+            dialog.show()
         })
 
+    }
+
+    private fun viewNewClick() {
+        EventBus.getDefault().post(NewTransactionEvent())
+        finish()
+    }
+
+    private fun viewDashboardClick() {
+        showMain()
     }
 
     private val callback = object : SurfaceHolder.Callback {
