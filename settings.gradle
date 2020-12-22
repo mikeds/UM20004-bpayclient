@@ -1,3 +1,4 @@
-include ':CardForm'
+include ':card-library'
+//include ':CardForm'
 include ':bambupay'
 rootProject.name = "BambuPay"
