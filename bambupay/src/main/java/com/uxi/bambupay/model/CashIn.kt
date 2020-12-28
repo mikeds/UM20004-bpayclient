@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
  */
 class CashIn {
 
-    @SerializedName("transaction_number")
+    /*@SerializedName("transaction_number")
     var transactionNumber: String? = null
 
     @SerializedName("transactionn_qr_code")
@@ -17,6 +17,14 @@ class CashIn {
     var merchant: String? = null
 
     @SerializedName("request_expiration")
-    var requestExpiration: String? = null
+    var requestExpiration: String? = null*/
+
+    @SerializedName("sender_ref_id")
+    var senderRefId: String? = null
+
+    @SerializedName("qr_code")
+    var qrCode: String? = null
+
+    var timestamp: String? = null
 
 }

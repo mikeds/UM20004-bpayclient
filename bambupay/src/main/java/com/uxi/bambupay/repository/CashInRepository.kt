@@ -1,10 +1,8 @@
 package com.uxi.bambupay.repository
 
-import com.uxi.bambupay.api.GenericApiResponse
 import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.api.WebService
 import com.uxi.bambupay.model.CashIn
-import com.uxi.bambupay.model.CashOut
 import com.uxi.bambupay.model.ResultWithMessage
 import com.uxi.bambupay.model.paynamics.Paynamics
 import io.reactivex.Flowable
@@ -19,10 +17,17 @@ import javax.inject.Inject
 class CashInRepository @Inject
 constructor(private val webService: WebService): BaseRepository() {
 
-    fun loadCashIn(request: Request) : Flowable<GenericApiResponse<CashIn>> {
+    fun loadCashIn(request: Request): Flowable<ResultWithMessage<CashIn>> {
         return webService.cashIn(request)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .map { res ->
+                when (val obj: CashIn? = res.response) {
+                    null -> ResultWithMessage.Error(false, res?.errorMessage)
+                    else -> ResultWithMessage.Success(obj, res.successMessage)
+                }
+            }
+            .onErrorReturn { errorHandler(it) }
     }
 
     fun loadCashInPaynamics(

@@ -8,16 +8,22 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.CashInViewModel
 import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_cash_in.*
+import kotlinx.android.synthetic.main.content_cash_in.btn_cancel
+import kotlinx.android.synthetic.main.content_cash_in.btn_transact
+import kotlinx.android.synthetic.main.content_cash_in.text_fee
+import kotlinx.android.synthetic.main.content_cash_in.text_input_amount
+import kotlinx.android.synthetic.main.content_cash_in_card.*
 
 class CashInActivity : BaseActivity() {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
-    private val cashInViewModel by viewModel<CashInViewModel>()
+    private val cashInViewModel by viewModels<CashInViewModel>{ viewModelFactory }
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,7 +102,7 @@ class CashInActivity : BaseActivity() {
             }
         })
 
-        cashInViewModel.loading.observe(this, Observer { isLoading ->
+        cashInViewModel.isLoading.observe(this, Observer { isLoading ->
             if (isLoading) {
                 showProgressDialog("Loading...")
             } else {
@@ -117,6 +123,38 @@ class CashInActivity : BaseActivity() {
             }
         })
 
+        cashInViewModel.cashInDataWithMessage.observe(this, Observer { it1 ->
+            it1?.let {
+                if (!it.first.isNullOrEmpty() && it.second != null) {
+                    val amount = text_input_amount.text.toString()
+                    val dialog = SuccessDialog(
+                        ctx = this@CashInActivity,
+                        message = it.first,
+                        amount = amount,
+                        date = it.second?.timestamp,
+                        qrCodeUrl = it.second?.qrCode,
+                        onNewClicked = ::viewNewClick,
+                        onDashBoardClicked = ::viewDashboardClick
+                    )
+                    dialog.show()
+                }
+            }
+        })
+
+        cashInViewModel.errorMessage.observe(this, Observer {
+            if (!it.isNullOrEmpty()) {
+                showMessageDialog(it)
+            }
+        })
+
+    }
+
+    private fun viewNewClick() {
+        text_input_amount.setText("")
+    }
+
+    private fun viewDashboardClick() {
+        showMain()
     }
 
 }

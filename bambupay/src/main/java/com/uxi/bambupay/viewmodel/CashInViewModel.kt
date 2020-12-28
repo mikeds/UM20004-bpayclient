@@ -1,11 +1,10 @@
 package com.uxi.bambupay.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.uxi.bambupay.api.Request
-import com.uxi.bambupay.model.PairData
+import com.uxi.bambupay.model.CashIn
 import com.uxi.bambupay.model.ResultWithMessage
 import com.uxi.bambupay.model.paynamics.Paynamics
 import com.uxi.bambupay.repository.CashInRepository
@@ -31,6 +30,7 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
 
     private val _paynamicsData = MutableLiveData<Paynamics>()
     private val _successMessage = MutableLiveData<String>()
+    private val _cashInData = MutableLiveData<CashIn>()
 
     val paynamicsDataWithMessage: MediatorLiveData<Pair<String?, Paynamics?>> = MediatorLiveData<Pair<String?, Paynamics?>>()
         .apply {
@@ -38,6 +38,16 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
                this.value = this.value?.copy(first = message) ?: Pair(message, null)
             }
             addSource(_paynamicsData) {
+                this.value = this.value?.copy(second = it) ?: Pair(null, it)
+            }
+        }
+
+    val cashInDataWithMessage: MediatorLiveData<Pair<String?, CashIn?>> = MediatorLiveData<Pair<String?, CashIn?>>()
+        .apply {
+            addSource(_successMessage) { message ->
+                this.value = this.value?.copy(first = message) ?: Pair(message, null)
+            }
+            addSource(_cashInData) {
                 this.value = this.value?.copy(second = it) ?: Pair(null, it)
             }
         }
@@ -57,31 +67,13 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
             .setType(Constants.TYPE_OTC)
             .setAmount(amount).build()
 
-        disposable?.add(repository.loadCashIn(requestBuilder)
-            .doOnSubscribe { loading.value = true }
-            .doAfterTerminate { loading.value = false }
+        repository.loadCashIn(requestBuilder)
+            .doOnSubscribe { _isLoading.value = true }
+            .doOnComplete { _isLoading.value = false }
             .subscribe({
-                if (it.response != null) {
-                    it.response?.let { cashIn ->
-                        Log.e("DEBUG", "CashIn :: ${cashIn.toString()}")
-                        isCashOutSuccess.value = true
-                    }
-                } else {
-                    it.errorMessage?.let { error ->
-                        errorMessage.value = error
-                        Log.e("DEBUG", "error message:: $error")
-                    }
-                }
-
-            }, {
-                Timber.e(it)
-                if (refreshToken(it)) {
-                    Log.e("DEBUG", "error refreshToken")
-                    utils.saveUserTokenPack("", true)
-                    isSuccess.value = false
-                }
-            })
-        )
+                resultState(it)
+            }, Timber::e)
+            .addTo(disposable)
 
     }
 
@@ -124,6 +116,11 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
                         _paynamicsData.postValue(paynamics)
                         _successMessage.postValue(t.message)
                     }
+                    is CashIn -> {
+                        val cashIn = t.value as CashIn
+                        _cashInData.postValue(cashIn)
+                        _successMessage.postValue(t.message)
+                    }
                 }
             }
             is ResultWithMessage.Error -> {
@@ -135,6 +132,7 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
                 }
                 loading.value = false
                 isSuccess.value = false
+                _isLoading.value = false
             }
         }
     }
