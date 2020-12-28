@@ -137,7 +137,10 @@ constructor(private val repository: CashOutRepository,
     fun subscribeCashOut(amount: String?, accountNo: String?, bankCode: Long?) {
         if (bankCode == -0L) return
 
-        if (amount.isNullOrEmpty() || accountNo.isNullOrEmpty()) return
+        if (amount.isNullOrEmpty() || accountNo.isNullOrEmpty()) {
+            errorMessage.value = "All fields are required!"
+            return
+        }
 
         val user = repositoryMain.loadCurrentUser() ?: return
 

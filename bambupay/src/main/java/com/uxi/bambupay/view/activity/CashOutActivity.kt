@@ -144,6 +144,12 @@ class CashOutActivity : BaseActivity() {
             }
         })
 
+        cashOutViewModel.errorMessage.observe(this, Observer {
+            if (!it.isNullOrEmpty()) {
+                showMessageDialog(it)
+            }
+        })
+
     }
 
     private fun viewNewClick() {
