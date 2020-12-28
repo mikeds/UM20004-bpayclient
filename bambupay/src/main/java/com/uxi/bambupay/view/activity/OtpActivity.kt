@@ -155,7 +155,7 @@ class OtpActivity : BaseActivity() {
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             Constants.CASH_OUT_SCREEN -> {
-                val intent = Intent(this@OtpActivity, CashOutActivity::class.java)
+                val intent = Intent(this@OtpActivity, SelectBankActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }

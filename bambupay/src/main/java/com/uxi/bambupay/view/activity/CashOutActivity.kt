@@ -7,17 +7,26 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.CashOutViewModel
 import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_cash_out.*
+import kotlinx.android.synthetic.main.content_cash_out.btn_cancel
+import kotlinx.android.synthetic.main.content_cash_out.btn_transact
+import kotlinx.android.synthetic.main.content_cash_out.text_fee
+import kotlinx.android.synthetic.main.content_cash_out.text_input_amount
 
 class CashOutActivity : BaseActivity() {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val cashOutViewModel by viewModel<CashOutViewModel>()
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
+
+    private val bankCode by lazy {
+        intent?.getLongExtra("bank_code", -0L)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +70,7 @@ class CashOutActivity : BaseActivity() {
         }
 
         btn_transact.setOnClickListener {
-            cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
+            cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_account_no.text.toString(), bankCode)
         }
 
         text_input_amount.doAfterTextChanged {
@@ -72,7 +81,8 @@ class CashOutActivity : BaseActivity() {
     private fun observeViewModel() {
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
-                cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
+//                cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
+                cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_account_no.text.toString(), bankCode)
             }
         })
 
@@ -95,7 +105,7 @@ class CashOutActivity : BaseActivity() {
             }
         })
 
-        cashOutViewModel.loading.observe(this, Observer { isLoading ->
+        cashOutViewModel.isLoading.observe(this, Observer { isLoading ->
             if (isLoading) {
                 showProgressDialog("Loading...")
             } else {
@@ -116,6 +126,34 @@ class CashOutActivity : BaseActivity() {
             }
         })
 
+        cashOutViewModel.ubpCashOutDataWithMessage.observe(this, Observer { it1 ->
+            it1?.let {
+                if (!it.first.isNullOrEmpty() && it.second != null) {
+                    val amount = text_input_amount.text.toString()
+                    val dialog = SuccessDialog(
+                        ctx = this@CashOutActivity,
+                        message = it.first,
+                        amount = amount,
+                        date = it.second?.timestamp,
+                        qrCodeUrl = it.second?.qrCode,
+                        onNewClicked = ::viewNewClick,
+                        onDashBoardClicked = ::viewDashboardClick
+                    )
+                    dialog.show()
+                }
+            }
+        })
+
+    }
+
+    private fun viewNewClick() {
+        text_input_account_no.setText("")
+        text_input_amount.setText("")
+        text_fee.text = "0"
+    }
+
+    private fun viewDashboardClick() {
+        showMain()
     }
 
 }

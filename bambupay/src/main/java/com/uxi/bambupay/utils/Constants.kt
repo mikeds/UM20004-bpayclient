@@ -9,6 +9,7 @@ class Constants {
         const val CREATE_SCAN_QR = "CreateScanQR"
         const val QUICK_PAY_QR = "QuickPayQR"
         const val CASH_IN_PAYNAMICS = "Cash-in (CC/DEBIT)"
+        const val CASH_OUT_UBP_INSTAPAY = "Cash-out (UBP/INSTAPAY)"
 
         const val PENDING = "pending"
         const val APPROVED = "approved"

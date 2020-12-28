@@ -27,6 +27,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:text="Account No" />
+
+        <EditText
+            android:id="@+id/text_input_account_no"
+            style="@style/TextViewSmall.Regular2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/underline"
+            android:gravity="center_vertical"
+            android:inputType="number"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:text="@string/amount" />
 
         <EditText
@@ -36,8 +56,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/underline"
             android:gravity="center_vertical"
-            android:hint="0.00"
-            android:inputType="numberDecimal"
+            android:hint="0"
+            android:inputType="number"
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
             android:paddingBottom="15dp" />
@@ -63,7 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:text="@string/send_mobile" />
+            android:text="@string/send_mobile"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/text_input_mobile"
@@ -72,12 +93,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/underline"
             android:gravity="center_vertical"
+            android:hint="639xxxxxxxxx"
             android:inputType="text"
             android:paddingTop="10dp"
             android:paddingEnd="15dp"
             android:paddingBottom="15dp"
-            android:hint="639xxxxxxxxx"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_transact"

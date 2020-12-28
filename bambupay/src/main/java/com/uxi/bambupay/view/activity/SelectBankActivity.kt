@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -13,6 +14,7 @@ import com.uxi.bambupay.R
 import com.uxi.bambupay.model.ubp.Bank
 import com.uxi.bambupay.utils.RecyclerItemClickListener
 import com.uxi.bambupay.view.adapter.BankAdapter
+import com.uxi.bambupay.viewmodel.CashOutViewModel
 import com.uxi.bambupay.viewmodel.InstaPayViewModel
 import kotlinx.android.synthetic.main.activity_select_bank.*
 import kotlinx.android.synthetic.main.app_toolbar.*
@@ -24,7 +26,8 @@ import timber.log.Timber
  */
 class SelectBankActivity : BaseActivity() {
 
-    private val instaPayViewModel by viewModel<InstaPayViewModel>()
+//    private val instaPayViewModel by viewModel<InstaPayViewModel>()
+    private val cashOutViewModel by viewModels<CashOutViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,9 +69,18 @@ class SelectBankActivity : BaseActivity() {
     }
 
     private fun observeViewModel() {
-        instaPayViewModel.subscribeInstaPayBanks()
+//        instaPayViewModel.subscribeInstaPayBanks()
+        cashOutViewModel.subscribeGetBanks()
 
-        instaPayViewModel.banksData.observe(this, Observer { list ->
+        /*instaPayViewModel.banksData.observe(this, Observer { list ->
+            if (list.isNotEmpty()) {
+                val appsList: MutableList<Bank> = list
+                appsList.sortBy { it.bank }
+                setBankAdapter(list)
+            }
+        })*/
+
+        cashOutViewModel.banksData.observe(this, Observer { list ->
             if (list.isNotEmpty()) {
                 val appsList: MutableList<Bank> = list
                 appsList.sortBy { it.bank }
@@ -97,12 +109,16 @@ class SelectBankActivity : BaseActivity() {
                             val item = bankAdapter.getItem(position)
 
                             item?.let {
-                                if (it.bank?.isNotEmpty()!! && it.bank == "UnionBank") {
+                                /*if (it.bank?.isNotEmpty()!! && it.bank == "UnionBank") {
                                     Timber.tag("DEBUG").e("UnionBank")
                                     val intent = Intent(this@SelectBankActivity, LoginUbpActivity::class.java)
                                     startActivity(intent)
                                     overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
-                                }
+                                }*/
+                                val intent = Intent(this@SelectBankActivity, CashOutActivity::class.java)
+                                intent.putExtra("bank_code", it.code)
+                                startActivity(intent)
+                                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
                             }
                         }
                     })

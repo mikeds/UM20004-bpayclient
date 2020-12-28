@@ -4,6 +4,9 @@ import com.uxi.bambupay.model.*
 import com.uxi.bambupay.model.otp.OtpResponse
 import com.uxi.bambupay.model.otp.OtpTokenResponse
 import com.uxi.bambupay.model.paynamics.Paynamics
+import com.uxi.bambupay.model.ubp.Bank
+import com.uxi.bambupay.model.ubp.UbpCashOut
+import com.uxi.bambupay.model.ubp.UbpToken
 import io.reactivex.Flowable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -90,5 +93,15 @@ interface WebService {
 
     @POST("transactions/client/cash-in")
     fun cashInPaynamics(@Body payload: HashMap<String, String>): Flowable<GenericApiResponse<Paynamics>>
+
+    @GET("lookup/client/ubp/banks")
+    fun getUbpBanks(): Flowable<GenericApiResponse<MutableList<Bank>>>
+
+    @GET("ubp/token")
+    fun ubpToken(@Query("bank_code") bankCode: Long): Flowable<GenericApiResponse<UbpToken>>
+
+    @POST("transactions/client/cash-out")
+    fun ubpCashOut(@Body payload: HashMap<String, String>, @Header("ubp-access-token") ubpAccessToken: String): Flowable<GenericApiResponse<UbpCashOut>>
+
 
 }

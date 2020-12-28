@@ -14,6 +14,7 @@ import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN_PAYNAMICS
 import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
+import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT_UBP_INSTAPAY
 import com.uxi.bambupay.utils.Constants.Companion.CREATE_SCAN_QR
 import com.uxi.bambupay.utils.Constants.Companion.QUICK_PAY_QR
 import com.uxi.bambupay.utils.Constants.Companion.SCAN_PAY_QR
@@ -60,7 +61,7 @@ class TransactionsHistoryAdapter(
                             txtAmount.setTextColor((ContextCompat.getColor(context, R.color.light_green)))
                         }
                     }
-                    CASH_OUT -> txtTransactionType.text = context?.getString(R.string.cash_out)
+                    CASH_OUT, CASH_OUT_UBP_INSTAPAY -> txtTransactionType.text = context?.getString(R.string.cash_out)
                     SCAN_PAY_QR -> txtTransactionType.text = context?.getString(R.string.scan_pay)
                     CREATE_SCAN_QR -> txtTransactionType.text = context?.getString(R.string.create_scan_qr)
                     QUICK_PAY_QR -> txtTransactionType.text = context?.getString(R.string.quick_qr)
