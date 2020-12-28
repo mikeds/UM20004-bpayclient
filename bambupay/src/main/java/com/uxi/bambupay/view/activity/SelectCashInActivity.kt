@@ -61,6 +61,7 @@ class SelectCashInActivity : AppCompatActivity() {
 
         btn_cash_in_bank.setOnClickListener {
             val intent = Intent(this@SelectCashInActivity, SelectBankActivity::class.java)
+            intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_IN_BANK_SCREEN)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_up, R.anim.stay)
         }
