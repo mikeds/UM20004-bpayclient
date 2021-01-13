@@ -29,7 +29,7 @@ interface WebService {
     fun cashIn(@Body params: Request): Flowable<GenericApiResponse<CashIn>>
 
     @POST("transactions/client/send-to")
-    fun sendTo(@Body params: Request): Flowable<GenericApiResponse<Pay>>
+    fun sendTo(@Body params: Request): Flowable<GenericApiResponse<SendMoney>>
 
     @POST("client/cash-out")
     fun cashOut(@Body params: Request): Flowable<GenericApiResponse<CashOut>>

@@ -96,6 +96,7 @@ class CreateQRActivity : BaseActivity() {
 
         qrCodeViewModel.createPayQrData.observe(this, Observer { scanQR ->
             scanQR?.let {
+                txt_qr_success_msg.visibility = View.VISIBLE
                 loadImage(it.qrCode!!, image_view_qr_code)
             }
         })

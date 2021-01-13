@@ -1,14 +1,18 @@
 package com.uxi.bambupay.view.activity
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.model.events.NewTransactionEvent
+import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.QRCodeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
@@ -16,6 +20,9 @@ import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_scan_pay_qr_code.*
 import kotlinx.android.synthetic.main.content_scan_pay_qr_code.btn_cancel
 import kotlinx.android.synthetic.main.content_scan_pay_qr_code.btn_transact
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * Created by Eraño Payawal on 10/12/20.
@@ -31,6 +38,7 @@ class ScanPayQrCodeActivity : BaseActivity() {
         setupToolbar()
         events()
         observeViewModel()
+        EventBus.getDefault().register(this)
     }
 
     override fun getLayoutId() = R.layout.activity_scan_pay_qr_code
@@ -38,6 +46,11 @@ class ScanPayQrCodeActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out)
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -81,8 +94,17 @@ class ScanPayQrCodeActivity : BaseActivity() {
             onBackPressed()
         }
         btn_transact.setOnClickListener {
-            qrCodeViewModel.subscribeScanPayQr(text_input_ref_num.text.toString())
+//            qrCodeViewModel.subscribeScanPayQr(text_input_ref_num.text.toString())
+            qrCodeViewModel.validation(text_input_ref_num.text.toString())
         }
+    }
+
+    private fun showOtpScreen() {
+        val intent = Intent(this, OtpActivity::class.java)
+        intent.putExtra(Constants.SCREEN_FROM, Constants.SCAN_PAY_QR_SCREEN)
+        intent.putExtra(Constants.REF_ID_NUMBER, text_input_ref_num.text.toString())
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
 
     private fun observeViewModel() {
@@ -141,6 +163,28 @@ class ScanPayQrCodeActivity : BaseActivity() {
             )
             dialog.show()
         })
+
+        qrCodeViewModel.validationSuccess.observe(this, Observer {
+            if (it) {
+                // on-hold
+                /*val builder = AlertDialog.Builder(this)
+                builder.setMessage(getString(R.string.alert_msg))
+                builder.setPositiveButton(getString(R.string.action_okay)) { dialogInt: DialogInterface, _: Int ->
+                    showOtpScreen()
+                    dialogInt.dismiss()
+                }
+                builder.setNegativeButton(getString(R.string.action_cancel)) { dialogInt: DialogInterface, _: Int ->
+                    dialogInt.dismiss()
+                }
+                builder.create().show()*/
+                showOtpScreen()
+            }
+        })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewTransactionEvent(event: NewTransactionEvent) {
+        viewNewClick()
     }
 
     private fun viewNewClick() {

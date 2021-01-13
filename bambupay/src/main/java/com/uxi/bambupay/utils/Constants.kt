@@ -50,5 +50,10 @@ class Constants {
 
         const val REDIRECT_URL = "redirect_url"
         const val MOBILE_NUMBER = "mobile_number"
+        const val BANK_CODE = "bank_code"
+        const val ACCOUNT_NO = "account_no"
+        const val MESSAGE = "message"
+        const val RECIPIENT_NUMBER = "recipient_number"
+        const val REF_ID_NUMBER = "refIdNumber"
     }
 }

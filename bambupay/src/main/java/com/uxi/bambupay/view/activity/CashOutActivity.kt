@@ -1,11 +1,13 @@
 package com.uxi.bambupay.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.CashOutViewModel
@@ -13,10 +15,9 @@ import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_cash_out.*
-import kotlinx.android.synthetic.main.content_cash_out.btn_cancel
-import kotlinx.android.synthetic.main.content_cash_out.btn_transact
-import kotlinx.android.synthetic.main.content_cash_out.text_fee
-import kotlinx.android.synthetic.main.content_cash_out.text_input_amount
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class CashOutActivity : BaseActivity() {
 
@@ -25,7 +26,7 @@ class CashOutActivity : BaseActivity() {
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
 
     private val bankCode by lazy {
-        intent?.getLongExtra("bank_code", -0L)
+        intent?.getLongExtra(Constants.BANK_CODE, -0L)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +34,7 @@ class CashOutActivity : BaseActivity() {
         setupToolbar()
         observeViewModel()
         events()
+        EventBus.getDefault().register(this)
     }
 
     override fun getLayoutId() = R.layout.activity_cash_out
@@ -40,6 +42,11 @@ class CashOutActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out)
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -70,12 +77,23 @@ class CashOutActivity : BaseActivity() {
         }
 
         btn_transact.setOnClickListener {
-            cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_account_no.text.toString(), bankCode)
+            // cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_account_no.text.toString(), bankCode)
+            cashOutViewModel.validation(text_input_amount.text.toString(), text_input_account_no.text.toString(), bankCode)
         }
 
         text_input_amount.doAfterTextChanged {
             feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_CASH_OUT_OTC_ID)
         }
+    }
+
+    private fun showOtpScreen() {
+        val intent = Intent(this, OtpActivity::class.java)
+        intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_OUT_SCREEN)
+        intent.putExtra(Constants.AMOUNT, text_input_amount.text.toString())
+        intent.putExtra(Constants.ACCOUNT_NO, text_input_account_no.text.toString())
+        intent.putExtra(Constants.BANK_CODE, bankCode)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
 
     private fun observeViewModel() {
@@ -150,6 +168,16 @@ class CashOutActivity : BaseActivity() {
             }
         })
 
+        cashOutViewModel.validationSuccess.observe(this, Observer {
+            if (it) {
+                showOtpScreen()
+            }
+        })
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewTransactionEvent(event: NewTransactionEvent) {
+        viewNewClick()
     }
 
     private fun viewNewClick() {

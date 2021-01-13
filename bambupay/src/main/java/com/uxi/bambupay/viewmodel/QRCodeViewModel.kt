@@ -1,12 +1,16 @@
 package com.uxi.bambupay.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.uxi.bambupay.api.Request
+import com.uxi.bambupay.model.ResultWithMessage
 import com.uxi.bambupay.model.ScanQr
 import com.uxi.bambupay.repository.QrCodeRepository
 import com.uxi.bambupay.utils.Utils
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,6 +29,24 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
 
     val isTransactionNumberEmpty = MutableLiveData<Boolean>()
     val successMessage = MutableLiveData<String>()
+
+    private val _validationSuccess = MutableLiveData<Boolean>()
+    val validationSuccess: LiveData<Boolean> = _validationSuccess
+
+    private val _successMessage = MutableLiveData<String>()
+    private val _scanPayQr = MutableLiveData<ScanQr>()
+    val scanPayQrDataWithMessage: MediatorLiveData<Pair<String?, ScanQr?>> = MediatorLiveData<Pair<String?, ScanQr?>>()
+        .apply {
+            addSource(_successMessage) { message ->
+                this.value = this.value?.copy(first = message) ?: Pair(message, null)
+            }
+            addSource(_scanPayQr) {
+                this.value = this.value?.copy(second = it) ?: Pair(null, it)
+            }
+        }
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
     fun subscriptionQuickPay(merchantId: String?, amount: String?) {
 
@@ -45,7 +67,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
             .subscribe({
 
                 if (it.response != null) {
-                    quickPaySuccessMsg.value = it.successMessage
+                    quickPaySuccessMsg.value = "Thank you for using QuickPayQR!"//it.successMessage
                     quickPayData.value = it.response
 
                 } else {
@@ -103,7 +125,41 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
         )
     }
 
-    fun subscribeScanPayQr(refIdNumber: String) {
+    fun validation(refIdNumber: String) {
+        if (refIdNumber.isNullOrEmpty()) {
+            isTransactionNumberEmpty.value = true
+            return
+        }
+
+        _validationSuccess.postValue(true)
+    }
+
+    private fun <T : Any> resultState(t: ResultWithMessage<T>) {
+        when (t) {
+            is ResultWithMessage.Success -> {
+                when (t.value) {
+                    is ScanQr -> {
+                        val scanQr = t.value as ScanQr
+                        _scanPayQr.postValue(scanQr)
+                        _successMessage.postValue("Thank you for using ScanPayQR!")
+                    }
+                }
+            }
+            is ResultWithMessage.Error -> {
+                if (t.refresh) {
+                    utils.saveUserTokenPack("", true)
+                    isSuccess.value = false
+                } else {
+                    errorMessage.value = t.message
+                }
+                loading.value = false
+                isSuccess.value = false
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun subscribeScanPayQr(refIdNumber: String?) {
         if (refIdNumber.isNullOrEmpty()) {
             isTransactionNumberEmpty.value = true
             return
@@ -112,32 +168,13 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
         val requestBuilder = Request.Builder()
             .setSenderRefId(refIdNumber).build()
 
-        disposable?.add(repository.loadAcceptPayQr(requestBuilder)
+        repository.loadAcceptPayQr(requestBuilder)
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
-                if (it.response != null) {
-                    quickPaySuccessMsg.value = it.successMessage
-                    quickPayData.value = it.response
-                } else {
-                    it.errorMessage?.let { error ->
-                        errorMessage.value = error
-                        Log.e("DEBUG", "error message:: $error")
-                    }
-                    it.successMessage?.let { message ->
-                        successMessage.value = message
-                    }
-                }
-
-            }, {
-                Timber.e(it)
-                if (refreshToken(it)) {
-                    Log.e("DEBUG", "error refreshToken")
-                    utils.saveUserTokenPack("", true)
-                    isSuccess.value = false
-                }
-            })
-        )
+                resultState(it)
+            }, Timber::e)
+            .addTo(disposable)
 
     }
 

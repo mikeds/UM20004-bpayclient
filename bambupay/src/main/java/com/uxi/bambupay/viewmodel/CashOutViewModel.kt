@@ -37,6 +37,8 @@ constructor(private val repository: CashOutRepository,
     private val _ubpToken = MutableLiveData<String>()
     private val _successMessage = MutableLiveData<String>()
     private val _ubpCashOut = MutableLiveData<UbpCashOut>()
+    private val _validationSuccess = MutableLiveData<Boolean>()
+    val validationSuccess: LiveData<Boolean> = _validationSuccess
 
     val ubpCashOutDataWithMessage: MediatorLiveData<Pair<String?, UbpCashOut?>> = MediatorLiveData<Pair<String?, UbpCashOut?>>()
         .apply {
@@ -106,7 +108,8 @@ constructor(private val repository: CashOutRepository,
                     is UbpCashOut -> {
                         val ubpCashOut = t.value as UbpCashOut
                         _ubpCashOut.postValue(ubpCashOut)
-                        _successMessage.postValue(t.message)
+//                        _successMessage.postValue(t.message)
+                        _successMessage.postValue("Thank you for using Cash Out!")
                     }
                 }
             }
@@ -132,6 +135,17 @@ constructor(private val repository: CashOutRepository,
                 resultState(it)
             }, Timber::e)
             .addTo(disposable)
+    }
+
+    fun validation(amount: String?, accountNo: String?, bankCode: Long?) {
+        if (bankCode == -0L) return
+
+        if (amount.isNullOrEmpty() || accountNo.isNullOrEmpty()) {
+            errorMessage.value = "All fields are required!"
+            return
+        }
+
+        _validationSuccess.postValue(true)
     }
 
     fun subscribeCashOut(amount: String?, accountNo: String?, bankCode: Long?) {

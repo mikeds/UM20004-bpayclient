@@ -119,7 +119,8 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
                     is CashIn -> {
                         val cashIn = t.value as CashIn
                         _cashInData.postValue(cashIn)
-                        _successMessage.postValue(t.message)
+//                        _successMessage.postValue(t.message)
+                        _successMessage.postValue("Go to the nearest BambuPay merchant and show the Merchant the generated QR code.")
                     }
                 }
             }

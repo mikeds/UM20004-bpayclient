@@ -17,7 +17,7 @@ import javax.inject.Inject
  */
 class TransactionRepository @Inject constructor(
     private val transactionDao: TransactionDao,
-    private val webService: WebService) {
+    private val webService: WebService): BaseRepository() {
 
     fun loadTransactions(): Flowable<GenericApiResponse<Transactions>> {
         return webService.history()
@@ -57,10 +57,17 @@ class TransactionRepository @Inject constructor(
         transactionDao.deleteRecent()
     }
 
-    fun loadSendMoney(request: Request) : Flowable<GenericApiResponse<Pay>>{
+    fun loadSendMoney(request: Request) : Flowable<ResultWithMessage<SendMoney>>{
         return webService.sendTo(request)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .map { res ->
+                when (val obj: SendMoney? = res.response) {
+                    null -> ResultWithMessage.Error(false, "")
+                    else -> ResultWithMessage.Success(obj, res.successMessage)
+                }
+            }
+            .onErrorReturn { errorHandler(it) }
     }
 
     fun loadTransaction(transactionId: String) : Transaction? {

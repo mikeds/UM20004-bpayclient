@@ -50,9 +50,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             R.id.btn_send_money -> {
-                val intent = Intent(activity, OtpActivity::class.java)
+//                val intent = Intent(activity, OtpActivity::class.java)
                 // for testing only
-                // val intent = Intent(activity, SendMoneyActivity::class.java)
+                val intent = Intent(activity, SendMoneyActivity::class.java)
                 intent.putExtra(Constants.SCREEN_FROM, Constants.SEND_MONEY_SCREEN)
                 // note: for testing purposes only
                 // intent.putExtra(Constants.MOBILE_NUMBER, "09266959071")
@@ -60,9 +60,9 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             R.id.btn_cash_out -> {
-                val intent = Intent(activity, OtpActivity::class.java)
+//                val intent = Intent(activity, OtpActivity::class.java)
                 // For testing only
-                // val intent = Intent(activity, SelectBankActivity::class.java)
+                val intent = Intent(activity, SelectBankActivity::class.java)
                 intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_OUT_SCREEN)
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)

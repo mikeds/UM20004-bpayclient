@@ -99,6 +99,16 @@
             android:paddingBottom="15dp"
             android:textColor="@color/black" />
 
+        <TextView
+            android:id="@+id/text_convenience_fee"
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:text="@string/alert_msg" />
+
         <Button
             android:id="@+id/btn_transact"
             style="@style/TextViewSmallBody.Bold"
@@ -106,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:background="@drawable/bg_rounded_green"
-            android:text="@string/transact"
+            android:text="@string/send_money"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
 

@@ -81,10 +81,9 @@ class PayQRActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
         } else {
-
-            val intent = Intent(this@PayQRActivity, OtpActivity::class.java)
+//            val intent = Intent(this@PayQRActivity, OtpActivity::class.java)
+            val intent = Intent(this@PayQRActivity, ScanPayQrCodeActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.SCAN_PAY_QR_SCREEN)
-//            val intent = Intent(this@PayQRActivity, ScanPayQrCodeActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         }

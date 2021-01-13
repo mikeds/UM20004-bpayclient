@@ -172,6 +172,9 @@
     <string name="hint_cvv">CVV</string>
     <string name="hint_card_holder">Cardholder\'s Name</string>
 
+    <string name="create_qr_message">Show this QR Code to the Merchant to pay.</string>
+    <string name="alert_msg">A Convenience Fee of ₱%s will be charged to this transaction. Would you like to proceed?</string>
+
     <string-array name="gender_choice_array">
         <item>Male</item>
         <item>Female</item>

@@ -1,11 +1,13 @@
 package com.uxi.bambupay.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.FeeViewModel
@@ -18,6 +20,9 @@ import kotlinx.android.synthetic.main.content_send_money.btn_transact
 import kotlinx.android.synthetic.main.content_send_money.text_fee
 import kotlinx.android.synthetic.main.content_send_money.text_input_amount
 import kotlinx.android.synthetic.main.content_send_money.text_input_mobile
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class SendMoneyActivity : BaseActivity() {
 
@@ -30,6 +35,7 @@ class SendMoneyActivity : BaseActivity() {
         setupToolbar()
         observeViewModel()
         events()
+        EventBus.getDefault().register(this)
     }
 
     override fun getLayoutId() = R.layout.activity_send_money
@@ -37,6 +43,11 @@ class SendMoneyActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out)
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -63,12 +74,15 @@ class SendMoneyActivity : BaseActivity() {
     }
 
     private fun events() {
+        text_convenience_fee.text = getString(R.string.alert_msg, "0")
+
         btn_cancel.setOnClickListener {
             onBackPressed()
         }
 
         btn_transact.setOnClickListener {
-            transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString(), input_message.text.toString())
+//            transactionViewModel.subscribeSendMoney(text_input_amount.text.toString(), text_input_mobile.text.toString(), input_message.text.toString())
+            transactionViewModel.validation(text_input_amount.text.toString(), text_input_mobile.text.toString())
         }
 
         text_input_amount.doAfterTextChanged {
@@ -132,15 +146,38 @@ class SendMoneyActivity : BaseActivity() {
         feeViewModel.fees.observe(this, Observer {
             it.getContentIfNotHandled()?.let { fee ->
                 text_fee.text = fee
+                text_convenience_fee.text = getString(R.string.alert_msg, fee)
             }
         })
 
+        transactionViewModel.validationSuccess.observe(this, Observer {
+            if (it) {
+                showOtpScreen()
+            }
+        })
+    }
+
+    private fun showOtpScreen() {
+        val intent = Intent(this, OtpActivity::class.java)
+        intent.putExtra(Constants.SCREEN_FROM, Constants.SEND_MONEY_SCREEN)
+        intent.putExtra(Constants.AMOUNT, text_input_amount.text.toString())
+        intent.putExtra(Constants.RECIPIENT_NUMBER, text_input_mobile.text.toString())
+        intent.putExtra(Constants.MESSAGE, input_message.text.toString())
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewTransactionEvent(event: NewTransactionEvent) {
+        viewNewClick()
     }
 
     private fun viewNewClick() {
         text_input_amount.setText("")
         text_input_mobile.setText("")
         input_message.setText("")
+        text_fee.text = "0"
+        text_convenience_fee.text = getString(R.string.alert_msg, "0")
     }
 
     private fun viewDashboardClick() {

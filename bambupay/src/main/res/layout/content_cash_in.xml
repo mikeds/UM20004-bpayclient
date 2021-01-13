@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:background="@drawable/bg_rounded_green"
-            android:text="@string/transact"
+            android:text="@string/cash_in"
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
 
