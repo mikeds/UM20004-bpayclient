@@ -8,6 +8,7 @@ import android.webkit.*
 import com.uxi.bambupay.BuildConfig
 import com.uxi.bambupay.R
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import kotlinx.android.synthetic.main.activity_paynamics.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 import timber.log.Timber
@@ -21,6 +22,10 @@ class CashInPaynamicsActivity : BaseActivity() {
 
     private val redirectUrl by lazy {
         intent?.getStringExtra(Constants.CASH_IN_REDIRECT_URL)
+    }
+
+    private val amount by lazy {
+        intent?.getStringExtra(Constants.AMOUNT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,22 +130,48 @@ class CashInPaynamicsActivity : BaseActivity() {
                 val scheme = uri.scheme
                 val host = uri.host // HOST
 
-                if (!host.isNullOrEmpty() && host == BuildConfig.API_BASE_URL) {
+                Timber.tag("DEBUG").e("Host:: $host")
+                Timber.tag("DEBUG").e("API_BASE_URL:: ${BuildConfig.API_BASE_URL}")
+
+                if (!host.isNullOrEmpty()) {
                     val query = uri.rawQuery
                     val urlQuerySanitizer = UrlQuerySanitizer(url)
                     val success = urlQuerySanitizer.getValue("success")
-
+                    var message = urlQuerySanitizer.getValue("message")
+                    message = message.replace("_", " ")
+                    var timestamp = urlQuerySanitizer.getValue("timestamp")
+                    timestamp = timestamp.replace("_", " ")
                     Timber.tag("DEBUG").e("Scheme:: $scheme")
-                    Timber.tag("DEBUG").e("Host:: $host")
                     Timber.tag("DEBUG").e("Query:: $query")
-                    Timber.tag("DEBUG").e("success:: $success")
+                    Timber.tag("DEBUG").e("message:: $message")
+                    Timber.tag("DEBUG").e("timestamp:: $timestamp")
 
                     if (success == "true") {
-                        showMain()
+                        val dialog = SuccessDialog(
+                            ctx = this@CashInPaynamicsActivity,
+                            message = message,
+                            amount = amount,
+                            date = timestamp,
+                            qrCodeUrl = null,
+                            onNewClicked = ::viewNewClick,
+                            onDashBoardClicked = ::viewDashboardClick,
+                            isTransactionVisible = false
+                        )
+                        dialog.show()
+                    } else if (success == "false") {
+                        showMessageDialog(message)
                     }
                 }
             }
         }
+    }
+
+    private fun viewDashboardClick() {
+        showMain()
+    }
+
+    private fun viewNewClick() {
+
     }
 
 }

@@ -9,7 +9,6 @@ import com.egpayawal.card_library.view.CreditCardExpiryTextWatcher
 import com.uxi.bambupay.R
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN_REDIRECT_URL
-import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.CashInViewModel
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_cash_in_card.*
@@ -160,6 +159,7 @@ class CashInCardActivity : BaseActivity() {
 
     private fun showPaynamicsWebview(url: String) {
         val intent = Intent(this@CashInCardActivity, CashInPaynamicsActivity::class.java)
+        intent.putExtra(Constants.AMOUNT, text_input_amount.text.toString())
         intent.putExtra(CASH_IN_REDIRECT_URL, url)
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)

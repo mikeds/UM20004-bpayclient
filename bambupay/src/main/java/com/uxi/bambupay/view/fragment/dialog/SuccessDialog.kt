@@ -22,7 +22,8 @@ class SuccessDialog(
     private val date: String?,
     private val qrCodeUrl: String?,
     private val onNewClicked: () -> Unit,
-    private val onDashBoardClicked: () -> Unit) : Dialog(ctx) {
+    private val onDashBoardClicked: () -> Unit,
+    private val isTransactionVisible: Boolean? = true) : Dialog(ctx) {
 
     init {
         setCancelable(false)
@@ -51,6 +52,14 @@ class SuccessDialog(
         if (!qrCodeUrl.isNullOrEmpty()) {
             image_view_qr_code.visibility = View.VISIBLE
             loadImage(qrCodeUrl, image_view_qr_code)
+        }
+
+        isTransactionVisible?.let {
+            if (it) {
+                btn_new_transaction.visibility = View.VISIBLE
+            } else {
+                btn_new_transaction.visibility = View.GONE
+            }
         }
 
         btn_new_transaction.setOnClickListener {
