@@ -11,10 +11,7 @@ import com.uxi.bambupay.R
 import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
-import com.uxi.bambupay.viewmodel.CashOutViewModel
-import com.uxi.bambupay.viewmodel.OtpViewModel
-import com.uxi.bambupay.viewmodel.QRCodeViewModel
-import com.uxi.bambupay.viewmodel.TransactionViewModel
+import com.uxi.bambupay.viewmodel.*
 import kotlinx.android.synthetic.main.app_toolbar.*
 import kotlinx.android.synthetic.main.content_otp.*
 import kotlinx.android.synthetic.main.content_otp.btn_cancel
@@ -28,6 +25,7 @@ import timber.log.Timber
 class OtpActivity : BaseActivity() {
 
     private val otpViewModel by viewModels<OtpViewModel> { viewModelFactory }
+    private val userTokenModel by viewModels<UserTokenViewModel> { viewModelFactory }
 
     private val cashOutViewModel by viewModels<CashOutViewModel> { viewModelFactory }
     private val transactionViewModel by viewModels<TransactionViewModel> { viewModelFactory }
@@ -159,6 +157,22 @@ class OtpActivity : BaseActivity() {
                 dismissProgressDialog()
             }
         })
+        otpViewModel.isSuccess.observe(this, Observer {
+            if (!it) {
+                // call token refresher
+                userTokenModel.subscribeToken()
+            }
+        })
+        userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
+            if (isTokenRefresh) {
+                if (!fromScreen.isNullOrEmpty() && fromScreen == Constants.REGISTRATION_SCREEN) {
+                    otpViewModel.subscribeRequestOtp(mobileNum = mobileNumber, module = "reg")
+                } else {
+                    otpViewModel.subscribeRequestOtp(mobileNum = mobileNumber)
+                }
+            }
+        })
+
         otpViewModel.redirectUrl.observe(this, Observer {
             if (!it.isNullOrEmpty()) {
                 val intent = Intent(this@OtpActivity, WebviewOtpActivity::class.java)
@@ -321,12 +335,28 @@ class OtpActivity : BaseActivity() {
                 finish()
             }
             Constants.CASH_IN_CARD_SCREEN -> {
-                val intent = Intent(this@OtpActivity, CashInCardActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                showCashInScreen(Constants.CASH_IN_CARD_SCREEN)
             }
-
+            Constants.CASH_IN_BANCNET_SCREEN -> {
+                showCashInScreen(Constants.CASH_IN_BANCNET_SCREEN)
+            }
+            Constants.CASH_IN_GRAB_SCREEN -> {
+                showCashInScreen(Constants.CASH_IN_GRAB_SCREEN)
+            }
+            Constants.CASH_IN_GCASH_SCREEN -> {
+                showCashInScreen(Constants.CASH_IN_GCASH_SCREEN)
+            }
+            Constants.CASH_IN_PAYMAYA_SCREEN -> {
+                showCashInScreen(Constants.CASH_IN_PAYMAYA_SCREEN)
+            }
         }
+    }
+
+    private fun showCashInScreen(cashInType: String) {
+        val intent = Intent(this@OtpActivity, CashInCardActivity::class.java)
+        intent.putExtra(Constants.SCREEN_FROM, cashInType)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
 
     companion object {

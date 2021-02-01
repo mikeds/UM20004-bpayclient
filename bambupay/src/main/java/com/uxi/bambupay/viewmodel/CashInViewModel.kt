@@ -29,10 +29,11 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _paynamicsData = MutableLiveData<Paynamics>()
+    val paynamicsData: LiveData<Paynamics> = _paynamicsData
     private val _successMessage = MutableLiveData<String>()
     private val _cashInData = MutableLiveData<CashIn>()
 
-    val paynamicsDataWithMessage: MediatorLiveData<Pair<String?, Paynamics?>> = MediatorLiveData<Pair<String?, Paynamics?>>()
+    /*val paynamicsDataWithMessage: MediatorLiveData<Pair<String?, Paynamics?>> = MediatorLiveData<Pair<String?, Paynamics?>>()
         .apply {
             addSource(_successMessage) { message ->
                this.value = this.value?.copy(first = message) ?: Pair(message, null)
@@ -40,7 +41,7 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
             addSource(_paynamicsData) {
                 this.value = this.value?.copy(second = it) ?: Pair(null, it)
             }
-        }
+        }*/
 
     val cashInDataWithMessage: MediatorLiveData<Pair<String?, CashIn?>> = MediatorLiveData<Pair<String?, CashIn?>>()
         .apply {
@@ -136,6 +137,35 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
                 _isLoading.value = false
             }
         }
+    }
+
+    fun subscribeCashInPaynamics(amount: String?, fromScreen: String?) {
+        if (amount.isNullOrEmpty()) {
+            isAmountEmpty.value = true
+            return
+        }
+
+        if (fromScreen.isNullOrEmpty()) {
+            return
+        }
+
+        val type = when (fromScreen) {
+            Constants.CASH_IN_CARD_SCREEN -> Constants.CASH_IN_PAYNAMICS_CC
+            Constants.CASH_IN_BANCNET_SCREEN -> Constants.CASH_IN_PAYNAMICS_BANCNET
+            Constants.CASH_IN_GRAB_SCREEN -> Constants.CASH_IN_PAYNAMICS_GRAB_PAY
+            Constants.CASH_IN_GCASH_SCREEN -> Constants.CASH_IN_PAYNAMICS_GCASH
+            Constants.CASH_IN_PAYMAYA_SCREEN -> Constants.CASH_IN_PAYNAMICS_PAYMAYA
+            else -> ""
+        }
+
+        repository.loadCashInPaynamics(type, amount)
+            .doOnSubscribe { _isLoading.value = true }
+            .doOnComplete { _isLoading.value = false }
+            .subscribe({
+                resultState(it)
+            }, Timber::e)
+            .addTo(disposable)
+
     }
 
 }

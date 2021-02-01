@@ -78,4 +78,7 @@ abstract class ActivityModule {
     @ContributesAndroidInjector()
     internal abstract fun contributeCashInCardActivity(): CashInCardActivity
 
+    @ContributesAndroidInjector()
+    internal abstract fun contributeCashInPaynamicsActivity(): CashInPaynamicsActivity
+
 }

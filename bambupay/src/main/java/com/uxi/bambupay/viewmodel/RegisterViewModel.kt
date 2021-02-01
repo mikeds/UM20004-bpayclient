@@ -10,6 +10,7 @@ import com.uxi.bambupay.utils.FilePickerManager
 import com.uxi.bambupay.utils.Utils
 import com.uxi.bambupay.utils.convertDoB
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import timber.log.Timber
 import java.io.File
@@ -156,36 +157,36 @@ constructor(private val repository: RegisterRepository, private val utils: Utils
         val image = postImageFile.value
 
         Timber.tag("DEBUG").e("dateOfBirth:: $dateOfBirth")
-        val dob = convertDoB(dateOfBirth!!)
+        val dob = convertDoB(dateOfBirth)
         Timber.tag("DEBUG").e("DOB:: $dob")
         Timber.tag("DEBUG").e("GENDER:: $gender")
         Timber.tag("DEBUG").e("phoneNumber:: $phoneNumber")
         Timber.tag("DEBUG").e("image:: $image")
 
         val map: HashMap<String, RequestBody> = HashMap()
-        map["first_name"] = RequestBody.create(MediaType.parse("text/plain"), firstName)
-        map["last_name"] = RequestBody.create(MediaType.parse("text/plain"), lastName)
-        map["dob"] = RequestBody.create(MediaType.parse("text/plain"), dob)
-        map["email_address"] = RequestBody.create(MediaType.parse("text/plain"), email)
-        map["mobile_no"] = RequestBody.create(MediaType.parse("text/plain"), phoneNumber)
-        map["password"] = RequestBody.create(MediaType.parse("text/plain"), encryptedPassword)
-        map["country_id"] = RequestBody.create(MediaType.parse("text/plain"), "169")
-        map["house_no"] = RequestBody.create(MediaType.parse("text/plain"), houseNo)
-        map["street"] = RequestBody.create(MediaType.parse("text/plain"), street)
-        map["brgy"] = RequestBody.create(MediaType.parse("text/plain"), brgy)
-        map["city"] = RequestBody.create(MediaType.parse("text/plain"), city)
+        map["first_name"] = RequestBody.create("text/plain".toMediaTypeOrNull(), firstName)
+        map["last_name"] = RequestBody.create("text/plain".toMediaTypeOrNull(), lastName)
+        map["dob"] = RequestBody.create("text/plain".toMediaTypeOrNull(), dob!!)
+        map["email_address"] = RequestBody.create("text/plain".toMediaTypeOrNull(), email)
+        map["mobile_no"] = RequestBody.create("text/plain".toMediaTypeOrNull(), phoneNumber ?: "")
+        map["password"] = RequestBody.create("text/plain".toMediaTypeOrNull(), encryptedPassword)
+        map["country_id"] = RequestBody.create("text/plain".toMediaTypeOrNull(), "169")
+        map["house_no"] = RequestBody.create("text/plain".toMediaTypeOrNull(), houseNo)
+        map["street"] = RequestBody.create("text/plain".toMediaTypeOrNull(), street)
+        map["brgy"] = RequestBody.create("text/plain".toMediaTypeOrNull(), brgy)
+        map["city"] = RequestBody.create("text/plain".toMediaTypeOrNull(), city)
 
         // Optional
         if (!tempGender.isNullOrEmpty()) {
-            map["gender"] = RequestBody.create(MediaType.parse("text/plain"), tempGender)
+            map["gender"] = RequestBody.create("text/plain".toMediaTypeOrNull(), tempGender)
         }
 
         if (!provinceId.isNullOrEmpty()) {
-            map["province_id"] = RequestBody.create(MediaType.parse("text/plain"), provinceId)
+            map["province_id"] = RequestBody.create("text/plain".toMediaTypeOrNull(), provinceId)
         }
 
         if (!others.isNullOrEmpty()) {
-            map["others"] = RequestBody.create(MediaType.parse("text/plain"), others)
+            map["others"] = RequestBody.create("text/plain".toMediaTypeOrNull(), others)
         }
 
         disposable?.add(repository.loadRegister(map, image)

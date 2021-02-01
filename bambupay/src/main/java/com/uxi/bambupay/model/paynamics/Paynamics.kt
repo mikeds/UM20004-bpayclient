@@ -17,4 +17,10 @@ open class Paynamics : Serializable {
 
     var timestamp: String? = null
 
+    @SerializedName("gateway_message")
+    var gatewayMessage: String? = null
+
+    @SerializedName("redirect")
+    var redirectUrl: String? = null
+
 }

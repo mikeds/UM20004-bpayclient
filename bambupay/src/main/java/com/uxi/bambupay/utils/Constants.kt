@@ -41,6 +41,10 @@ class Constants {
         const val CASH_IN_OTC_SCREEN = "cash_in_otc_screen"
         const val CASH_IN_BANK_SCREEN = "cash_in_bank_screen"
         const val CASH_IN_CARD_SCREEN = "cash_in_card_screen"
+        const val CASH_IN_BANCNET_SCREEN = "cash_in_bancnet_screen"
+        const val CASH_IN_GRAB_SCREEN = "cash_in_grab_screen"
+        const val CASH_IN_GCASH_SCREEN = "cash_in_gcash_screen"
+        const val CASH_IN_PAYMAYA_SCREEN = "cash_in_paymaya_screen"
         const val CASH_OUT_SCREEN = "cash_out_screen"
         const val SEND_MONEY_SCREEN = "send_money_screen"
         const val SCAN_PAY_QR_SCREEN = "scan_pay_qr_screen"
@@ -55,5 +59,12 @@ class Constants {
         const val MESSAGE = "message"
         const val RECIPIENT_NUMBER = "recipient_number"
         const val REF_ID_NUMBER = "refIdNumber"
+
+        const val CASH_IN_PAYNAMICS_CC = "cc"
+        const val CASH_IN_PAYNAMICS_BANCNET = "bancnet"
+        const val CASH_IN_PAYNAMICS_GRAB_PAY = "grabpay"
+        const val CASH_IN_PAYNAMICS_GCASH = "gcash"
+        const val CASH_IN_PAYNAMICS_PAYMAYA = "paymaya"
+        const val CASH_IN_REDIRECT_URL = "redirect_url"
     }
 }

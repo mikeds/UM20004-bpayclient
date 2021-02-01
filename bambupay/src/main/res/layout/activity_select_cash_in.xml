@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,12 +31,12 @@
                     style="@style/TextViewSmall.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_cash_in"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:paddingTop="@dimen/activity_horizontal_margin"
                     android:paddingBottom="@dimen/activity_horizontal_margin"
-                    android:text="@string/cash_in_merchant" />
+                    android:text="@string/cash_in_merchant"
+                    app:drawableStartCompat="@drawable/ic_cash_in" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -66,12 +67,12 @@
                     style="@style/TextViewSmall.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_cash_in"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:paddingTop="@dimen/activity_horizontal_margin"
                     android:paddingBottom="@dimen/activity_horizontal_margin"
-                    android:text="@string/cash_in_bank" />
+                    android:text="@string/cash_in_bank"
+                    app:drawableStartCompat="@drawable/ic_cash_in" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -102,12 +103,156 @@
                     style="@style/TextViewSmall.SemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_pay_card"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:paddingTop="@dimen/activity_horizontal_margin"
                     android:paddingBottom="@dimen/activity_horizontal_margin"
-                    android:text="@string/cash_in_card" />
+                    android:text="@string/cash_in_card"
+                    app:drawableStartCompat="@drawable/ic_pay_card" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_arrow_right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/div" />
+
+            <RelativeLayout
+                android:id="@+id/btn_bancnet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    style="@style/TextViewSmall.SemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    android:text="@string/cash_in_bancnet"
+                    app:drawableStartCompat="@drawable/ic_pay_card" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_arrow_right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/div" />
+
+            <RelativeLayout
+                android:id="@+id/btn_grab_pay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    style="@style/TextViewSmall.SemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    android:text="@string/cash_in_grab_pay"
+                    app:drawableStartCompat="@drawable/ic_grab_pay" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_arrow_right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/div" />
+
+            <RelativeLayout
+                android:id="@+id/btn_gcash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    style="@style/TextViewSmall.SemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    android:text="@string/cash_in_gcash"
+                    app:drawableStartCompat="@drawable/ic_gcash" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_arrow_right" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/div" />
+
+            <RelativeLayout
+                android:id="@+id/btn_paymaya"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    style="@style/TextViewSmall.SemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:includeFontPadding="false"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    android:text="@string/cash_in_paymaya"
+                    app:drawableStartCompat="@drawable/ic_pay_card" />
 
                 <ImageView
                     android:layout_width="wrap_content"

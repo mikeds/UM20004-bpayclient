@@ -2,7 +2,9 @@ package com.uxi.bambupay.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.uxi.bambupay.model.ResultWithMessage
 import com.uxi.bambupay.model.SingleEvent
+import com.uxi.bambupay.model.otp.OtpResponse
 import com.uxi.bambupay.repository.MainRepository
 import com.uxi.bambupay.repository.OtpRepository
 import com.uxi.bambupay.utils.Utils
@@ -70,10 +72,31 @@ constructor(
             .doOnSubscribe { _isLoading.value = true }
             .doAfterTerminate { _isLoading.value = false }
             .subscribe({ res->
-                res?.redirectUrl?.let {
+                /*res?.redirectUrl?.let {
                     Timber.tag("DEBUG").e("redirectUrl=> $it")
                     _redirectUrl.postValue(it)
+                }*/
+
+                when (res) {
+                    is ResultWithMessage.Success -> {
+                        val otpResponse = res.value as OtpResponse
+                        Timber.tag("DEBUG").e("redirectUrl=> ${otpResponse.redirectUrl}")
+                        _redirectUrl.postValue(otpResponse.redirectUrl)
+                        isSuccess.value = true
+                    }
+                    is ResultWithMessage.Error -> {
+                        if (res.refresh) {
+                            utils.saveUserTokenPack("", true)
+                            isSuccess.value = false
+                        } else {
+                            errorMessage.value = res.message
+                        }
+                        loading.value = false
+                        isSuccess.value = false
+                        _isLoading.value = false
+                    }
                 }
+
             }, Timber::e)
             .addTo(disposable)
     }

@@ -133,6 +133,10 @@
     <string name="cash_in_merchant">Cash In via Merchant (Over The Counter)</string>
     <string name="cash_in_bank">Cash In via Bank</string>
     <string name="cash_in_card">Cash In via Credit or Debit Card</string>
+    <string name="cash_in_bancnet">Cash In via Bancnet</string>
+    <string name="cash_in_grab_pay">Cash In via GrabPay</string>
+    <string name="cash_in_gcash">Cash In via GCash</string>
+    <string name="cash_in_paymaya">Cash In via Paymaya</string>
     <string name="select_bank">Select a Bank</string>
     <string name="union_bank_login">Unionbank Login</string>
     <string name="bank_transfer">Bank Transfer</string>

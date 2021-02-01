@@ -103,5 +103,8 @@ interface WebService {
     @POST("transactions/client/cash-out")
     fun ubpCashOut(@Body payload: HashMap<String, String>, @Header("ubp-access-token") ubpAccessToken: String): Flowable<GenericApiResponse<UbpCashOut>>
 
+    @POST("transactions/client/cash-in")
+    fun cashInPaynamics(@Body params: Request): Flowable<GenericApiResponse<Paynamics>>
+
 
 }

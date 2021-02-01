@@ -114,6 +114,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".view.activity.CashInPaynamicsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".view.activity.CashInBankActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"

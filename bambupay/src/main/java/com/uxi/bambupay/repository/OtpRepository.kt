@@ -2,6 +2,9 @@ package com.uxi.bambupay.repository
 
 import com.uxi.bambupay.api.GenericApiResponse
 import com.uxi.bambupay.api.WebService
+import com.uxi.bambupay.model.CashIn
+import com.uxi.bambupay.model.ResultWithMessage
+import com.uxi.bambupay.model.otp.OtpRes
 import com.uxi.bambupay.model.otp.OtpResponse
 import com.uxi.bambupay.model.otp.OtpTokenResponse
 import io.reactivex.Flowable
@@ -15,9 +18,9 @@ import javax.inject.Singleton
  * hunterxer31@gmail.com
  */
 @Singleton
-class OtpRepository @Inject constructor(private val webService: WebService) {
+class OtpRepository @Inject constructor(private val webService: WebService): BaseRepository() {
 
-    fun loadRequestOTP(mobileNumber: String, module: String?): Flowable<OtpResponse> {
+    fun loadRequestOTP(mobileNumber: String, module: String?): Flowable<ResultWithMessage<OtpResponse>> {
         val map = HashMap<String, String>()
         map["mobile_no"] = mobileNumber
 
@@ -27,6 +30,13 @@ class OtpRepository @Inject constructor(private val webService: WebService) {
         return webService.requestOTP(map)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .map { res ->
+                when (val obj: OtpRes? = res.response) {
+                    null -> ResultWithMessage.Error(false, res.errorDescription)
+                    else -> ResultWithMessage.Success(res, res.message)
+                }
+            }
+            .onErrorReturn { errorHandler(it) }
     }
 
     fun loadTokenOTP(code: String): Flowable<GenericApiResponse<OtpTokenResponse>> {

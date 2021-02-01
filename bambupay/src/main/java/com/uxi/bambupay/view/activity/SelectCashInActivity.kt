@@ -67,13 +67,37 @@ class SelectCashInActivity : AppCompatActivity() {
         }
 
         btn_card.setOnClickListener {
-            val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
+            /*val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
             // For testing only
             // val intent = Intent(this@SelectCashInActivity, CashInCardActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_IN_CARD_SCREEN)
             startActivity(intent)
-            overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+            overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)*/
+            showCashInScreen(Constants.CASH_IN_CARD_SCREEN)
         }
+
+        btn_bancnet.setOnClickListener {
+            showCashInScreen(Constants.CASH_IN_BANCNET_SCREEN)
+        }
+
+        btn_grab_pay.setOnClickListener {
+            showCashInScreen(Constants.CASH_IN_GRAB_SCREEN)
+        }
+
+        btn_gcash.setOnClickListener {
+            showCashInScreen(Constants.CASH_IN_GCASH_SCREEN)
+        }
+
+        btn_paymaya.setOnClickListener {
+            showCashInScreen(Constants.CASH_IN_PAYMAYA_SCREEN)
+        }
+    }
+
+    private fun showCashInScreen(cashInType: String) {
+        val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
+        intent.putExtra(Constants.SCREEN_FROM, cashInType)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
 
 }

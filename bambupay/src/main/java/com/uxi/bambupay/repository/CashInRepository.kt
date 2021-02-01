@@ -59,4 +59,20 @@ constructor(private val webService: WebService): BaseRepository() {
             .onErrorReturn { errorHandler(it) }
     }
 
+    fun loadCashInPaynamics(type: String, amount: String): Flowable<ResultWithMessage<Paynamics>> {
+        val requestBuilder = Request.Builder()
+            .setType(type)
+            .setAmount(amount).build()
+        return webService.cashInPaynamics(requestBuilder)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { res ->
+                when (val obj: Paynamics? = res.response) {
+                    null -> ResultWithMessage.Error(false, res?.errorMessage)
+                    else -> ResultWithMessage.Success(obj, res.successMessage)
+                }
+            }
+            .onErrorReturn { errorHandler(it) }
+    }
+
 }

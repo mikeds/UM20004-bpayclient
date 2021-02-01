@@ -11,10 +11,23 @@ class OtpResponse : Serializable {
 
     var error: Boolean = false
 
+    var message: String? = null
+
+    var timestamp: String? = null
+
+    var response: OtpRes? = null
+
     @SerializedName("error_description")
     var errorDescription: String? = null
 
     @SerializedName("redirect_url")
     var redirectUrl: String? = null
+
+}
+
+open class OtpRes {
+
+    @SerializedName("expiration_date")
+    var expirationDate: String? = null
 
 }
