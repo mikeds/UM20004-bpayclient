@@ -89,6 +89,18 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
         builder.create().show()
     }
 
+    protected fun showMessageDialog(message: String, onDismiss: () -> Unit) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(message)
+        builder.setPositiveButton(
+            getString(R.string.action_okay)
+        ) { dialog, _ ->
+            dialog.dismiss()
+            onDismiss()
+        }
+        builder.create().show()
+    }
+
     fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)

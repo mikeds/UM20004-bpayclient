@@ -85,14 +85,17 @@ constructor(
                         isSuccess.value = true
                     }
                     is ResultWithMessage.Error -> {
+                        Timber.tag("DEBUG").e("loadRequestOTP Error")
                         if (res.refresh) {
+                            Timber.tag("DEBUG").e("loadRequestOTP REFRESH TOKEN")
                             utils.saveUserTokenPack("", true)
                             isSuccess.value = false
                         } else {
+                            Timber.tag("DEBUG").e("Error message:: ${res.message}")
                             errorMessage.value = res.message
                         }
                         loading.value = false
-                        isSuccess.value = false
+                        // isSuccess.value = false
                         _isLoading.value = false
                     }
                 }

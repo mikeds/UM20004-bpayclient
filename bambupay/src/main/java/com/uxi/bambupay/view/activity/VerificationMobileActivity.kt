@@ -8,6 +8,7 @@ import com.uxi.bambupay.utils.Constants
 import kotlinx.android.synthetic.main.activity_verification_mobile.*
 import kotlinx.android.synthetic.main.activity_verification_mobile.input_mobile_number
 import kotlinx.android.synthetic.main.app_toolbar.*
+import timber.log.Timber
 
 /**
  * Created by Eraño Payawal on 12/14/20.
@@ -67,6 +68,7 @@ class VerificationMobileActivity : BaseActivity() {
     }
 
     private fun showOtpScreen(mobile: String) {
+        Timber.tag("DEBUG").e("showOtpScreen mobile:: $mobile")
         val intent = Intent(this, OtpActivity::class.java)
         intent.putExtra(Constants.SCREEN_FROM, Constants.REGISTRATION_SCREEN)
         intent.putExtra(Constants.MOBILE_NUMBER, mobile)

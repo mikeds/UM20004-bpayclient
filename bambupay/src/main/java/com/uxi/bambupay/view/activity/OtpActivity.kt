@@ -191,6 +191,14 @@ class OtpActivity : BaseActivity() {
         otpViewModel.errorMsg.observe(this, Observer {
             showDialogMessage(it)
         })
+        otpViewModel.errorMessage.observe(this, Observer {
+            if (!it.isNullOrEmpty()) {
+                showMessageDialog(
+                    message = it,
+                    onDismiss = ::viewOtpDismiss
+                )
+            }
+        })
 
         // start cash out
         cashOutViewModel.isLoading.observe(this, Observer { isLoading ->
@@ -287,6 +295,10 @@ class OtpActivity : BaseActivity() {
 
     private fun viewDashboardClick() {
         showMain()
+    }
+
+    private fun viewOtpDismiss() {
+        onBackPressed()
     }
 
     private fun screenIntent() {
