@@ -31,10 +31,20 @@ class OtpRepository @Inject constructor(private val webService: WebService): Bas
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { res ->
-                when (val obj: OtpRes? = res.response) {
-                    null -> ResultWithMessage.Error(false, res.errorDescription)
-                    else -> ResultWithMessage.Success(res, res.message)
+                if (res.error) {
+                    if (res.redirectUrl.isNullOrEmpty()) {
+                        ResultWithMessage.Error(false, res.errorDescription)
+                    } else {
+                        ResultWithMessage.Success(res, res.message)
+                    }
+                } else {
+                    ResultWithMessage.Success(res, res.message)
                 }
+
+                /*when (val obj: OtpRes? = res.response) {
+                    null -> ResultWithMessage.ErrorResult(false, res)
+                    else -> ResultWithMessage.Success(res, res.message)
+                }*/
             }
             .onErrorReturn { errorHandler(it) }
     }

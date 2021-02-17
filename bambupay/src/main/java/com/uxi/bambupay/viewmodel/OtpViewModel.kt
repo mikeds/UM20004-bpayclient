@@ -72,11 +72,6 @@ constructor(
             .doOnSubscribe { _isLoading.value = true }
             .doAfterTerminate { _isLoading.value = false }
             .subscribe({ res->
-                /*res?.redirectUrl?.let {
-                    Timber.tag("DEBUG").e("redirectUrl=> $it")
-                    _redirectUrl.postValue(it)
-                }*/
-
                 when (res) {
                     is ResultWithMessage.Success -> {
                         val otpResponse = res.value as OtpResponse
@@ -96,6 +91,26 @@ constructor(
                         }
                         loading.value = false
                         // isSuccess.value = false
+                        _isLoading.value = false
+                    }
+                    is ResultWithMessage.ErrorResult -> {
+                        Timber.tag("DEBUG").e("ErrorResult loadRequestOTP Error")
+                        if (res.refresh) {
+                            Timber.tag("DEBUG").e("loadRequestOTP REFRESH TOKEN")
+                            utils.saveUserTokenPack("", true)
+                            isSuccess.value = false
+                        } else {
+                            val error = res.errorValue as OtpResponse
+                            Timber.tag("DEBUG").e("ErrorResult redirectUrl=> ${error.redirectUrl}")
+                            if (!error.redirectUrl.isNullOrEmpty()) {
+                                _redirectUrl.postValue(error.redirectUrl)
+                            } else {
+                                errorMessage.value = error.errorDescription
+                            }
+                            Timber.tag("DEBUG").e("Error message:: ${error.errorDescription}")
+
+                        }
+                        loading.value = false
                         _isLoading.value = false
                     }
                 }
