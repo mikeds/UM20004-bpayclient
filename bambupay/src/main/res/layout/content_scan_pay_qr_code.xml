@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
-            android:text="@string/scan" />
+            android:text="@string/scan_press" />
 
         <Button
             android:id="@+id/btn_transact"

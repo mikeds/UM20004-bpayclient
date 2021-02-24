@@ -27,6 +27,7 @@
     <string name="view_all">View all</string>
     <string name="pay">Pay</string>
     <string name="scan">Scan</string>
+    <string name="scan_press">Press button to Scan</string>
     <string name="cash_out">Cash Out</string>
     <string name="cash_in">Cash In</string>
     <string name="scan_pay">ScanPayQR</string>
@@ -177,7 +178,11 @@
     <string name="hint_card_holder">Cardholder\'s Name</string>
 
     <string name="create_qr_message">Show this QR Code to the Merchant to pay.</string>
-    <string name="alert_msg">A Convenience Fee of ₱%s will be charged to this transaction. Would you like to proceed?</string>
+    <string name="convenience_fee_msg">A Convenience Fee of ₱%s will be charged to this transaction. Would you like to proceed?</string>
+    <string name="minimum_amount">Note: Minimum amount to proceed is ₱500.00</string>
+    <string name="cash_in_card_paymaya_fee_msg">A Convenience Fee of 4.5% will be  applied to each Debit and Credit Card transaction. There is a minimum Convenience Fee of 5.2% for all transactions of ₱1000.00 and below. Would you like to proceed?</string>
+    <string name="cash_in_grab_fee_msg">A Convenience Fee of 4% will be applied to each GrabPay transaction. There is a minimum Convenience Fee of 5% for all transactions ₱800.00 and below. Would you like to proceed?</string>
+    <string name="cash_in_gcash_fee_msg">A Convenience Fee of 3.5% will be applied to each GCash transaction. There is a minimum Convenience Fee of 5% for all transactions ₱800.00 and below. Would you like to proceed?</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

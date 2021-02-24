@@ -107,7 +107,7 @@
             android:gravity="center"
             android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_16sdp"
-            android:text="@string/alert_msg" />
+            android:text="@string/convenience_fee_msg" />
 
         <Button
             android:id="@+id/btn_transact"

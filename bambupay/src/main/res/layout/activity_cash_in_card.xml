@@ -6,8 +6,12 @@
     android:orientation="vertical"
     tools:context=".view.activity.CashInCardActivity">
 
-    <include layout="@layout/app_toolbar" />
+    <include
+        android:id="@+id/app_toolbar"
+        layout="@layout/app_toolbar" />
 
-    <include layout="@layout/content_cash_in_card" />
+    <include
+        android:id="@+id/content_cash_in_card"
+        layout="@layout/content_cash_in_card" />
 
 </LinearLayout>

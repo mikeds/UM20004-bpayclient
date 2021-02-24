@@ -3,32 +3,29 @@ package com.uxi.bambupay.view.activity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.databinding.ActivityCashInBinding
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.ext.viewBinding
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.CashInViewModel
 import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
-import kotlinx.android.synthetic.main.app_toolbar.*
-import kotlinx.android.synthetic.main.content_cash_in.*
-import kotlinx.android.synthetic.main.content_cash_in.btn_cancel
-import kotlinx.android.synthetic.main.content_cash_in.btn_transact
-import kotlinx.android.synthetic.main.content_cash_in.text_fee
-import kotlinx.android.synthetic.main.content_cash_in.text_input_amount
-import kotlinx.android.synthetic.main.content_cash_in_card.*
 
 class CashInActivity : BaseActivity() {
 
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val cashInViewModel by viewModels<CashInViewModel>{ viewModelFactory }
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
+    private val binding by viewBinding(ActivityCashInBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         setupToolbar()
+        initViews()
         observeViewModel()
         events()
     }
@@ -55,23 +52,28 @@ class CashInActivity : BaseActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        tv_toolbar_title?.text = getString(R.string.cash_in)
+        setSupportActionBar(binding.appToolbar.toolbar)
+        binding.appToolbar.tvToolbarTitle.text = getString(R.string.cash_in)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
+    private fun initViews() {
+        // default
+        binding.contentCashIn.textFeeMsg.text = getString(R.string.convenience_fee_msg, "0")
+    }
+
     private fun events() {
-        btn_cancel.setOnClickListener {
+        binding.contentCashIn.btnCancel.setOnClickListener {
             onBackPressed()
         }
 
-        btn_transact.setOnClickListener {
-            cashInViewModel.subscribeCashIn(text_input_amount.text.toString()/*, text_input_mobile.text.toString()*/)
+        binding.contentCashIn.btnTransact.setOnClickListener {
+            cashInViewModel.subscribeCashIn(binding.contentCashIn.textInputAmount.text.toString()/*, text_input_mobile.text.toString()*/)
         }
 
-        text_input_amount.doAfterTextChanged {
+        binding.contentCashIn.textInputAmount.doAfterTextChanged {
             feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_CASH_IN_OTC_ID)
         }
     }
@@ -79,7 +81,7 @@ class CashInActivity : BaseActivity() {
     private fun observeViewModel() {
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
-                cashInViewModel.subscribeCashIn(text_input_amount.text.toString()/*, text_input_mobile.text.toString()*/)
+                cashInViewModel.subscribeCashIn(binding.contentCashIn.textInputAmount.text.toString()/*, text_input_mobile.text.toString()*/)
             }
         })
 
@@ -119,14 +121,15 @@ class CashInActivity : BaseActivity() {
 
         feeViewModel.fees.observe(this, Observer {
             it.getContentIfNotHandled()?.let { fee ->
-                text_fee.text = fee
+                binding.contentCashIn.textFee.text = fee
+                binding.contentCashIn.textFeeMsg.text = getString(R.string.convenience_fee_msg, fee)
             }
         })
 
         cashInViewModel.cashInDataWithMessage.observe(this, Observer { it1 ->
             it1?.let {
                 if (!it.first.isNullOrEmpty() && it.second != null) {
-                    val amount = text_input_amount.text.toString()
+                    val amount = binding.contentCashIn.textInputAmount.text.toString()
                     val dialog = SuccessDialog(
                         ctx = this@CashInActivity,
                         message = it.first,
@@ -150,7 +153,7 @@ class CashInActivity : BaseActivity() {
     }
 
     private fun viewNewClick() {
-        text_input_amount.setText("")
+        binding.contentCashIn.textInputAmount.setText("")
     }
 
     private fun viewDashboardClick() {

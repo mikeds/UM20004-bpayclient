@@ -43,6 +43,15 @@
             android:paddingBottom="15dp" />
 
         <TextView
+            style="@style/TextViewSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="start"
+            android:text="@string/minimum_amount"
+            android:textColor="@color/darker_grey" />
+
+        <TextView
             style="@style/TextViewSmall.SemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,6 +65,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="0"
+            android:textColor="@color/darker_grey" />
+
+        <TextView
+            android:id="@+id/text_fee_msg"
+            style="@style/TextViewSmall.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="center"
+            android:text="@string/convenience_fee_msg"
             android:textColor="@color/darker_grey" />
 
         <LinearLayout

@@ -7,14 +7,14 @@ import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.databinding.ActivityCashOutBinding
 import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.ext.viewBinding
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.CashOutViewModel
 import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
-import kotlinx.android.synthetic.main.app_toolbar.*
-import kotlinx.android.synthetic.main.content_cash_out.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -24,6 +24,7 @@ class CashOutActivity : BaseActivity() {
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val cashOutViewModel by viewModel<CashOutViewModel>()
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
+    private val binding by viewBinding(ActivityCashOutBinding::inflate)
 
     private val bankCode by lazy {
         intent?.getLongExtra(Constants.BANK_CODE, -0L)
@@ -31,7 +32,9 @@ class CashOutActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         setupToolbar()
+        initViews()
         observeViewModel()
         events()
         EventBus.getDefault().register(this)
@@ -64,24 +67,28 @@ class CashOutActivity : BaseActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        tv_toolbar_title?.text = getString(R.string.cash_out)
+        setSupportActionBar(binding.appToolbar.toolbar)
+        binding.appToolbar.tvToolbarTitle.text = getString(R.string.cash_out)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
+    private fun initViews() {
+        binding.contentCashOut.textFeeMsg.text = getString(R.string.convenience_fee_msg, "0")
+    }
+
     private fun events() {
-        btn_cancel.setOnClickListener {
+        binding.contentCashOut.btnCancel.setOnClickListener {
             onBackPressed()
         }
 
-        btn_transact.setOnClickListener {
+        binding.contentCashOut.btnTransact.setOnClickListener {
             // cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_account_no.text.toString(), bankCode)
-            cashOutViewModel.validation(text_input_amount.text.toString(), text_input_account_no.text.toString(), bankCode)
+            cashOutViewModel.validation(binding.contentCashOut.textInputAmount.text.toString(), binding.contentCashOut.textInputAccountNo.text.toString(), bankCode)
         }
 
-        text_input_amount.doAfterTextChanged {
+        binding.contentCashOut.textInputAmount.doAfterTextChanged {
             feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_CASH_OUT_OTC_ID)
         }
     }
@@ -89,8 +96,8 @@ class CashOutActivity : BaseActivity() {
     private fun showOtpScreen() {
         val intent = Intent(this, OtpActivity::class.java)
         intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_OUT_SCREEN)
-        intent.putExtra(Constants.AMOUNT, text_input_amount.text.toString())
-        intent.putExtra(Constants.ACCOUNT_NO, text_input_account_no.text.toString())
+        intent.putExtra(Constants.AMOUNT, binding.contentCashOut.textInputAmount.text.toString())
+        intent.putExtra(Constants.ACCOUNT_NO, binding.contentCashOut.textInputAccountNo.text.toString())
         intent.putExtra(Constants.BANK_CODE, bankCode)
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
@@ -100,7 +107,7 @@ class CashOutActivity : BaseActivity() {
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
 //                cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_mobile.text.toString())
-                cashOutViewModel.subscribeCashOut(text_input_amount.text.toString(), text_input_account_no.text.toString(), bankCode)
+                cashOutViewModel.subscribeCashOut(binding.contentCashOut.textInputAmount.text.toString(), binding.contentCashOut.textInputAccountNo.text.toString(), bankCode)
             }
         })
 
@@ -140,14 +147,15 @@ class CashOutActivity : BaseActivity() {
 
         feeViewModel.fees.observe(this, Observer {
             it.getContentIfNotHandled()?.let { fee ->
-                text_fee.text = fee
+                binding.contentCashOut.textFee.text = fee
+                binding.contentCashOut.textFeeMsg.text = getString(R.string.convenience_fee_msg, fee)
             }
         })
 
         cashOutViewModel.ubpCashOutDataWithMessage.observe(this, Observer { it1 ->
             it1?.let {
                 if (!it.first.isNullOrEmpty() && it.second != null) {
-                    val amount = text_input_amount.text.toString()
+                    val amount = binding.contentCashOut.textInputAmount.text.toString()
                     val dialog = SuccessDialog(
                         ctx = this@CashOutActivity,
                         message = it.first,
@@ -181,9 +189,10 @@ class CashOutActivity : BaseActivity() {
     }
 
     private fun viewNewClick() {
-        text_input_account_no.setText("")
-        text_input_amount.setText("")
-        text_fee.text = "0"
+        binding.contentCashOut.textInputAccountNo.setText("")
+        binding.contentCashOut.textInputAmount.setText("")
+        binding.contentCashOut.textFee.text = "0"
+        binding.contentCashOut.textFeeMsg.text = getString(R.string.convenience_fee_msg, "0")
     }
 
     private fun viewDashboardClick() {

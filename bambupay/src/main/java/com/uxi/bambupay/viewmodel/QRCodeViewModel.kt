@@ -53,7 +53,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
         Timber.tag("DEBUG").e("merchantId:: $merchantId")
         Timber.tag("DEBUG").e("amount:: $amount")
         loading.value = true
-        disposable?.add(repository.loadQuickPayQrMerchant(merchantId!!)
+        repository.loadQuickPayQrMerchant(merchantId!!)
             .flatMap { t ->
                 val merchantAccountNumber = t.response?.accountNumber
                 val request = Request.Builder()
@@ -85,8 +85,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
                     isSuccess.value = false
                 }
             })
-
-        )
+            .addTo(disposable)
 
     }
 
@@ -99,7 +98,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
         val request = Request.Builder()
             .setAmount(amount).build()
 
-        disposable?.add(repository.loadCreatePayQr(request)
+        repository.loadCreatePayQr(request)
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
@@ -122,7 +121,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
                     isSuccess.value = false
                 }
             })
-        )
+            .addTo(disposable)
     }
 
     fun validation(refIdNumber: String) {

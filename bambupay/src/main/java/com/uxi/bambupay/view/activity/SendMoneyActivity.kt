@@ -74,7 +74,7 @@ class SendMoneyActivity : BaseActivity() {
     }
 
     private fun events() {
-        text_convenience_fee.text = getString(R.string.alert_msg, "0")
+        text_convenience_fee.text = getString(R.string.convenience_fee_msg, "0")
 
         btn_cancel.setOnClickListener {
             onBackPressed()
@@ -146,7 +146,7 @@ class SendMoneyActivity : BaseActivity() {
         feeViewModel.fees.observe(this, Observer {
             it.getContentIfNotHandled()?.let { fee ->
                 text_fee.text = fee
-                text_convenience_fee.text = getString(R.string.alert_msg, fee)
+                text_convenience_fee.text = getString(R.string.convenience_fee_msg, fee)
             }
         })
 
@@ -177,7 +177,7 @@ class SendMoneyActivity : BaseActivity() {
         text_input_mobile.setText("")
         input_message.setText("")
         text_fee.text = "0"
-        text_convenience_fee.text = getString(R.string.alert_msg, "0")
+        text_convenience_fee.text = getString(R.string.convenience_fee_msg, "0")
     }
 
     private fun viewDashboardClick() {

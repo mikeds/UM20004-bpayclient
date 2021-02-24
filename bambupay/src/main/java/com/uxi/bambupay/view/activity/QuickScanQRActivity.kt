@@ -11,11 +11,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.databinding.ActivityQuickScanQrBinding
 import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.ext.viewBinding
 import com.uxi.bambupay.viewmodel.FeeViewModel
-import kotlinx.android.synthetic.main.activity_quick_scan_qr.*
-import kotlinx.android.synthetic.main.app_toolbar.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -27,10 +27,13 @@ import org.greenrobot.eventbus.ThreadMode
 class QuickScanQRActivity : BaseActivity() {
 
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
+    private val binding by viewBinding(ActivityQuickScanQrBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         setupToolbar()
+        initViews()
         observeViewModel()
         events()
         EventBus.getDefault().register(this)
@@ -63,38 +66,43 @@ class QuickScanQRActivity : BaseActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        tv_toolbar_title?.text = getString(R.string.quick_qr)
+        setSupportActionBar(binding.appToolbar.toolbar)
+        binding.appToolbar.tvToolbarTitle.text = getString(R.string.quick_qr)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
+    private fun initViews() {
+        binding.textFeeMsg.text = getString(R.string.convenience_fee_msg, "0")
+    }
+
     private fun observeViewModel() {
         feeViewModel.fees.observe(this, Observer {
             it.getContentIfNotHandled()?.let { fee ->
-                text_fee.text = fee
+                binding.textFee.text = fee
+                binding.textFeeMsg.text = getString(R.string.convenience_fee_msg, fee)
             }
         })
     }
 
     private fun  events() {
-        btn_cancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
 
-        btn_scan_qr_code.setOnClickListener {
+        binding.btnScanQrCode.setOnClickListener {
             showScanPayQr()
         }
 
-        text_input_amount.doAfterTextChanged {
+        binding.textInputAmount.doAfterTextChanged {
             feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_QUICK_PAY_QR_ID)
         }
     }
 
     private fun showScanPayQr() {
 
-        if (text_input_amount.text.toString().isEmpty()) {
+        if (binding.textInputAmount.text.toString().isEmpty()) {
             alertMessage(getString(R.string.amount_required))
             return
         }
@@ -107,7 +115,7 @@ class QuickScanQRActivity : BaseActivity() {
         } else {
             val intent = Intent(this@QuickScanQRActivity, ScanPayQRActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.QUICK_PAY_SCAN_SCREEN)
-            intent.putExtra(Constants.AMOUNT, text_input_amount.text.toString())
+            intent.putExtra(Constants.AMOUNT, binding.textInputAmount.text.toString())
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         }
@@ -123,7 +131,7 @@ class QuickScanQRActivity : BaseActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNewTransactionEvent(event: NewTransactionEvent) {
-        text_input_amount.setText("")
+        binding.textInputAmount.setText("")
     }
 
 }

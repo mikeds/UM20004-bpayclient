@@ -10,12 +10,14 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uxi.bambupay.R
+import com.uxi.bambupay.databinding.ActivityCreateQrcodeBinding
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.ext.viewBinding
 import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.QRCodeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
 import kotlinx.android.synthetic.main.activity_create_qrcode.*
-import kotlinx.android.synthetic.main.app_toolbar.*
+import timber.log.Timber
 
 /**
  * Created by Eraño Payawal on 10/4/20.
@@ -26,10 +28,13 @@ class CreateQRActivity : BaseActivity() {
     private val qrCodeViewModel by viewModel<QRCodeViewModel>()
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
+    private val binding by viewBinding(ActivityCreateQrcodeBinding::inflate)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         setupToolbar()
+        initViews()
         events()
         observeViewModel()
     }
@@ -56,33 +61,41 @@ class CreateQRActivity : BaseActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        tv_toolbar_title?.text = getString(R.string.create_qr)
+        setSupportActionBar(binding.appToolbar.toolbar)
+        binding.appToolbar.tvToolbarTitle.text = getString(R.string.create_qr)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
+    private fun initViews() {
+        binding.textFeeMsg.text = getString(R.string.convenience_fee_msg, "0")
+    }
+
     private fun events() {
-        btn_retry.setOnClickListener {
-            text_input_amount.setText("")
-            image_view_qr_code.setImageDrawable(null)
-            container_buttons.visibility = View.GONE
-            btn_generate.visibility = View.VISIBLE
+        binding.btnRetry.setOnClickListener {
+            binding.textInputAmount.setText("")
+            binding.imageViewQrCode.setImageDrawable(null)
+            binding.containerButtons.visibility = View.GONE
+            binding.containerGenerate.visibility = View.VISIBLE
         }
 
-        btn_cancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             onBackPressed()
         }
 
-        btn_generate.setOnClickListener {
-            it.hideKeyboard()
-            btn_generate.visibility = View.GONE
-            container_buttons.visibility = View.VISIBLE
-            qrCodeViewModel.subscribeCreatePayQr(text_input_amount.text.toString())
+        binding.btnCancelGenerate.setOnClickListener {
+            onBackPressed()
         }
 
-        text_input_amount.doAfterTextChanged {
+        binding.btnGenerate.setOnClickListener {
+            it.hideKeyboard()
+            binding.containerGenerate.visibility = View.GONE
+            binding.containerButtons.visibility = View.VISIBLE
+            qrCodeViewModel.subscribeCreatePayQr(binding.textInputAmount.text.toString())
+        }
+
+        binding.textInputAmount.doAfterTextChanged {
             feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_CREATE_SCAN_QR_ID)
         }
     }
@@ -96,8 +109,9 @@ class CreateQRActivity : BaseActivity() {
 
         qrCodeViewModel.createPayQrData.observe(this, Observer { scanQR ->
             scanQR?.let {
-                txt_qr_success_msg.visibility = View.VISIBLE
-                loadImage(it.qrCode!!, image_view_qr_code)
+                binding.txtQrSuccessMsg.visibility = View.VISIBLE
+                Timber.tag("DEBUG").e("create Qr code QR:: ${it.qrCode}")
+                loadImage(it.qrCode!!, binding.imageViewQrCode)
             }
         })
 
@@ -116,16 +130,23 @@ class CreateQRActivity : BaseActivity() {
             }
         })
 
+        qrCodeViewModel.errorMessage.observe(this, Observer {
+            if (!it.isNullOrEmpty()) {
+                showMessageDialog(it)
+            }
+        })
+
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
-                qrCodeViewModel.subscribeCreatePayQr(text_input_amount.text.toString())
+                qrCodeViewModel.subscribeCreatePayQr(binding.textInputAmount.text.toString())
             }
         })
 
 
         feeViewModel.fees.observe(this, Observer {
             it.getContentIfNotHandled()?.let { fee ->
-                text_fee.text = fee
+                binding.textFee.text = fee
+                binding.textFeeMsg.text = getString(R.string.convenience_fee_msg, fee)
             }
         })
 
