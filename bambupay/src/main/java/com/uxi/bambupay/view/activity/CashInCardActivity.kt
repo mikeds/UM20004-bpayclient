@@ -9,11 +9,15 @@ import androidx.lifecycle.Observer
 import com.egpayawal.card_library.view.CreditCardExpiryTextWatcher
 import com.uxi.bambupay.R
 import com.uxi.bambupay.databinding.ActivityCashInCardBinding
+import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN_REDIRECT_URL
 import com.uxi.bambupay.view.ext.viewBinding
 import com.uxi.bambupay.viewmodel.CashInViewModel
 import com.uxi.bambupay.viewmodel.FeeViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * Created by Eraño Payawal on 12/15/20.
@@ -36,6 +40,7 @@ class CashInCardActivity : BaseActivity() {
         initViews()
         observeViewModel()
         events()
+        EventBus.getDefault().register(this)
     }
 
     override fun getLayoutId() = R.layout.activity_cash_in_card
@@ -47,6 +52,11 @@ class CashInCardActivity : BaseActivity() {
 
     override fun onBackPressed() {
         finish()
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -152,6 +162,11 @@ class CashInCardActivity : BaseActivity() {
         })
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewTransactionEvent(event: NewTransactionEvent) {
+        viewNewClick()
+    }
+
     private fun viewNewClick() {
         binding.contentCashInCard.textInputAmount.setText("")
         binding.contentCashInCard.textInputCardNumber.setText("")
@@ -175,7 +190,13 @@ class CashInCardActivity : BaseActivity() {
                 text_input_cvv.text.toString(),
                 text_input_card_name.text.toString()
             )*/
-            cashInViewModel.subscribeCashInPaynamics(binding.contentCashInCard.textInputAmount.text.toString(), fromScreen)
+//            cashInViewModel.subscribeCashInPaynamics(binding.contentCashInCard.textInputAmount.text.toString(), fromScreen)
+
+            val intent = Intent(this@CashInCardActivity, OtpActivity::class.java)
+            intent.putExtra(Constants.SCREEN_FROM, fromScreen)
+            intent.putExtra(Constants.AMOUNT, binding.contentCashInCard.textInputAmount.text.toString())
+            startActivity(intent)
+            overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         }
 
         binding.contentCashInCard.btnCancel.setOnClickListener {

@@ -51,9 +51,9 @@ class SelectCashInActivity : AppCompatActivity() {
 
     private fun events() {
         btn_cash_in_merchant.setOnClickListener {
-            val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
+//            val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
             // For Testing only
-            // val intent = Intent(this@SelectCashInActivity, CashInActivity::class.java)
+            val intent = Intent(this@SelectCashInActivity, CashInActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.CASH_IN_OTC_SCREEN)
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
@@ -94,7 +94,8 @@ class SelectCashInActivity : AppCompatActivity() {
     }
 
     private fun showCashInScreen(cashInType: String) {
-        val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
+//        val intent = Intent(this@SelectCashInActivity, OtpActivity::class.java)
+        val intent = Intent(this@SelectCashInActivity, CashInCardActivity::class.java)
         intent.putExtra(Constants.SCREEN_FROM, cashInType)
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)

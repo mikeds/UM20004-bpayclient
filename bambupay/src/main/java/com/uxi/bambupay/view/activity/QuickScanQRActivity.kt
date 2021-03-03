@@ -29,6 +29,10 @@ class QuickScanQRActivity : BaseActivity() {
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
     private val binding by viewBinding(ActivityQuickScanQrBinding::inflate)
 
+    private val fromScreen by lazy {
+        intent?.getStringExtra(Constants.SCREEN_FROM)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -110,7 +114,7 @@ class QuickScanQRActivity : BaseActivity() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
             PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.CAMERA), PayQRActivity.CAMERA_REQUEST_CODE
+                arrayOf(Manifest.permission.CAMERA), SelectPayQRActivity.CAMERA_REQUEST_CODE
             )
         } else {
             val intent = Intent(this@QuickScanQRActivity, ScanPayQRActivity::class.java)

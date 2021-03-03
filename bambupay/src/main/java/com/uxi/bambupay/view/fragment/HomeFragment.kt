@@ -73,7 +73,7 @@ class HomeFragment : BaseFragment(), View.OnClickListener {
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             R.id.btn_pay_qr -> {
-                val intent = Intent(activity, PayQRActivity::class.java)
+                val intent = Intent(activity, SelectPayQRActivity::class.java)
                 startActivity(intent)
                 activity?.overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }

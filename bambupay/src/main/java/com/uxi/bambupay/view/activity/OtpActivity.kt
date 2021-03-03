@@ -31,6 +31,8 @@ class OtpActivity : BaseActivity() {
     private val transactionViewModel by viewModels<TransactionViewModel> { viewModelFactory }
     private val qrCodeViewModel by viewModels<QRCodeViewModel> { viewModelFactory }
 
+    private val cashInViewModel by viewModels<CashInViewModel> { viewModelFactory }
+
     private val fromScreen by lazy {
         intent?.getStringExtra(Constants.SCREEN_FROM)
     }
@@ -286,6 +288,46 @@ class OtpActivity : BaseActivity() {
             }
         })
         // end scanpayqr
+
+        // start cash-in
+        cashInViewModel.cashInDataWithMessage.observe(this, Observer { it1 ->
+            it1?.let {
+                if (!it.first.isNullOrEmpty() && it.second != null) {
+                    val dialog = SuccessDialog(
+                        ctx = this,
+                        message = it.first,
+                        amount = this.amount,
+                        date = it.second?.timestamp,
+                        qrCodeUrl = it.second?.qrCode,
+                        onNewClicked = ::viewNewClick,
+                        onDashBoardClicked = ::viewDashboardClick
+                    )
+                    dialog.show()
+                }
+            }
+        })
+
+        cashInViewModel.errorMessage.observe(this, Observer {
+            if (!it.isNullOrEmpty()) {
+                showMessageDialog(it)
+            }
+        })
+
+        cashInViewModel.paynamicsData.observe(this, Observer { paynamics ->
+            paynamics?.redirectUrl?.let {
+                showPaynamicsWebview(it)
+            }
+        })
+
+        cashInViewModel.isLoading.observe(this, Observer {
+            if (it) {
+                showProgressDialog("Loading...")
+            } else {
+                dismissProgressDialog()
+            }
+        })
+
+        // end cash-in
     }
 
     private fun viewNewClick() {
@@ -307,9 +349,10 @@ class OtpActivity : BaseActivity() {
         when (fromScreen) {
 
             Constants.CASH_IN_OTC_SCREEN -> {
-                val intent = Intent(this@OtpActivity, CashInActivity::class.java)
+                /*val intent = Intent(this@OtpActivity, CashInActivity::class.java)
                 startActivity(intent)
-                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)*/
+                cashInViewModel.subscribeCashIn(amount)
             }
             Constants.CASH_OUT_SCREEN -> {
                 /*val intent = Intent(this@OtpActivity, SelectBankActivity::class.java)
@@ -346,7 +389,7 @@ class OtpActivity : BaseActivity() {
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
                 finish()
             }
-            Constants.CASH_IN_CARD_SCREEN -> {
+            /*Constants.CASH_IN_CARD_SCREEN -> {
                 showCashInScreen(Constants.CASH_IN_CARD_SCREEN)
             }
             Constants.CASH_IN_BANCNET_SCREEN -> {
@@ -360,6 +403,10 @@ class OtpActivity : BaseActivity() {
             }
             Constants.CASH_IN_PAYMAYA_SCREEN -> {
                 showCashInScreen(Constants.CASH_IN_PAYMAYA_SCREEN)
+            }*/
+            Constants.CASH_IN_CARD_SCREEN, Constants.CASH_IN_BANCNET_SCREEN,
+            Constants.CASH_IN_GRAB_SCREEN, Constants.CASH_IN_GCASH_SCREEN, Constants.CASH_IN_PAYMAYA_SCREEN -> {
+                cashInViewModel.subscribeCashInPaynamics(amount, fromScreen)
             }
         }
     }
@@ -370,6 +417,15 @@ class OtpActivity : BaseActivity() {
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
+
+    private fun showPaynamicsWebview(url: String) {
+        val intent = Intent(this@OtpActivity, CashInPaynamicsActivity::class.java)
+        intent.putExtra(Constants.AMOUNT, amount)
+        intent.putExtra(Constants.CASH_IN_REDIRECT_URL, url)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+    }
+
 
     companion object {
         const val SUBSCRIBE_GLOBE_TOKEN = 0x0001

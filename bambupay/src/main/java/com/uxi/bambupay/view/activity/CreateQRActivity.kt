@@ -30,6 +30,10 @@ class CreateQRActivity : BaseActivity() {
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
     private val binding by viewBinding(ActivityCreateQrcodeBinding::inflate)
 
+    private val fromScreen by lazy {
+        intent?.getStringExtra(Constants.SCREEN_FROM)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

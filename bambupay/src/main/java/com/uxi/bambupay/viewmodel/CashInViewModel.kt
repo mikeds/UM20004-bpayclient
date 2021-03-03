@@ -158,10 +158,13 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
             else -> ""
         }
 
+        _isLoading.value = true
         repository.loadCashInPaynamics(type, amount)
-            .doOnSubscribe { _isLoading.value = true }
-            .doOnComplete { _isLoading.value = false }
+//            .doOnSubscribe { _isLoading.value = true }
+//            .doOnComplete { _isLoading.value = false }
+            .doOnTerminate {  }
             .subscribe({
+                _isLoading.value = false
                 resultState(it)
             }, Timber::e)
             .addTo(disposable)

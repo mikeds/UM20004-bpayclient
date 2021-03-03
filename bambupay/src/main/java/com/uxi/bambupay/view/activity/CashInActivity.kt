@@ -1,5 +1,6 @@
 package com.uxi.bambupay.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
@@ -7,12 +8,16 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
 import com.uxi.bambupay.databinding.ActivityCashInBinding
+import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.view.ext.viewBinding
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.CashInViewModel
 import com.uxi.bambupay.viewmodel.FeeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class CashInActivity : BaseActivity() {
 
@@ -21,6 +26,10 @@ class CashInActivity : BaseActivity() {
     private val feeViewModel by viewModels<FeeViewModel> { viewModelFactory }
     private val binding by viewBinding(ActivityCashInBinding::inflate)
 
+    private val fromScreen by lazy {
+        intent?.getStringExtra(Constants.SCREEN_FROM)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -28,6 +37,7 @@ class CashInActivity : BaseActivity() {
         initViews()
         observeViewModel()
         events()
+        EventBus.getDefault().register(this)
     }
 
     override fun getLayoutId() = R.layout.activity_cash_in
@@ -35,6 +45,11 @@ class CashInActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.from_left_in, R.anim.from_right_out)
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this)
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -70,7 +85,12 @@ class CashInActivity : BaseActivity() {
         }
 
         binding.contentCashIn.btnTransact.setOnClickListener {
-            cashInViewModel.subscribeCashIn(binding.contentCashIn.textInputAmount.text.toString()/*, text_input_mobile.text.toString()*/)
+            //cashInViewModel.subscribeCashIn(binding.contentCashIn.textInputAmount.text.toString()/*, text_input_mobile.text.toString()*/)
+            val intent = Intent(this, OtpActivity::class.java)
+            intent.putExtra(Constants.SCREEN_FROM, fromScreen)
+            intent.putExtra(Constants.AMOUNT, binding.contentCashIn.textInputAmount.text.toString())
+            startActivity(intent)
+            overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         }
 
         binding.contentCashIn.textInputAmount.doAfterTextChanged {
@@ -152,8 +172,15 @@ class CashInActivity : BaseActivity() {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNewTransactionEvent(event: NewTransactionEvent) {
+        viewNewClick()
+    }
+
     private fun viewNewClick() {
         binding.contentCashIn.textInputAmount.setText("")
+        binding.contentCashIn.textFee.text = ""
+        binding.contentCashIn.textFeeMsg.text = getString(R.string.convenience_fee_msg, "0")
     }
 
     private fun viewDashboardClick() {

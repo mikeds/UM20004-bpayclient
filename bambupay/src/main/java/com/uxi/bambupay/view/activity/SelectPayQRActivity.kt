@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.app_toolbar.*
  * Created by Eraño Payawal on 10/4/20.
  * hunterxer31@gmail.com
  */
-class PayQRActivity : AppCompatActivity() {
+class SelectPayQRActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,17 +58,17 @@ class PayQRActivity : AppCompatActivity() {
         }
 
         btn_create_pay_qr.setOnClickListener {
-            val intent = Intent(this@PayQRActivity, OtpActivity::class.java)
+            val intent = Intent(this@SelectPayQRActivity, OtpActivity::class.java)
+//            val intent = Intent(this@SelectPayQRActivity, CreateQRActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.CREATE_PAY_QR_SCREEN)
-//            val intent = Intent(this@PayQRActivity, CreateQRActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         }
 
         btn_quick_pay_qr.setOnClickListener {
-            val intent = Intent(this@PayQRActivity, OtpActivity::class.java)
+            val intent = Intent(this@SelectPayQRActivity, OtpActivity::class.java)
+//            val intent = Intent(this@SelectPayQRActivity, QuickScanQRActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.QUICK_PAY_SCAN_SCREEN)
-//            val intent = Intent(this@PayQRActivity, QuickScanQRActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         }
@@ -82,7 +82,7 @@ class PayQRActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
         } else {
 //            val intent = Intent(this@PayQRActivity, OtpActivity::class.java)
-            val intent = Intent(this@PayQRActivity, ScanPayQrCodeActivity::class.java)
+            val intent = Intent(this@SelectPayQRActivity, ScanPayQrCodeActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.SCAN_PAY_QR_SCREEN)
             startActivity(intent)
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
