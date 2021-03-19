@@ -6,8 +6,12 @@
     android:orientation="vertical"
     tools:context=".view.activity.ScanPayQrCodeActivity">
 
-    <include layout="@layout/app_toolbar" />
+    <include
+        android:id="@+id/app_toolbar"
+        layout="@layout/app_toolbar" />
 
-    <include layout="@layout/content_scan_pay_qr_code" />
+    <include
+        android:id="@+id/content_scan_pay_qr_code"
+        layout="@layout/content_scan_pay_qr_code" />
 
 </LinearLayout>

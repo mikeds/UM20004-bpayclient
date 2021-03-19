@@ -4,12 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.uxi.bambupay.api.Request
 import com.uxi.bambupay.model.ResultWithMessage
 import com.uxi.bambupay.model.ScanQr
+import com.uxi.bambupay.model.lookup.TxDetails
 import com.uxi.bambupay.repository.QrCodeRepository
 import com.uxi.bambupay.utils.Utils
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -35,18 +39,28 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
 
     private val _successMessage = MutableLiveData<String>()
     private val _scanPayQr = MutableLiveData<ScanQr>()
-    val scanPayQrDataWithMessage: MediatorLiveData<Pair<String?, ScanQr?>> = MediatorLiveData<Pair<String?, ScanQr?>>()
-        .apply {
-            addSource(_successMessage) { message ->
-                this.value = this.value?.copy(first = message) ?: Pair(message, null)
-            }
-            addSource(_scanPayQr) {
-                this.value = this.value?.copy(second = it) ?: Pair(null, it)
-            }
-        }
+    private val _txDetails = MutableLiveData<TxDetails>()
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
+
+    val scanPayQrDataWithMessage: LiveData<Triple<String?, ScanQr?, TxDetails?>> = scanQrTxDetailsLiveData()
+    private fun scanQrTxDetailsLiveData(): LiveData<Triple<String?, ScanQr?, TxDetails?>> =
+        Transformations.map(
+            MediatorLiveData<Triple<String?, ScanQr?, TxDetails?>>()
+                .apply {
+                    addSource(_successMessage) { message ->
+                        this.value =
+                            this.value?.copy(first = message) ?: Triple(message, null, null)
+                    }
+                    addSource(_scanPayQr) {
+                        this.value = this.value?.copy(second = it) ?: Triple(null, it, null)
+                    }
+                    addSource(_txDetails) {
+                        this.value = this.value?.copy(third = it) ?: Triple(null, null, it)
+                    }
+                }
+        ) { it }
 
     fun subscriptionQuickPay(merchantId: String?, amount: String?) {
 
@@ -67,7 +81,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
             .subscribe({
 
                 if (it.response != null) {
-                    quickPaySuccessMsg.value = "Thank you for using QuickPayQR!"//it.successMessage
+                    quickPaySuccessMsg.value = "Thank you for using QuickPayQR!"
                     quickPayData.value = it.response
 
                 } else {
@@ -142,6 +156,10 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
                         _scanPayQr.postValue(scanQr)
                         _successMessage.postValue("Thank you for using ScanPayQR!")
                     }
+                    is TxDetails -> {
+                        val txDetails = t.value as TxDetails
+                        _txDetails.postValue(txDetails)
+                    }
                 }
             }
             is ResultWithMessage.Error -> {
@@ -155,6 +173,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
                 isSuccess.value = false
                 _isLoading.value = false
             }
+            else -> {}
         }
     }
 
@@ -164,14 +183,18 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
             return
         }
 
-        val requestBuilder = Request.Builder()
-            .setSenderRefId(refIdNumber).build()
+        val txDetailsApi = repository.loadTxDetails(refIdNumber)
+        val acceptPayQrApi = repository.loadAcceptPayQr(refIdNumber)
+        val zip = Flowable.zip(txDetailsApi, acceptPayQrApi, { t1, t2 -> Pair(t1, t2) })
 
-        repository.loadAcceptPayQr(requestBuilder)
+        zip
             .doOnSubscribe { loading.value = true }
             .doAfterTerminate { loading.value = false }
             .subscribe({
-                resultState(it)
+                it?.let {
+                    resultState(it.first)
+                    resultState(it.second)
+                }
             }, Timber::e)
             .addTo(disposable)
 

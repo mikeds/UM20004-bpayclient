@@ -273,13 +273,14 @@ class OtpActivity : BaseActivity() {
         })
         qrCodeViewModel.scanPayQrDataWithMessage.observe(this, Observer { it1 ->
             it1?.let {
-                if (!it.first.isNullOrEmpty() && it.second != null) {
+                if (!it.first.isNullOrEmpty() && it.second != null && it.third != null) {
                     val dialog = SuccessDialog(
                         ctx = this,
                         message = it.first,
-                        amount = this.amount,
+                        amount = it.third?.amount,
                         date = it.second?.timestamp,
                         qrCodeUrl = null,
+                        txFee = it.third?.fee,
                         onNewClicked = ::viewNewClick,
                         onDashBoardClicked = ::viewDashboardClick
                     )

@@ -1,6 +1,7 @@
 package com.uxi.bambupay.api
 
 import com.uxi.bambupay.model.*
+import com.uxi.bambupay.model.lookup.TxDetails
 import com.uxi.bambupay.model.otp.OtpResponse
 import com.uxi.bambupay.model.otp.OtpTokenResponse
 import com.uxi.bambupay.model.paynamics.Paynamics
@@ -106,5 +107,7 @@ interface WebService {
     @POST("transactions/client/cash-in")
     fun cashInPaynamics(@Body params: Request): Flowable<GenericApiResponse<Paynamics>>
 
+    @GET("lookup/client/tx/{refIdNumber}")
+    fun getTxDetails(@Path("refIdNumber") refIdNumber: String): Flowable<GenericApiResponse<TxDetails>>
 
 }

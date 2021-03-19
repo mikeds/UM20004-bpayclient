@@ -37,6 +37,23 @@
         android:text="₱" />
 
     <TextView
+        android:id="@+id/text_fee_lbl"
+        style="@style/TextViewTiny"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/fee" />
+
+    <TextView
+        android:id="@+id/text_fee"
+        style="@style/TextViewTiny"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:text="₱ 0" />
+
+    <TextView
         style="@style/TextViewTiny"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

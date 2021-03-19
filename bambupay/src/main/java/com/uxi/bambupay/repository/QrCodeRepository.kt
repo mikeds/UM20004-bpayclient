@@ -6,6 +6,7 @@ import com.uxi.bambupay.api.WebService
 import com.uxi.bambupay.model.MerchantInfo
 import com.uxi.bambupay.model.ResultWithMessage
 import com.uxi.bambupay.model.ScanQr
+import com.uxi.bambupay.model.lookup.TxDetails
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -25,8 +26,10 @@ class QrCodeRepository @Inject constructor(private val webService: WebService): 
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun loadAcceptPayQr(request: Request) : Flowable<ResultWithMessage<ScanQr>> {
-        return webService.acceptPayQr(request)
+    fun loadAcceptPayQr(refIdNumber: String?) : Flowable<ResultWithMessage<ScanQr>> {
+        val requestBuilder = Request.Builder()
+            .setSenderRefId(refIdNumber).build()
+        return webService.acceptPayQr(requestBuilder)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { res ->
@@ -48,6 +51,19 @@ class QrCodeRepository @Inject constructor(private val webService: WebService): 
         return webService.quickPayQRAccept(request)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun loadTxDetails(refIdNumber: String?): Flowable<ResultWithMessage<TxDetails>> {
+        return webService.getTxDetails(refIdNumber!!)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { res ->
+                when (val obj: TxDetails? = res.response) {
+                    null -> ResultWithMessage.Error(false, "")
+                    else -> ResultWithMessage.Success(obj, res.successMessage)
+                }
+            }
+            .onErrorReturn { errorHandler(it) }
     }
 
 }

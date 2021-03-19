@@ -9,7 +9,8 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.uxi.bambupay.R
-import kotlinx.android.synthetic.main.dialog_message_result.*
+import com.uxi.bambupay.databinding.DialogMessageResultBinding
+import com.uxi.bambupay.view.ext.viewBinding
 
 /**
  * Created by Eraño Payawal on 10/4/20.
@@ -21,9 +22,12 @@ class SuccessDialog(
     private val amount: String?,
     private val date: String?,
     private val qrCodeUrl: String?,
+    private val txFee: String? = null,
     private val onNewClicked: () -> Unit,
     private val onDashBoardClicked: () -> Unit,
     private val isTransactionVisible: Boolean? = true) : Dialog(ctx) {
+
+    private val binding by viewBinding(DialogMessageResultBinding::inflate)
 
     init {
         setCancelable(false)
@@ -38,36 +42,45 @@ class SuccessDialog(
 
     private fun initViews() {
         message?.let {
-            text_success_message.text = it
+            binding.textSuccessMessage.text = it
         }
 
         amount?.let {
-            text_amount.text = ctx.getString(R.string.amount_value, it)
+            binding.textAmount.text = ctx.getString(R.string.amount_value, it)
         }
 
         date?.let {
-            text_date.text = it
+            binding.textDate.text = it
         }
 
         if (!qrCodeUrl.isNullOrEmpty()) {
-            image_view_qr_code.visibility = View.VISIBLE
-            loadImage(qrCodeUrl, image_view_qr_code)
+            binding.imageViewQrCode.visibility = View.VISIBLE
+            loadImage(qrCodeUrl, binding.imageViewQrCode)
         }
 
         isTransactionVisible?.let {
             if (it) {
-                btn_new_transaction.visibility = View.VISIBLE
+                binding.btnNewTransaction.visibility = View.VISIBLE
             } else {
-                btn_new_transaction.visibility = View.GONE
+                binding.btnNewTransaction.visibility = View.GONE
             }
         }
 
-        btn_new_transaction.setOnClickListener {
+        if (txFee.isNullOrEmpty()) {
+            binding.textFeeLbl.visibility = View.GONE
+            binding.textFee.visibility = View.GONE
+        }
+
+        txFee?.let {
+            binding.textFee.text = ctx.getString(R.string.amount_value, it)
+        }
+
+        binding.btnNewTransaction.setOnClickListener {
             dismiss()
             onNewClicked()
         }
 
-        btn_okay.setOnClickListener {
+        binding.btnOkay.setOnClickListener {
             dismiss()
             onDashBoardClicked()
         }

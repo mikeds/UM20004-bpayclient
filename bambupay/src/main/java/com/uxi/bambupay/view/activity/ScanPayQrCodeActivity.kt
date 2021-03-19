@@ -1,25 +1,21 @@
 package com.uxi.bambupay.view.activity
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
+import com.uxi.bambupay.databinding.ActivityScanPayQrCodeBinding
 import com.uxi.bambupay.model.events.NewTransactionEvent
 import com.uxi.bambupay.utils.Constants
+import com.uxi.bambupay.view.ext.viewBinding
 import com.uxi.bambupay.view.fragment.dialog.SuccessDialog
 import com.uxi.bambupay.viewmodel.QRCodeViewModel
 import com.uxi.bambupay.viewmodel.UserTokenViewModel
-import kotlinx.android.synthetic.main.app_toolbar.*
-import kotlinx.android.synthetic.main.content_scan_pay_qr_code.*
-import kotlinx.android.synthetic.main.content_scan_pay_qr_code.btn_cancel
-import kotlinx.android.synthetic.main.content_scan_pay_qr_code.btn_transact
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -33,8 +29,11 @@ class ScanPayQrCodeActivity : BaseActivity() {
     private val userTokenModel by viewModel<UserTokenViewModel>()
     private val qrCodeViewModel by viewModel<QRCodeViewModel>()
 
+    private val binding by viewBinding(ActivityScanPayQrCodeBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         setupToolbar()
         events()
         observeViewModel()
@@ -73,36 +72,36 @@ class ScanPayQrCodeActivity : BaseActivity() {
             val qrCode: String? = data?.getStringExtra(ScanCodeActivity.SCANNED_QR_CODE)
             Log.e("DEBUG", "qrCode:: $qrCode")
             qrCode?.let {
-                text_input_ref_num.setText(it)
+                binding.contentScanPayQrCode.textInputRefNum.setText(it)
             }
         }
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        tv_toolbar_title?.text = getString(R.string.scan_pay)
+        setSupportActionBar(binding.appToolbar.toolbar)
+        binding.appToolbar.tvToolbarTitle.text = getString(R.string.scan_pay)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
     private fun events() {
-        btn_scan_qr_code.setOnClickListener {
+        binding.contentScanPayQrCode.btnScanQrCode.setOnClickListener {
             cameraPermission()
         }
-        btn_cancel.setOnClickListener {
+        binding.contentScanPayQrCode.btnCancel.setOnClickListener {
             onBackPressed()
         }
-        btn_transact.setOnClickListener {
+        binding.contentScanPayQrCode.btnTransact.setOnClickListener {
 //            qrCodeViewModel.subscribeScanPayQr(text_input_ref_num.text.toString())
-            qrCodeViewModel.validation(text_input_ref_num.text.toString())
+            qrCodeViewModel.validation(binding.contentScanPayQrCode.textInputRefNum.text.toString())
         }
     }
 
     private fun showOtpScreen() {
         val intent = Intent(this, OtpActivity::class.java)
         intent.putExtra(Constants.SCREEN_FROM, Constants.SCAN_PAY_QR_SCREEN)
-        intent.putExtra(Constants.REF_ID_NUMBER, text_input_ref_num.text.toString())
+        intent.putExtra(Constants.REF_ID_NUMBER, binding.contentScanPayQrCode.textInputRefNum.text.toString())
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
     }
@@ -143,7 +142,7 @@ class ScanPayQrCodeActivity : BaseActivity() {
 
         userTokenModel.isTokenRefresh.observe(this, Observer { isTokenRefresh ->
             if (isTokenRefresh) {
-                qrCodeViewModel.subscribeScanPayQr(text_input_ref_num.text.toString())
+                qrCodeViewModel.subscribeScanPayQr(binding.contentScanPayQrCode.textInputRefNum.text.toString())
             }
         })
 
@@ -188,7 +187,7 @@ class ScanPayQrCodeActivity : BaseActivity() {
     }
 
     private fun viewNewClick() {
-        text_input_ref_num.setText("")
+        binding.contentScanPayQrCode.textInputRefNum.setText("")
     }
 
     private fun viewDashboardClick() {
