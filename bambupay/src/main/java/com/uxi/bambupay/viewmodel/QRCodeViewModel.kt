@@ -40,6 +40,7 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
     private val _successMessage = MutableLiveData<String>()
     private val _scanPayQr = MutableLiveData<ScanQr>()
     private val _txDetails = MutableLiveData<TxDetails>()
+    val txDetails: LiveData<TxDetails> = _txDetails
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -198,6 +199,18 @@ constructor(private val repository: QrCodeRepository, private val utils: Utils) 
             }, Timber::e)
             .addTo(disposable)
 
+    }
+
+    fun subscribeTxDetails(refIdNumber: String?) {
+        if (refIdNumber.isNullOrEmpty()) return
+
+        repository.loadTxDetails(refIdNumber)
+            .doOnSubscribe { loading.value = true }
+            .doAfterTerminate { loading.value = false }
+            .subscribe({
+                resultState(it)
+            }, Timber::e)
+            .addTo(disposable)
     }
 
 }

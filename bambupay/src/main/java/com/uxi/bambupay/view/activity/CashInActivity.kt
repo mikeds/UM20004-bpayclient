@@ -146,7 +146,7 @@ class CashInActivity : BaseActivity() {
             }
         })
 
-        cashInViewModel.cashInDataWithMessage.observe(this, Observer { it1 ->
+        /*cashInViewModel.cashInDataWithMessage.observe(this, Observer { it1 ->
             it1?.let {
                 if (!it.first.isNullOrEmpty() && it.second != null) {
                     val amount = binding.contentCashIn.textInputAmount.text.toString()
@@ -162,7 +162,7 @@ class CashInActivity : BaseActivity() {
                     dialog.show()
                 }
             }
-        })
+        })*/
 
         cashInViewModel.errorMessage.observe(this, Observer {
             if (!it.isNullOrEmpty()) {

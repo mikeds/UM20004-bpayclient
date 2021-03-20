@@ -36,7 +36,7 @@ class SuccessDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
-        setContentView(R.layout.dialog_message_result)
+        setContentView(binding.root)
         initViews()
     }
 

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import com.uxi.bambupay.R
@@ -73,6 +74,7 @@ class ScanPayQrCodeActivity : BaseActivity() {
             Log.e("DEBUG", "qrCode:: $qrCode")
             qrCode?.let {
                 binding.contentScanPayQrCode.textInputRefNum.setText(it)
+                qrCodeViewModel.subscribeTxDetails(it)
             }
         }
     }
@@ -179,6 +181,14 @@ class ScanPayQrCodeActivity : BaseActivity() {
                 showOtpScreen()
             }
         })
+
+        qrCodeViewModel.txDetails.observe(this, { it1 ->
+            it1?.let {
+                binding.contentScanPayQrCode.containerFee.visibility = View.VISIBLE
+                binding.contentScanPayQrCode.textFee.text = it.fee
+                binding.contentScanPayQrCode.textAmount.text = it.amount
+            }
+        })
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -188,6 +198,9 @@ class ScanPayQrCodeActivity : BaseActivity() {
 
     private fun viewNewClick() {
         binding.contentScanPayQrCode.textInputRefNum.setText("")
+        binding.contentScanPayQrCode.containerFee.visibility = View.GONE
+        binding.contentScanPayQrCode.textFee.text = ""
+        binding.contentScanPayQrCode.textAmount.text = ""
     }
 
     private fun viewDashboardClick() {

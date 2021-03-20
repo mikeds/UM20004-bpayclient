@@ -291,20 +291,19 @@ class OtpActivity : BaseActivity() {
         // end scanpayqr
 
         // start cash-in
-        cashInViewModel.cashInDataWithMessage.observe(this, Observer { it1 ->
-            it1?.let {
-                if (!it.first.isNullOrEmpty() && it.second != null) {
-                    val dialog = SuccessDialog(
-                        ctx = this,
-                        message = it.first,
-                        amount = this.amount,
-                        date = it.second?.timestamp,
-                        qrCodeUrl = it.second?.qrCode,
-                        onNewClicked = ::viewNewClick,
-                        onDashBoardClicked = ::viewDashboardClick
-                    )
-                    dialog.show()
-                }
+        cashInViewModel.cashInDataWithMessage.observe(this, {
+            if (it.first != null && it.second != null) {
+                val dialog = SuccessDialog(
+                    ctx = this,
+                    message = it.first,
+                    amount = it.second?.amount,
+                    date = it.second?.timestamp,
+                    qrCodeUrl = it.second?.qrCode,
+                    txFee = it.second?.fee.toString(),
+                    onNewClicked = ::viewNewClick,
+                    onDashBoardClicked = ::viewDashboardClick
+                )
+                dialog.show()
             }
         })
 
@@ -350,6 +349,7 @@ class OtpActivity : BaseActivity() {
         when (fromScreen) {
 
             Constants.CASH_IN_OTC_SCREEN -> {
+                Timber.tag("DEBUG").e("CASH_IN_OTC_SCREEN")
                 /*val intent = Intent(this@OtpActivity, CashInActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)*/

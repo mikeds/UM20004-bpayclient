@@ -8,9 +8,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.uxi.bambupay.R
+import com.uxi.bambupay.databinding.ActivityPayqrcodeBinding
 import com.uxi.bambupay.utils.Constants
-import kotlinx.android.synthetic.main.activity_payqrcode.*
-import kotlinx.android.synthetic.main.app_toolbar.*
+import com.uxi.bambupay.view.ext.viewBinding
 
 /**
  * Created by Eraño Payawal on 10/4/20.
@@ -18,9 +18,11 @@ import kotlinx.android.synthetic.main.app_toolbar.*
  */
 class SelectPayQRActivity : AppCompatActivity() {
 
+    private val binding by viewBinding(ActivityPayqrcodeBinding::inflate)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payqrcode)
+        setContentView(binding.root)
         setupToolbar()
         events()
     }
@@ -45,19 +47,19 @@ class SelectPayQRActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        tv_toolbar_title?.text = getString(R.string.pay_qr_code)
+        setSupportActionBar(binding.appToolbar.toolbar)
+        binding.appToolbar.tvToolbarTitle.text = getString(R.string.pay_qr_code)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
     private fun events() {
-        btn_scan_pay_qr.setOnClickListener {
+        binding.btnScanPayQr.setOnClickListener {
             showScanPayQr()
         }
 
-        btn_create_pay_qr.setOnClickListener {
+        binding.btnCreatePayQr.setOnClickListener {
             val intent = Intent(this@SelectPayQRActivity, OtpActivity::class.java)
 //            val intent = Intent(this@SelectPayQRActivity, CreateQRActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.CREATE_PAY_QR_SCREEN)
@@ -65,7 +67,7 @@ class SelectPayQRActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         }
 
-        btn_quick_pay_qr.setOnClickListener {
+        binding.btnQuickPayQr.setOnClickListener {
             val intent = Intent(this@SelectPayQRActivity, OtpActivity::class.java)
 //            val intent = Intent(this@SelectPayQRActivity, QuickScanQRActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, Constants.QUICK_PAY_SCAN_SCREEN)

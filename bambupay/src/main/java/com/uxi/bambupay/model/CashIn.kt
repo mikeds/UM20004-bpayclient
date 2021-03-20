@@ -8,22 +8,18 @@ import com.google.gson.annotations.SerializedName
  */
 class CashIn {
 
-    /*@SerializedName("transaction_number")
-    var transactionNumber: String? = null
-
-    @SerializedName("transactionn_qr_code")
-    var transactionQrCode: String? = null
-
-    var merchant: String? = null
-
-    @SerializedName("request_expiration")
-    var requestExpiration: String? = null*/
-
     @SerializedName("sender_ref_id")
     var senderRefId: String? = null
 
     @SerializedName("qr_code")
     var qrCode: String? = null
+
+    var amount: String? = null
+
+    var fee: Int = 0
+
+    @SerializedName("total_amount")
+    var totalAmount: Int = 0
 
     var timestamp: String? = null
 

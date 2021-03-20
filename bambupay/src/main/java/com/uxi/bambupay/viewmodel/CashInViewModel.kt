@@ -43,7 +43,7 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
             }
         }*/
 
-    val cashInDataWithMessage: MediatorLiveData<Pair<String?, CashIn?>> = MediatorLiveData<Pair<String?, CashIn?>>()
+    /*val cashInDataWithMessage: MediatorLiveData<Pair<String?, CashIn?>> = MediatorLiveData<Pair<String?, CashIn?>>()
         .apply {
             addSource(_successMessage) { message ->
                 this.value = this.value?.copy(first = message) ?: Pair(message, null)
@@ -51,7 +51,18 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
             addSource(_cashInData) {
                 this.value = this.value?.copy(second = it) ?: Pair(null, it)
             }
+        }*/
+
+    val cashInDataWithMessage: LiveData<Pair<String?, CashIn?>> = generateCashInDate()
+
+    private fun generateCashInDate() = MediatorLiveData<Pair<String?, CashIn?>>().apply {
+        addSource(_successMessage) { message ->
+            this.value = this.value?.copy(first = message) ?: Pair(message, null)
         }
+        addSource(_cashInData) {
+            this.value = this.value?.copy(second = it) ?: Pair(null, it)
+        }
+    }
 
     fun subscribeCashIn(amount: String?/*, recipient: String?*/) {
         if (amount.isNullOrEmpty()) {
@@ -63,6 +74,8 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
             isRecipientEmpty.value = true
             return
         }*/
+
+        Timber.tag("DEBUG").e("Cash In Over the Counter")
 
         val requestBuilder = Request.Builder()
             .setType(Constants.TYPE_OTC)
@@ -119,9 +132,9 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
                     }
                     is CashIn -> {
                         val cashIn = t.value as CashIn
-                        _cashInData.postValue(cashIn)
-//                        _successMessage.postValue(t.message)
-                        _successMessage.postValue("Go to the nearest BambuPay merchant and show the Merchant the generated QR code.")
+                        _cashInData.value = cashIn
+                        _successMessage.value = t.message
+//                        _successMessage.postValue("Go to the nearest BambuPay merchant and show the Merchant the generated QR code.")
                     }
                 }
             }
@@ -136,6 +149,7 @@ constructor(private val repository: CashInRepository, private val utils: Utils) 
                 isSuccess.value = false
                 _isLoading.value = false
             }
+            else -> {}
         }
     }
 
