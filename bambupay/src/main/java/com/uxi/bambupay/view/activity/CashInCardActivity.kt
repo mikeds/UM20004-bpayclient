@@ -18,6 +18,7 @@ import com.uxi.bambupay.viewmodel.FeeViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
 
 /**
  * Created by Eraño Payawal on 12/15/20.
@@ -101,7 +102,7 @@ class CashInCardActivity : BaseActivity() {
 
         val feeMsg = when (fromScreen) {
             Constants.CASH_IN_CARD_SCREEN -> {
-                getString(R.string.cash_in_card_paymaya_fee_msg)
+                getString(R.string.cash_in_card_fee_msg)
             }
             Constants.CASH_IN_BANCNET_SCREEN -> {
                 getString(R.string.convenience_fee_msg, "0")
@@ -191,6 +192,13 @@ class CashInCardActivity : BaseActivity() {
                 text_input_card_name.text.toString()
             )*/
 //            cashInViewModel.subscribeCashInPaynamics(binding.contentCashInCard.textInputAmount.text.toString(), fromScreen)
+
+            val amount = binding.contentCashInCard.textInputAmount.text.toString()
+            if (amount.isEmpty()) return@setOnClickListener
+
+            val amountValue = amount.toInt()
+            Timber.tag("DEBUG").e("amountValue:: $amountValue")
+            if (amountValue < 500) return@setOnClickListener
 
             val intent = Intent(this@CashInCardActivity, OtpActivity::class.java)
             intent.putExtra(Constants.SCREEN_FROM, fromScreen)
