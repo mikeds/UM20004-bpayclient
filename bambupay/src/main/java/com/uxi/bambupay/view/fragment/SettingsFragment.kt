@@ -2,9 +2,11 @@ package com.uxi.bambupay.view.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import com.uxi.bambupay.BuildConfig
 import com.uxi.bambupay.R
 import com.uxi.bambupay.view.activity.LoginActivity
 import com.uxi.bambupay.view.activity.MainActivity
@@ -27,6 +29,21 @@ class SettingsFragment : BaseFragment() {
         if (context is MainActivity) {
             (context as MainActivity).setToolbarBgColor(R.color.white)
         }
+
+        btn_data_privacy.setOnClickListener {
+            val url = "${BuildConfig.API_BASE_URL_TMS}data-privacy"
+            openBrowser(url)
+        }
+
+        btn_terms.setOnClickListener {
+            val url = "${BuildConfig.API_BASE_URL_TMS}terms-and-conditions"
+            openBrowser(url)
+        }
+
+        btn_eula.setOnClickListener {
+            val url = "${BuildConfig.API_BASE_URL_TMS}eula"
+            openBrowser(url)
+        }
     }
 
     private fun showLogoutDialog() {
@@ -45,4 +62,13 @@ class SettingsFragment : BaseFragment() {
         startActivity(intent)
         activity?.finish()
     }
+
+    private fun openBrowser(url: String?) {
+        url?.let {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(it)
+            startActivity(intent)
+        }
+    }
+
 }

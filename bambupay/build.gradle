@@ -60,12 +60,14 @@ android {
             }
             signingConfig signingConfigs.release
             buildConfigField "String", 'API_BASE_URL', '"https://api.resolveitthrough.us/"'
+            buildConfigField "String", 'API_BASE_URL_TMS', '"https://tms.resolveitthrough.us/"'
         }
 
         debug {
             debuggable true
             versionNameSuffix "(demo)"
             buildConfigField "String", 'API_BASE_URL', '"https://dev-api.resolveitthrough.us/"'
+            buildConfigField "String", 'API_BASE_URL_TMS', '"https://dev-tms.resolveitthrough.us/"'
             signingConfig signingConfigs.debug
             matchingFallbacks = ['debug', 'release']
         }
@@ -74,6 +76,7 @@ android {
             debuggable true
             versionNameSuffix "(staging)"
             buildConfigField "String", 'API_BASE_URL', '"https://staging-api.resolveitthrough.us/"'
+            buildConfigField "String", 'API_BASE_URL_TMS', '"https://staging-tms.resolveitthrough.us/"'
             signingConfig signingConfigs.debug
             matchingFallbacks = ['debug', 'release']
         }

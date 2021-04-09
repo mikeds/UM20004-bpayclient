@@ -1,9 +1,13 @@
 package com.uxi.bambupay.view.activity
 
+//import com.microblink.entities.recognizers.RecognizerBundle
+//import com.microblink.entities.recognizers.blinkid.generic.BlinkIdCombinedRecognizer
+//import com.microblink.entities.recognizers.blinkid.imageoptions.FullDocumentImageOptions
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -15,15 +19,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
-//import com.microblink.entities.recognizers.RecognizerBundle
-//import com.microblink.entities.recognizers.blinkid.generic.BlinkIdCombinedRecognizer
-//import com.microblink.entities.recognizers.blinkid.imageoptions.FullDocumentImageOptions
+import com.uxi.bambupay.BuildConfig
 import com.uxi.bambupay.R
-import com.uxi.bambupay.model.registration.Province
-import com.uxi.bambupay.model.registration.Fund
-import com.uxi.bambupay.model.registration.IDType
-import com.uxi.bambupay.model.registration.ImageType
-import com.uxi.bambupay.model.registration.Work
+import com.uxi.bambupay.model.registration.*
 import com.uxi.bambupay.utils.BitmapUtils
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.FilePickerManager
@@ -156,6 +154,29 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             R.id.input_id_expiration -> {
                 showExpirationDatePicker()
             }
+            R.id.btn_terms -> {
+                // https://dev-tms.resolveitthrough.us/terms-and-conditions
+                val url = "${BuildConfig.API_BASE_URL_TMS}terms-and-conditions"
+                openBrowser(url)
+            }
+            R.id.btn_data_privacy -> {
+                // https://dev-tms.resolveitthrough.us/data-privacy
+                val url = "${BuildConfig.API_BASE_URL_TMS}data-privacy"
+                openBrowser(url)
+            }
+            R.id.btn_eula -> {
+                // https://dev-tms.resolveitthrough.us/eula
+                val url = "${BuildConfig.API_BASE_URL_TMS}eula"
+                openBrowser(url)
+            }
+        }
+    }
+
+    private fun openBrowser(url: String?) {
+        url?.let {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(it)
+            startActivity(intent)
         }
     }
 
@@ -203,6 +224,9 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         input_gender.setOnClickListener(this)
         input_date_of_birth.setOnClickListener(this)
         input_id_expiration.setOnClickListener(this)
+        btn_terms.setOnClickListener(this)
+        btn_data_privacy.setOnClickListener(this)
+        btn_eula.setOnClickListener(this)
 //            showVerificationScreen()
     }
 
