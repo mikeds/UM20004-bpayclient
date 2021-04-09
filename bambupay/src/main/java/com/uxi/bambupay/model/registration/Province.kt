@@ -1,4 +1,4 @@
-package com.uxi.bambupay.model
+package com.uxi.bambupay.model.registration
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

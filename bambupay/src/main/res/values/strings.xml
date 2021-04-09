@@ -53,7 +53,7 @@
     <string name="lname">Last Name</string>
     <string name="gender">Gender</string>
     <string name="date_of_birth">Birthday</string>
-    <string name="id_number">ID Number</string>
+    <string name="place_of_birth">Place of Birth</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="transaction_status">Status</string>
     <string name="card_details">Card Details</string>
@@ -67,7 +67,15 @@
     <string name="street">Street</string>
     <string name="barangay">Barangay</string>
     <string name="state">State / Province / Region</string>
-    <string name="others">Others</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="source_of_funds">Source of Funds</string>
+    <string name="nature_of_work">Nature of Work</string>
+    <string name="id_type">ID Type</string>
+    <string name="id_number">ID Number</string>
+    <string name="id_expiration">ID Expiration Date</string>
+    <string name="id_front">ID Front</string>
+    <string name="id_back">ID Back</string>
+    <string name="agent_code">Agent Code</string>
 
     <string name="send_money">Send Money</string>
     <string name="transact">Transaction</string>
@@ -101,10 +109,12 @@
     <string name="sign_out">Sign Out</string>
 
     <string name="skip">Skip</string>
-    <string name="page1">Easy payments</string>
-    <string name="page2">Manage payments</string>
+    <string name="page1">Send Money</string>
+    <string name="page2">Easy payments</string>
     <string name="page3">High level security</string>
-    <string name="page_demo">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...</string>
+    <string name="page1_desc">Avoid long queues by transferring money in real-time to other BambuPay client App users or a nominated bank account.</string>
+    <string name="page2_desc">Enjoy cashless on-the-go transactions at reasonable fees. Cash-in/pay-in comes with various methods, like credit or debit card cash-in/pay-in, bank transfers, and purchase of payments via QR Code.</string>
+    <string name="page3_desc">Our mobile platform technology uses world-class security protocols and fraud control systems, ensuring all transactions are protected, secure, and reliable.</string>
 
     <string name="verification_title">Enter verification code we just sent you via email</string>
     <string name="verification">Verification</string>
@@ -130,6 +140,17 @@
     <string name="signup_password_mismatch">Password Mismatch</string>
     <string name="signup_no_consent">Consent is required</string>
     <string name="signup_no_verify">Please enter a valid verification code</string>
+    <string name="signup_no_pob">Please enter place of birth</string>
+    <string name="signup_no_postal_code">Please enter postal code</string>
+    <string name="signup_no_id_number">Please enter id number</string>
+    <string name="signup_no_id_expiration_date">Please enter id expiration date</string>
+    <string name="signup_no_id_front">Please attached front id picture</string>
+    <string name="signup_no_id_back">Please attached back id picture</string>
+    <string name="signup_no_agent_code">Please enter agent code</string>
+    <string name="signup_no_house_no">Please enter house no.</string>
+    <string name="signup_no_street">Please enter street</string>
+    <string name="signup_no_brgy">Please enter brgy</string>
+    <string name="signup_no_city">Please enter city</string>
 
     <string name="cash_in_merchant">Cash In via Merchant (Over The Counter)</string>
     <string name="cash_in_bank">Cash In via Bank</string>
@@ -184,6 +205,11 @@
     <string name="cash_in_card_paymaya_fee_msg">A Convenience Fee of 4.5% will be  applied to each Paymaya transaction. There is a minimum Convenience Fee of 5.2% for all transactions of ₱1000.00 and below. Would you like to proceed?</string>
     <string name="cash_in_grab_fee_msg">A Convenience Fee of 4% will be applied to each GrabPay transaction. There is a minimum Convenience Fee of 5% for all transactions ₱800.00 and below. Would you like to proceed?</string>
     <string name="cash_in_gcash_fee_msg">A Convenience Fee of 3.5% will be applied to each GCash transaction. There is a minimum Convenience Fee of 5% for all transactions ₱800.00 and below. Would you like to proceed?</string>
+
+    <string name="learn_terms">To learn further these statements/agreements, you may  click on: </string>
+    <string name="terms_conditions">Terms and Conditions</string>
+    <string name="data_privacy">Data Privacy</string>
+    <string name="eula">EULA</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

@@ -19,11 +19,18 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 //import com.microblink.entities.recognizers.blinkid.generic.BlinkIdCombinedRecognizer
 //import com.microblink.entities.recognizers.blinkid.imageoptions.FullDocumentImageOptions
 import com.uxi.bambupay.R
-import com.uxi.bambupay.model.Province
+import com.uxi.bambupay.model.registration.Province
+import com.uxi.bambupay.model.registration.Fund
+import com.uxi.bambupay.model.registration.IDType
+import com.uxi.bambupay.model.registration.ImageType
+import com.uxi.bambupay.model.registration.Work
 import com.uxi.bambupay.utils.BitmapUtils
 import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.FilePickerManager
 import com.uxi.bambupay.utils.formatDate
+import com.uxi.bambupay.view.adapter.FundsAdapter
+import com.uxi.bambupay.view.adapter.IdentificationAdapter
+import com.uxi.bambupay.view.adapter.NatureWorkAdapter
 import com.uxi.bambupay.view.adapter.ProvinceAdapter
 import com.uxi.bambupay.viewmodel.LoginViewModel
 import com.uxi.bambupay.viewmodel.RegisterViewModel
@@ -31,7 +38,6 @@ import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.content_register.*
 import timber.log.Timber
-import java.text.DateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -109,39 +115,53 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
+    private fun register() {
+        registerViewModel.subscribeRegister(
+            input_fname.text.toString(),
+            input_lname.text.toString(),
+            input_gender.text.toString(),
+            input_date_of_birth.text.toString(),
+            input_mobile_number.text.toString(),
+            input_email.text.toString(),
+            input_password.text.toString(),
+            input_confirm_password.text.toString(),
+            input_policy.isChecked,
+            input_text_house_no.text.toString(),
+            input_text_street.text.toString(),
+            input_text_brgy.text.toString(),
+            input_text_city.text.toString(),
+            provinceSelected?.provinceId,
+            input_text_postal_code.text.toString(),
+            input_pob.text.toString(),
+            fundSelected.id,
+            workSelected.id,
+            idTypeSelected.id,
+            input_text_id_number.text.toString(),
+            input_id_expiration.text.toString(),
+            input_text_agent_code.text.toString()
+        )
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_register -> {
-                registerViewModel.subscribeRegister(
-                    input_fname.text.toString(),
-                    input_lname.text.toString(),
-                    input_gender.text.toString(),
-                    input_date_of_birth.text.toString(),
-                    input_mobile_number.text.toString(),
-                    input_email.text.toString(),
-                    input_password.text.toString(),
-                    input_confirm_password.text.toString(),
-                    input_policy.isChecked,
-                    input_text_house_no.text.toString(),
-                    input_text_street.text.toString(),
-                    input_text_brgy.text.toString(),
-                    input_text_city.text.toString(),
-                    provinceSelected?.provinceId,
-                    input_text_others.text.toString()
-                )
+                register()
             }
             R.id.input_gender -> {
                 showGenderDialog()
             }
             R.id.input_date_of_birth -> {
-                showDatePicker()
+                showBirthdDatePicker()
+            }
+            R.id.input_id_expiration -> {
+                showExpirationDatePicker()
             }
         }
     }
 
     private fun events() {
         //input_card_expiry.addTextChangedListener(CreditCardExpiryTextWatcher(input_card_expiry))
-        btn_image_document.setOnClickListener {
+        btn_image_profile.setOnClickListener {
 //            // use default UI for scanning documents
 //            val uiSettings = BlinkIdUISettings(recognizerBundle)
 //            // start scan activity based on UI settings
@@ -154,21 +174,53 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             val btnTakePhoto = dialogView.findViewById<TextView>(R.id.btn_take_photo)
             val btnChooseGallery = dialogView.findViewById<TextView>(R.id.btn_choose_gallery)
             btnTakePhoto?.setOnClickListener {
-                takeFile(FilePickerManager.Type.CAMERA)
+                takeFile(FilePickerManager.Type.CAMERA, ImageType.PROFILE)
                 dialog.dismiss()
             }
             btnChooseGallery?.setOnClickListener {
-                takeFile(FilePickerManager.Type.GALLERY)
+                takeFile(FilePickerManager.Type.GALLERY, ImageType.PROFILE)
                 dialog.dismiss()
             }
             dialog.show()
 
         }
 
+        img_id_front_view.setOnClickListener {
+            showBottomSheet(
+                onTakePhotoClick = { takeFile(FilePickerManager.Type.CAMERA, ImageType.ID_FRONT) },
+                onChooseGalleryClick = { takeFile(FilePickerManager.Type.GALLERY, ImageType.ID_FRONT) }
+            )
+        }
+
+        img_id_back_view.setOnClickListener {
+            showBottomSheet(
+                onTakePhotoClick = { takeFile(FilePickerManager.Type.CAMERA, ImageType.ID_BACK) },
+                onChooseGalleryClick = { takeFile(FilePickerManager.Type.GALLERY, ImageType.ID_BACK) }
+            )
+        }
+
         btn_register.setOnClickListener(this)
         input_gender.setOnClickListener(this)
         input_date_of_birth.setOnClickListener(this)
+        input_id_expiration.setOnClickListener(this)
 //            showVerificationScreen()
+    }
+
+    private fun showBottomSheet( onTakePhotoClick: () -> Unit, onChooseGalleryClick: () -> Unit) {
+        val dialogView: View = layoutInflater.inflate(R.layout.bottom_sheet, null)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(dialogView)
+        val btnTakePhoto = dialogView.findViewById<TextView>(R.id.btn_take_photo)
+        val btnChooseGallery = dialogView.findViewById<TextView>(R.id.btn_choose_gallery)
+        btnTakePhoto?.setOnClickListener {
+            onTakePhotoClick.invoke()
+            dialog.dismiss()
+        }
+        btnChooseGallery?.setOnClickListener {
+            onChooseGalleryClick.invoke()
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     /*private fun setupMicroBlink() {
@@ -263,7 +315,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         builder.create().show()
     }
 
-    private fun showDatePicker() {
+    private fun showBirthdDatePicker() {
         val mCalendar: Calendar = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
             this, R.style.DatePickerDialogStyle,
@@ -284,9 +336,31 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         datePickerDialog.show()
     }
 
+    private fun showExpirationDatePicker() {
+        val mCalendar: Calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            this, R.style.DatePickerDialogStyle,
+            OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                mCalendar.set(Calendar.YEAR, year)
+                mCalendar.set(Calendar.MONTH, monthOfYear)
+                mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                val date: String = formatDate(mCalendar.time)
+                input_id_expiration.setText(date)
+                input_id_expiration.error = null
+            },
+            mCalendar.get(Calendar.YEAR),
+            mCalendar.get(Calendar.MONTH),
+            mCalendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.setTitle("Select Date")
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+        datePickerDialog.show()
+    }
+
     private fun observeViewModel() {
         viewModelLogin.subscribeToken()
         registerViewModel.subscribeProvince()
+        registerViewModel.subscribeTools()
 
         registerViewModel.loading.observe(this, Observer { isLoading ->
             if (isLoading) {
@@ -306,18 +380,18 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             nested_scroll_view.requestChildFocus(input_lname, input_lname)
         })
 
-        /*registerViewModel.isGenderEmpty.observe(this, Observer { isGenderEmpty ->
-            if (isGenderEmpty) input_gender.error = getString(R.string.signup_no_gender)
-            nested_scroll_view.requestChildFocus(input_gender, input_gender)
-        })*/
+        registerViewModel.isGenderEmpty.observe(this, { it1 ->
+            it1?.getContentIfNotHandled()?.let {
+                if (it) {
+                    input_gender.error = getString(R.string.signup_no_gender)
+                    nested_scroll_view.requestChildFocus(input_gender, input_gender)
+                }
+            }
+        })
 
         registerViewModel.isDobEmpty.observe(this, Observer { isDobEmpty ->
             if (isDobEmpty) input_date_of_birth.error = getString(R.string.signup_no_dob)
             nested_scroll_view.requestChildFocus(input_date_of_birth, input_date_of_birth)
-        })
-
-        registerViewModel.isIdNumberEmpty.observe(this, Observer { isIdNumberEmpty ->
-            if (isIdNumberEmpty) input_id_number.error = getString(R.string.signup_no_id)
         })
 
         registerViewModel.isMobileNumberEmpty.observe(this, Observer { isMobileNumberEmpty ->
@@ -337,6 +411,20 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         registerViewModel.isConfirmPasswordEmpty.observe(this, Observer { isConfirmPasswordEmpty ->
             if (isConfirmPasswordEmpty) input_confirm_password.error =
                 getString(R.string.signup_no_password)
+        })
+
+        registerViewModel.isPobEmpty.observe(this, { it1 ->
+            it1?.getContentIfNotHandled()?.let {
+                if (it) {
+                    showMessageDialog(getString(R.string.signup_no_pob))
+                }
+            }
+        })
+
+        registerViewModel.emptyFieldErrorMsg.observe(this, { it1 ->
+            it1?.getContentIfNotHandled()?.let {
+                showMessageDialog(it)
+            }
         })
 
         registerViewModel.isPasswordMismatch.observe(this, Observer { isPasswordMismatch ->
@@ -365,6 +453,15 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             }
         })
 
+        registerViewModel.successRegistration.observe(this, {
+            it?.let {
+                showMessageDialog(
+                    message = it,
+                    onDismiss = ::onDialogOkay
+                )
+            }
+        })
+
         registerViewModel.errorMessage.observe(this, Observer { errorMessage ->
             Log.e("DEBUG", "registration error")
             Toast.makeText(this, "$errorMessage", Toast.LENGTH_SHORT).show()
@@ -373,30 +470,14 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
         viewModelLogin.refreshLogin.observe(this, Observer { isRefreshLogin ->
             if (isRefreshLogin) {
-                registerViewModel.subscribeRegister(
-                    input_fname.text.toString(),
-                    input_lname.text.toString(),
-                    input_gender.text.toString(),
-                    input_date_of_birth.text.toString(),
-                    input_mobile_number.text.toString(),
-                    input_email.text.toString(),
-                    input_password.text.toString(),
-                    input_confirm_password.text.toString(),
-                    input_policy.isChecked,
-                    input_text_house_no.text.toString(),
-                    input_text_street.text.toString(),
-                    input_text_brgy.text.toString(),
-                    input_text_city.text.toString(),
-                    provinceSelected?.provinceId,
-                    input_text_others.text.toString()
-                )
+                register()
             }
         })
 
         val customDropDownAdapter = ProvinceAdapter(this@RegisterActivity, arrayListOf(Province("", "---------- Select ----------")))
-        spinner.apply {
-            spinner.adapter = customDropDownAdapter
-            spinner.onItemSelectedListener = object : OnItemSelectedListener {
+        spinner_state.apply {
+            spinner_state.adapter = customDropDownAdapter
+            spinner_state.onItemSelectedListener = object : OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
                     provinceSelected = customDropDownAdapter.getItem(position) as Province
                     Timber.tag("DEBUG").e("item ${provinceSelected.provinceName}")
@@ -408,30 +489,119 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
+        registerViewModel.works.observe(this, {
+            if (it.isNotEmpty()) {
+                spinner_nature_work.apply {
+                    val natureWorkAdapter = NatureWorkAdapter(this@RegisterActivity, it)
+                    adapter = natureWorkAdapter
+                    onItemSelectedListener = object : OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                            workSelected = natureWorkAdapter.getItem(position)
+                            Timber.tag("DEBUG").e("workSelected:: ${workSelected.name}")
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+                    }
+                }
+            }
+        })
+
+        registerViewModel.idTypes.observe(this,  {
+            if (it.isNotEmpty()) {
+                spinner_id_type.apply {
+                    val idAdapter = IdentificationAdapter(this@RegisterActivity, it)
+                    adapter = idAdapter
+                    onItemSelectedListener = object : OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                            idTypeSelected = idAdapter.getItem(position)
+                            Timber.tag("DEBUG").e("idTypeSelected:: ${idTypeSelected.name}")
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+                    }
+                }
+            }
+        })
+
+        registerViewModel.funds.observe(this,  {
+            if (it.isNotEmpty()) {
+                spinner_source_funds.apply {
+                    val fundAdapter = FundsAdapter(it)
+                    adapter = fundAdapter
+                    onItemSelectedListener = object : OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                            fundSelected = fundAdapter.getItem(position)
+                            Timber.tag("DEBUG").e("fundSelected:: ${fundSelected.name}")
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+
+                        }
+                    }
+                }
+            }
+        })
+
         registerViewModel.provinces.observe(this, {
             if (it.isNotEmpty()) {
                 customDropDownAdapter.updateAdapter(it)
             }
         })
 
-        registerViewModel.postImageFile.observe(this, Observer { file ->
+        registerViewModel.postProfileImageFile.observe(this, { file ->
             when (file) {
-                null -> btn_image_document.setImageResource(R.drawable.bg_img_preview)
+                null -> btn_image_profile.setImageResource(R.drawable.bg_img_preview)
                 else -> {
-                    btn_image_document.setImageBitmap(BitmapUtils.getBitmap(file.absolutePath))
+                    btn_image_profile.setImageBitmap(BitmapUtils.getBitmap(file.absolutePath))
+                    txt_capture.visibility = View.INVISIBLE
                 }
             }
         })
 
+        registerViewModel.postFrontImageFile.observe(this, { file ->
+            when (file) {
+                null -> img_id_front_view.setImageDrawable(null)
+                else -> {
+                    img_id_front_view.setImageBitmap(BitmapUtils.getBitmap(file.absolutePath))
+                }
+            }
+        })
+
+        registerViewModel.postBackImageFile.observe(this, { file ->
+            when (file) {
+                null -> img_id_back_view.setImageDrawable(null)
+                else -> {
+                    img_id_back_view.setImageBitmap(BitmapUtils.getBitmap(file.absolutePath))
+                }
+            }
+        })
+
+        registerViewModel.isIdNumberEmpty.observe(this, Observer { isIdNumberEmpty ->
+            if (isIdNumberEmpty) input_text_id_number.error = getString(R.string.signup_no_id)
+        })
+
+    }
+
+    private fun onDialogOkay() {
+        showOtpScreen()
     }
 
     private lateinit var provinceSelected: Province
+    private lateinit var workSelected: Work
+    private lateinit var idTypeSelected: IDType
+    private lateinit var fundSelected: Fund
 
-    private fun takeFile(type: FilePickerManager.Type) {
+    private fun takeFile(type: FilePickerManager.Type, imageType: ImageType) {
         filePickerManager.pickFile(this, type)
             .subscribe({ result ->
                 when (result) {
-                    is FilePickerManager.Result.Image -> registerViewModel.setPostImageFile(result.file)
+                    is FilePickerManager.Result.Image -> {
+                        registerViewModel.setPostImageFile(result.file, imageType)
+                    }
                     is FilePickerManager.Result.Document -> registerViewModel.setPostDocumentFile(result)
                     FilePickerManager.Result.Cancelled -> Timber.d("file picker cancelled")
                 }

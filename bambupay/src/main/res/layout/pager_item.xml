@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -32,7 +33,7 @@
         android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:gravity="center"
         android:lineSpacingExtra="6dp"
-        android:text="@string/page_demo"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:text="@tools:sample/lorem/random" />
 
 </LinearLayout>

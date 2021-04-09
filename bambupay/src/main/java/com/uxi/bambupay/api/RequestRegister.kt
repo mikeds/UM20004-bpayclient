@@ -40,7 +40,10 @@ open class RequestRegister private constructor(
 
     private val city: String?,
 
-    private val others: String?
+    private val others: String?,
+
+    @SerializedName("pob")
+    private val placeOfBirth: String?
 
     ) {
 
@@ -78,7 +81,10 @@ open class RequestRegister private constructor(
 
         private var city: String? = null,
 
-        private var others: String? = null) {
+        private var others: String? = null,
+
+        @SerializedName("pob")
+        private var placeOfBirth: String?) {
 
         fun setFirstName(firstName: String) = apply { this.firstName = firstName }
         fun setLastName(lastName: String) = apply { this.lastName = lastName }
@@ -94,7 +100,8 @@ open class RequestRegister private constructor(
         fun setBrgy(brgy: String) = apply { this.brgy = brgy }
         fun setCity(city: String) = apply { this.city = city}
         fun setOthers(others: String) = apply { this.others = others }
-        fun build() = RequestRegister(firstName, lastName, email, mobileNumber, password, countryId, provinceId, gender, dob, houseNo, street, brgy, city, others)
+        fun setPlaceOfBirth(placeOfBirth: String) = apply { this.placeOfBirth = placeOfBirth }
+        fun build() = RequestRegister(firstName, lastName, email, mobileNumber, password, countryId, provinceId, gender, dob, houseNo, street, brgy, city, others, placeOfBirth)
     }
 
 }

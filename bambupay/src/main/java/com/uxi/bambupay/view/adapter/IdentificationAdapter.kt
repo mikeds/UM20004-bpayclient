@@ -7,28 +7,23 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.uxi.bambupay.R
-import com.uxi.bambupay.model.registration.Province
+import com.uxi.bambupay.model.registration.IDType
+
 
 /**
- * Created by Eraño Payawal on 9/21/20.
+ * Created by Eraño Payawal on 4/8/21.
  * hunterxer31@gmail.com
  */
-class ProvinceAdapter(val context: Context?, var list: MutableList<Province>) : BaseAdapter() {
+class IdentificationAdapter(val context: Context?, private val lists: List<IDType>) : BaseAdapter() {
 
     private val inflater: LayoutInflater =
         context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-    override fun getCount(): Int {
-        return list.size
-    }
+    override fun getCount(): Int = lists.size
 
-    override fun getItem(position: Int): Any {
-        return list[position]
-    }
+    override fun getItem(position: Int): IDType = lists[position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -41,17 +36,12 @@ class ProvinceAdapter(val context: Context?, var list: MutableList<Province>) : 
             view = convertView
             vh = view.tag as ItemHolder
         }
-        vh.label.text = list[position].provinceName
+        vh.label.text = lists[position].name
 
         return view
     }
 
     private class ItemHolder(row: View?) {
         val label: TextView = row?.findViewById(R.id.text) as TextView
-    }
-
-    fun updateAdapter(list: MutableList<Province>) {
-        this.list.addAll(list)
-        notifyDataSetChanged()
     }
 }

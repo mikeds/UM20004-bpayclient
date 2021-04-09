@@ -31,9 +31,9 @@ class SplashActivity : BaseActivity() {
         }
 
         val images: ArrayList<Splash> = arrayListOf(
-            Splash(R.drawable.img_page1, getString(R.string.page1), getString(R.string.page_demo)),
-            Splash(R.drawable.img_page2, getString(R.string.page2), getString(R.string.page_demo)),
-            Splash(R.drawable.img_page3, getString(R.string.page3), getString(R.string.page_demo))
+            Splash(R.drawable.img_page1, getString(R.string.page1), getString(R.string.page1_desc)),
+            Splash(R.drawable.img_page2, getString(R.string.page2), getString(R.string.page2_desc)),
+            Splash(R.drawable.img_page3, getString(R.string.page3), getString(R.string.page3_desc))
         )
 
         val adapter = SplashPagerAdapter(this@SplashActivity, images)

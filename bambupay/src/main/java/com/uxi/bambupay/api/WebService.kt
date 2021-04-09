@@ -5,13 +5,13 @@ import com.uxi.bambupay.model.lookup.TxDetails
 import com.uxi.bambupay.model.otp.OtpResponse
 import com.uxi.bambupay.model.otp.OtpTokenResponse
 import com.uxi.bambupay.model.paynamics.Paynamics
+import com.uxi.bambupay.model.registration.*
 import com.uxi.bambupay.model.ubp.Bank
 import com.uxi.bambupay.model.ubp.UbpCashOut
 import com.uxi.bambupay.model.ubp.UbpToken
 import io.reactivex.Flowable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface WebService {
@@ -48,10 +48,31 @@ interface WebService {
     @POST("clients/registration")
     fun register(@PartMap() partMap: Map<String, @JvmSuppressWildcards RequestBody>): Flowable<GenericApiResponse<User>>
 
+    @Multipart
+    @POST("clients/registration")
+    fun register(
+        @PartMap() partMap: Map<String, @JvmSuppressWildcards RequestBody>,
+        @Part frontIdPicture: MultipartBody.Part?,
+        @Part backIdPicture: MultipartBody.Part?
+    ): Flowable<GenericApiResponse<Registration>>
+
     // Working
     @Multipart
     @POST("clients/registration")
-    fun registerWithFile(@PartMap() partMap: Map<String, @JvmSuppressWildcards RequestBody>, @Part file: MultipartBody.Part?): Flowable<GenericApiResponse<User>>
+    fun registerWithFile(
+        @PartMap() partMap: Map<String, @JvmSuppressWildcards RequestBody>,
+        @Part file: MultipartBody.Part?
+    ): Flowable<GenericApiResponse<User>>
+
+    // Working
+    @Multipart
+    @POST("clients/registration")
+    fun registerWithFile(
+        @PartMap() partMap: Map<String, @JvmSuppressWildcards RequestBody>,
+        @Part profilePicture: MultipartBody.Part?,
+        @Part frontIdPicture: MultipartBody.Part?,
+        @Part backIdPicture: MultipartBody.Part?
+    ): Flowable<GenericApiResponse<Registration>>
 
     @POST("activation/client-email/activate")
     fun verificationCode(@Body params: Request): Flowable<GenericApiResponse<User>>
@@ -61,6 +82,15 @@ interface WebService {
 
     @GET("tools/provinces/169")
     fun getProvinces(): Flowable<GenericApiResponse<List<Province>>>
+
+    @GET("tools/nature-of-work")
+    fun getWorks(): Flowable<GenericApiResponse<List<Work>>>
+
+    @GET("tools/id-types")
+    fun getIdTypes(): Flowable<GenericApiResponse<List<IDType>>>
+
+    @GET("tools/source-of-funds")
+    fun getFunds(): Flowable<GenericApiResponse<List<Fund>>>
 
     @POST("transactions/client/scanpayqr")
     fun scanPayQR(@Body params: Request): Flowable<GenericApiResponse<User>>
