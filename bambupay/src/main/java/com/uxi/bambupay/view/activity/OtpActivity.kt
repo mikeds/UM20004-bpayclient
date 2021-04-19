@@ -384,11 +384,12 @@ class OtpActivity : BaseActivity() {
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             Constants.REGISTRATION_SCREEN -> {
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
-                finish()
+
+                showMessageDialog(
+                    message = getString(R.string.registration_success_msg),
+                    onDismiss = ::showLoginScreen
+                )
+
             }
             /*Constants.CASH_IN_CARD_SCREEN -> {
                 showCashInScreen(Constants.CASH_IN_CARD_SCREEN)
@@ -425,6 +426,14 @@ class OtpActivity : BaseActivity() {
         intent.putExtra(Constants.CASH_IN_REDIRECT_URL, url)
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+    }
+
+    private fun showLoginScreen() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+        finish()
     }
 
 
