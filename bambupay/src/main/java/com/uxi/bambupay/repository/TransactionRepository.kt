@@ -63,7 +63,7 @@ class TransactionRepository @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .map { res ->
                 when (val obj: SendMoney? = res.response) {
-                    null -> ResultWithMessage.Error(false, "")
+                    null -> ResultWithMessage.Error(false, res.errorMessage)
                     else -> ResultWithMessage.Success(obj, res.successMessage)
                 }
             }

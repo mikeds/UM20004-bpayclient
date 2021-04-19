@@ -85,6 +85,7 @@ class TransactionDetailsActivity : BaseActivity() {
                 setFee(it.fee)
                 setSender(it.sender)
                 setRecipient(it.recipient)
+                setMessage(it.message)
             }
         })
 
@@ -99,6 +100,7 @@ class TransactionDetailsActivity : BaseActivity() {
                 setFee(it.fee)
                 setSender(it.sender)
                 setRecipient(it.recipient)
+                setMessage(it.message)
             }
         })
     }
@@ -192,6 +194,14 @@ class TransactionDetailsActivity : BaseActivity() {
     private fun setRecipient(recipient: String?) {
         recipient?.let {
             txt_recipient.text = it
+        }
+    }
+
+    private fun setMessage(message: String?) {
+        if (message.isNullOrEmpty()) {
+            txt_message.text = ""
+        } else {
+            txt_message.text = message
         }
     }
 
