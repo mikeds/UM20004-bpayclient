@@ -125,6 +125,10 @@ class TransactionDetailsActivity : BaseActivity() {
                 txt_transaction_type.text = getString(R.string.scan_pay)
                 txt_amount?.setTextColor(ContextCompat.getColor(this, R.color.red))
             }
+            Constants.QUICK_PAY_QR -> txt_transaction_type.text = getString(R.string.quick_qr)
+            Constants.CREATE_SCAN_QR -> txt_transaction_type.text = getString(R.string.create_scan_qr)
+            Constants.INCOME_SHARES -> txt_transaction_type.text = getString(R.string.income_shares)
+            else -> { txt_transaction_type.text = transactionType }
         }
     }
 

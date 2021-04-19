@@ -34,6 +34,7 @@
     <string name="create_qr">CreatePayQR</string>
     <string name="create_scan_qr">CreateScanQR</string>
     <string name="quick_qr">QuickPayQR</string>
+    <string name="income_shares">Income Shares</string>
 
     <string name="sign_in">Sign In</string>
     <string name="sign_in_details">to access\nyour account</string>

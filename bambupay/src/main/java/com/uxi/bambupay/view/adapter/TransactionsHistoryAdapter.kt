@@ -65,6 +65,7 @@ class TransactionsHistoryAdapter(
                     SCAN_PAY_QR -> txtTransactionType.text = context?.getString(R.string.scan_pay)
                     CREATE_SCAN_QR -> txtTransactionType.text = context?.getString(R.string.create_scan_qr)
                     QUICK_PAY_QR -> txtTransactionType.text = context?.getString(R.string.quick_qr)
+                    else -> { txtTransactionType.text = it.transactionType }
                 }
                 val transactionAmount = it.amount?.let { it1 -> utils?.currencyFormat(it1) }
                 txtAmount.text = context?.getString(R.string.ph_currency, transactionAmount)

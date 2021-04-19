@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.uxi.bambupay.R
 import com.uxi.bambupay.model.RecentTransaction
-import com.uxi.bambupay.utils.Constants
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN
 import com.uxi.bambupay.utils.Constants.Companion.CASH_IN_PAYNAMICS
 import com.uxi.bambupay.utils.Constants.Companion.CASH_OUT
@@ -66,6 +65,7 @@ class RecentTransactionsAdapter(
                     SCAN_PAY_QR -> txtTransactionType.text = context?.getString(R.string.scan_pay)
                     CREATE_SCAN_QR -> txtTransactionType.text = context?.getString(R.string.create_scan_qr)
                     QUICK_PAY_QR -> txtTransactionType.text = context?.getString(R.string.quick_qr)
+                    else -> { txtTransactionType.text = it.transactionType }
                 }
                 val transactionAmount = it.amount?.let { it1 -> utils?.currencyFormat(it1) }
                 txtAmount.text = context?.getString(R.string.ph_currency, transactionAmount)
