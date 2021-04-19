@@ -1,5 +1,6 @@
 package com.uxi.bambupay.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -85,11 +86,11 @@ class CreateQRActivity : BaseActivity() {
         }
 
         binding.btnCancel.setOnClickListener {
-            onBackPressed()
+            cancelCreateQR()
         }
 
         binding.btnCancelGenerate.setOnClickListener {
-            onBackPressed()
+            cancelCreateQR()
         }
 
         binding.btnGenerate.setOnClickListener {
@@ -102,6 +103,15 @@ class CreateQRActivity : BaseActivity() {
         binding.textInputAmount.doAfterTextChanged {
             feeViewModel.subscribeFee(it.toString(), Constants.TX_TYPE_CREATE_SCAN_QR_ID)
         }
+    }
+
+    private fun cancelCreateQR() {
+        val intent = Intent(this, SelectPayQRActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK) // going back to previous screen and clear in between activity stack
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // clear all backstack
+        startActivity(intent)
+        overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
+        finish()
     }
 
     private fun observeViewModel() {
