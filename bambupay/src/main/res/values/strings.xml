@@ -147,7 +147,7 @@
     <string name="signup_no_id_expiration_date">Please enter id expiration date</string>
     <string name="signup_no_id_front">Please attached front id picture</string>
     <string name="signup_no_id_back">Please attached back id picture</string>
-    <string name="signup_no_agent_code">Please enter agent code</string>
+    <string name="signup_no_agent_code">Please input Agent Code. If none, just input 0</string>
     <string name="signup_no_house_no">Please enter house no.</string>
     <string name="signup_no_street">Please enter street</string>
     <string name="signup_no_brgy">Please enter brgy</string>
