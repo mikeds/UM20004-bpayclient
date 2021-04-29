@@ -212,7 +212,8 @@
     <string name="data_privacy">Data Privacy</string>
     <string name="eula">EULA</string>
 
-    <string name="registration_success_msg">Thank you for signing up. Kindly give us a maximum of 48 to 72 hours to review your application.\n - BambuPay Team</string>
+    <string name="registration_success_msg">Thank you for signing up. Kindly give us a maximum of 48 to 72 hours to review your application.</string>
+    <string name="logo_desc">Bridging Payments through Technology Innovations</string>
 
     <string-array name="gender_choice_array">
         <item>Male</item>

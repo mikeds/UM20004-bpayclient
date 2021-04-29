@@ -384,11 +384,11 @@ class OtpActivity : BaseActivity() {
                 overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
             }
             Constants.REGISTRATION_SCREEN -> {
-
-                showMessageDialog(
+                showSuccessScreen()
+                /*showMessageDialog(
                     message = getString(R.string.registration_success_msg),
                     onDismiss = ::showLoginScreen
-                )
+                )*/
 
             }
             /*Constants.CASH_IN_CARD_SCREEN -> {
@@ -434,6 +434,12 @@ class OtpActivity : BaseActivity() {
         startActivity(intent)
         overridePendingTransition(R.anim.from_right_in, R.anim.from_left_out)
         finish()
+    }
+
+    private fun showSuccessScreen() {
+        val intent = Intent(this@OtpActivity, SuccessRegistrationActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_up, R.anim.stay)
     }
 
 
